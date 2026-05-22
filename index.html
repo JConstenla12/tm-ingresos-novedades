@@ -93,13 +93,13 @@ grid-template-columns:150px 1fr;
   border-radius:16px;
   padding:12px;
   display:grid;
-  grid-template-columns:160px 1fr; /* + grande */
+  grid-template-columns:180px 1fr; /* + grande */
   gap:14px;
   align-items:start;
 }
 .imgBox{
-  width:160px;
-  height:160px;
+  width:180px;
+  height:180px;
   border-radius:16px;
   background:rgba(255,255,255,.03);
   border:1px solid var(--stroke);
@@ -109,7 +109,7 @@ grid-template-columns:150px 1fr;
   align-items:center;
   justify-content:center;
 }
-.imgBox img{width:100%;height:100%;object-fit:contain;display:block;}
+.imgBox img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
 
 .pTitle{font-weight:900;font-size:14px;margin:0 0 4px;}
 .pDesc{
@@ -121,7 +121,7 @@ grid-template-columns:150px 1fr;
 .badge{
   border:1px solid var(--stroke);
   background:rgba(255,255,255,.06);
-  padding:4px 8px;border-radius:999px;color:var(--muted);
+  padding:4px 8px;border-radius:999px;color:var(--muted);font-weight:700;
 }
 .badge b{color:var(--text)}
 .badge.stock-good b{color:var(--good)}
@@ -226,14 +226,15 @@ body.force-desktop .grid{grid-template-columns:repeat(2,minmax(0,1fr));}
   }
 
 }
-
-  .offTag{
-  background: rgba(239,68,68,.18);
-  border:1px solid rgba(239,68,68,.35);
-  color:#fff;
-  font-weight:900;
+.offTag{
+  background: #ef4444;          /* rojo fuerte */
+  border: 1px solid #ef4444;
+  color: #ffffff;               /* blanco */
+  font-weight: 900;
+  letter-spacing: .2px;
+  box-shadow: 0 6px 16px rgba(239,68,68,.35);
 }
-.oldPrice{
+ .oldPrice{
   color: var(--muted);
   text-decoration: line-through;
   font-size: 12px;
@@ -459,9 +460,9 @@ function card(p){
 
       <div class="buyRow">
         <div>
-          <div class="price">${ars(net)}</div>
-          ${off>0 ? `<div class="oldPrice">PVC: ${ars(num(p.PVC))}</div>` : ``}
-          <div class="netLabel">PVC Neto</div>
+         ${off>0 ? `<div class="oldPrice">PVC: ${ars(num(p.PVC))}</div>` : ``}
+<div class="price">${ars(net)}</div>
+<div class="netLabel">PVC Neto</div>
         </div>
 
         <div class="qty">
