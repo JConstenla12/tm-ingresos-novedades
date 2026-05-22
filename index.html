@@ -299,12 +299,13 @@ body.force-desktop .grid{grid-template-columns:repeat(2,minmax(0,1fr));}
 }
 
 .switchTrack{
-  width:52px;
-  height:28px;
-  background:#1f2937;
+  width:60px;
+  height:30px;
+  background:#111827; /* oscuro fuerte */
   border-radius:999px;
   position:relative;
   transition:all .25s ease;
+  border:2px solid rgba(255,255,255,.2);
 }
 
 .switchKnob{
@@ -316,16 +317,16 @@ body.force-desktop .grid{grid-template-columns:repeat(2,minmax(0,1fr));}
   top:3px;
   left:3px;
   transition:all .25s ease;
-  box-shadow:0 3px 10px rgba(0,0,0
+  box-shadow:0 3px 10px rgba(0,0,0,.5);
 }
-
 /* MODO CLARO ACTIVO */
 body.theme-light .switchTrack{
-  background:#f59e0b;
+  background:#f59e0b; /* naranja TM */
+  border-color:#f59e0
 }
 
 body.theme-light .switchKnob{
-  left:27px;
+  left:34px
 }
 
 </style>
