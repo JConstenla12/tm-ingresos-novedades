@@ -93,13 +93,13 @@ grid-template-columns:150px 1fr;
   border-radius:16px;
   padding:12px;
   display:grid;
-  grid-template-columns:180px 1fr; /* + grande */
+  grid-template-columns:210px 1fr; /* + grande */
   gap:14px;
   align-items:start;
 }
 .imgBox{
-  width:180px;
-  height:180px;
+  width:210px;
+  height:210px;
   border-radius:16px;
   background:rgba(255,255,255,.03);
   border:1px solid var(--stroke);
@@ -110,6 +110,7 @@ grid-template-columns:150px 1fr;
   justify-content:center;
 }
 .imgBox img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+
 
 .pTitle{font-weight:900;font-size:14px;margin:0 0 4px;}
 .pDesc{
@@ -244,6 +245,22 @@ body.force-desktop .grid{grid-template-columns:repeat(2,minmax(0,1fr));}
   color: var(--muted);
   font-size: 12px;
   margin-top: 2px;
+}
+  .imgBox{ position:relative; }
+
+.stickerOff{
+  position:absolute;
+  top:10px;
+  left:10px;
+  background:#ef4444;
+  color:#fff;
+  font-weight:900;
+  font-size:12px;
+  padding:6px 10px;
+  border-radius:999px;
+  box-shadow:0 10px 22px rgba(239,68,68,.35);
+  border:1px solid rgba(255,255,255,.15);
+  z-index:3;
 }
 </style>
 </head>
@@ -440,9 +457,10 @@ function card(p){
   const im=(p.IMAGEN_URL_1||"").trim()||PLACE;
  return `
   <div class="card" data-k="${art}">
-    <div class="imgBox" data-z="1">
-      <img src="${im}" onerror="this.onerror=null;this.src='${PLACE}'">
-    </div>
+   <div class="imgBox" data-z="1">
+  ${off>0 ? `<div class="stickerOff">${Math.round(off*100)}% OFF</div>` : ``}
+  <img src="${im}" onerror="this.onerror=null;this.src='${PLACE}'">
+</div>
 
     <div>
       <div class="pTitle">${marca} · ${art}</div>
