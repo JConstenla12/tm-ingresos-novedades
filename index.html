@@ -61,7 +61,9 @@ body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text
 .hTitle h1{margin:0;font-size:18px;font-weight:900;}
 .hTitle .sub{color:var(--muted);font-size:12px;}
 
-.tools{margin-top:10px;display:grid;grid-template-columns:1fr;gap:8px;}
+.tools{margin-top:10px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+.tools .inp{grid-column:1 / -1;}
+.tools select{width:100%;}
 .inp, select{
   width:100%;box-sizing:border-box;
   padding:10px 12px;border-radius:14px;
