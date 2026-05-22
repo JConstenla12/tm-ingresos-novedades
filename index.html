@@ -19,6 +19,14 @@
   --ing:#38bdf8;  /* ingresando */
   --bad:#ef4444;
 }
+body.theme-light{
+  --bg:#f5f7fb;
+  --panel:#ffffff;
+  --card:#ffffff;
+  --stroke:rgba(0,0,0,.12);
+  --text:#0b1220;
+  --muted:#4b5563;
+}
 
 body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);}
 
@@ -307,7 +315,7 @@ body.force-desktop .grid{grid-template-columns:repeat(2,minmax(0,1fr));}
       </div>
 
       <div class="rightBtns">
-       
+       <button class="btn" id="btnTheme">🌙</button>
       </div>
     </div>
 
@@ -673,6 +681,29 @@ fetch(CSV+"?cb="+Date.now())
   document.getElementById(id).addEventListener("input", apply);
   document.getElementById(id).addEventListener("change", apply);
 });
+  const btnTheme = document.getElementById("btnTheme");
+
+if (btnTheme){
+
+  // estado guardado
+  const saved = localStorage.getItem("tm_theme");
+
+  if (saved === "light"){
+    document.body.classList.add("theme-light");
+    btnTheme.textContent = "☀️";
+  }
+
+  btnTheme.onclick = () => {
+
+    document.body.classList.toggle("theme-light");
+
+    const isLight = document.body.classList.contains("theme-light");
+
+    localStorage.setItem("tm_theme", isLight ? "light" : "dark");
+
+    btnTheme.textContent = isLight ? "☀️" : "🌙";
+  };
+}
 </script>
 </body>
 </html>
