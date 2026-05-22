@@ -197,7 +197,7 @@ body.force-desktop .grid{grid-template-columns:repeat(2,minmax(0,1fr));}
       </div>
 
       <div class="rightBtns">
-        <button class="btn" id="btnView">Vista: Móvil</button>
+       
         <button class="btn primary" id="btnCopyTop">Copiar pedido</button>
       </div>
     </div>
@@ -507,12 +507,6 @@ document.getElementById("mX").onclick=closeModal;
 document.getElementById("modal").onclick=(e)=>{ if(e.target.id==="modal") closeModal(); }
 document.getElementById("mR").onclick=(e)=>{ e.stopPropagation(); next(); }
 document.getElementById("mL").onclick=(e)=>{ e.stopPropagation(); prev(); }
-
-// Vista notebook forzada
-document.getElementById("btnView").onclick=()=>{
-  document.body.classList.toggle("force-desktop");
-  document.getElementById("btnView").textContent = document.body.classList.contains("force-desktop") ? "Vista: Notebook" : "Vista: Móvil";
-};
 
 // Copiar pedido (botón arriba)
 document.getElementById("btnCopyTop").onclick=async ()=>{
