@@ -93,13 +93,13 @@ grid-template-columns:150px 1fr;
   border-radius:16px;
   padding:12px;
   display:grid;
-  grid-template-columns:120px 1fr;
-  gap:12px;
+  grid-template-columns:160px 1fr; /* + grande */
+  gap:14px;
   align-items:start;
 }
 .imgBox{
-  width:150px;
-  height:150px;
+  width:160px;
+  height:160px;
   border-radius:16px;
   background:rgba(255,255,255,.03);
   border:1px solid var(--stroke);
@@ -109,14 +109,14 @@ grid-template-columns:150px 1fr;
   align-items:center;
   justify-content:center;
 }
-
 .imgBox img{width:100%;height:100%;object-fit:contain;display:block;}
 
 .pTitle{font-weight:900;font-size:14px;margin:0 0 4px;}
 .pDesc{
   margin:0;color:var(--muted);font-size:12px;line-height:1.25;
-  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden;
 }
+
 .badges{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:12px;}
 .badge{
   border:1px solid var(--stroke);
@@ -227,6 +227,23 @@ body.force-desktop .grid{grid-template-columns:repeat(2,minmax(0,1fr));}
 
 }
 
+  .offTag{
+  background: rgba(239,68,68,.18);
+  border:1px solid rgba(239,68,68,.35);
+  color:#fff;
+  font-weight:900;
+}
+.oldPrice{
+  color: var(--muted);
+  text-decoration: line-through;
+  font-size: 12px;
+  margin-top: 2px;
+}
+.netLabel{
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 2px;
+}
 </style>
 </head>
 
@@ -413,15 +430,19 @@ function badgeStock(v){
 function card(p){
   const marca=p.MARCA||"", art=p.ARTICULO||"", desc=p.DESCRIPCION||"", rub=p.RUBRO||"";
   const net=pvcNeto(p);
+  const off=pct(p.OFF);
   const pvL=num(p.PVL);
   const mk=pct(p.MKUP);
   const iva=pct(p.IVA);
   const ii=pct(p.II);
   const q=qty(p);
   const im=(p.IMAGEN_URL_1||"").trim()||PLACE;
-  return `
+ return `
   <div class="card" data-k="${art}">
-    <div class="imgBox" data-z="1"><img src="${im}" onerror="this.onerror=null;this.src='${PLACE}'"></div>
+    <div class="imgBox" data-z="1">
+      <img src="${im}" onerror="this.onerror=null;this.src='${PLACE}'">
+    </div>
+
     <div>
       <div class="pTitle">${marca} · ${art}</div>
       <p class="pDesc">${desc}</p>
@@ -429,6 +450,7 @@ function card(p){
       <div class="badges">
         <span class="badge"><b>${rub||"—"}</b></span>
         ${badgeStock(p.STOCK_TXT)}
+        ${off>0 ? `<span class="badge offTag">${Math.round(off*100)}% OFF</span>` : ``}
         <span class="badge">IVA: <b>${Math.round(iva*100)}%</b></span>
         <span class="badge">II: <b>${Math.round(ii*100)}%</b></span>
         ${Number.isFinite(pvL)?`<span class="badge">PVL: <b>${ars(pvL)}</b></span>`:""}
@@ -438,8 +460,10 @@ function card(p){
       <div class="buyRow">
         <div>
           <div class="price">${ars(net)}</div>
-          <div class="small">PVC Neto (aplica OFF si corresponde)</div>
+          ${off>0 ? `<div class="oldPrice">PVC: ${ars(num(p.PVC))}</div>` : ``}
+          <div class="netLabel">PVC Neto</div>
         </div>
+
         <div class="qty">
           <button class="qbtn" data-a="d">–</button>
           <div class="qval">${q}</div>
@@ -447,8 +471,7 @@ function card(p){
         </div>
       </div>
     </div>
-  </div>`;
-}
+  </div>`;}
 
 function render(){
   const g=document.getElementById("grid");
