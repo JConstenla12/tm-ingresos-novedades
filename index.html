@@ -539,11 +539,45 @@ a, button, .imgBox, .card{
   background:#ff0000;
   color:#fff;
 }
+/* --- SPLASH --- */
+#splash{
+  position:fixed;
+  inset:0;
+  background:#050a14;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  transition: opacity .4s ease;
+}
 
+.splashBox{
+  text-align:center;
+}
+
+.splashLogo{
+  font-size:56px;
+  font-weight:900;
+  color:#f59e0b;
+  letter-spacing:1px;
+  text-shadow:0 0 20px rgba(245,158,11,.5);
+}
+
+.splashText{
+  margin-top:10px;
+  color:#9db0d4;
+  font-size:14px;
+}
 </style>
 </head>
 
 <body>
+  <div id="splash">
+  <div class="splashBox">
+    <div class="splashLogo">tm</div>
+    <div class="splashText">Todomusica</div>
+  </div>
+</div>
 <div class="top">
   <div class="wrap">
     <div class="brandRow">
@@ -974,9 +1008,15 @@ if (btnTheme){
     const isLight = document.body.classList.contains("theme-light");
 
     localStorage.setItem("tm_theme", isLight ? "light" : "dark");
+   
+window.addEventListener("load", () => {
+  const s = document.getElementById("splash");
+  setTimeout(()=>{
+    s.style.opacity = "0";
+    setTimeout(()=> s.remove(), 400);
+  }, 700);
+});
 
-  
-  };
 }
 </script>
 </body>
