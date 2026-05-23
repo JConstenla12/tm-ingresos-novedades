@@ -733,18 +733,36 @@ function totals(){
   document.getElementById("wa").href="https://wa.me/?text="+encodeURIComponent(txt);
 }
 
-function buildWA(sub,iva,ii,tot){
-  const lines=[];
+function buildWA(sub, iva, ii, tot){
+
+  const lines = [];
+
   lines.push("Pedido — Ingresos de Mayo (Todomusica)");
   lines.push("");
-  for(const [k,v] of CART.entries()){
-    lines.push(`- ${v.p.MARCA} ${v.p.ARTICULO} x${v.q}`);
+
+  for(const [k, v] of CART.entries()){
+
+    const p = v.p;
+    const q = v.q;
+    const net = pvcNeto(p);
+
+    lines.push(`${p.MARCA || ""}`);        // marca
+    lines.push(`${p.ARTICULO || ""}`);     // 👈 artículo SOLO
+    lines.push(`Cant: ${q}`);              
+    lines.push(`${ars(net)}`);             // precio neto
+    lines.push("");                        // separación entre items
+
   }
+
+  lines.push("--------------------------------");
   lines.push("");
   lines.push(`Subtotal: ${ars(sub)}`);
   lines.push(`IVA: ${ars(iva)}`);
   lines.push(`Imp. Int: ${ars(ii)}`);
   lines.push(`TOTAL: ${ars(tot)}`);
+  lines.push("");
+  lines.push("Los precios están sujetos a modificaciones sin previo aviso");
+
   return lines.join("\n");
 }
 
