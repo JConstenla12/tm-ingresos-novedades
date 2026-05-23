@@ -550,9 +550,16 @@ a, button, .imgBox, .card{
   justify-content:center;
   z-index:9999;
 
-  /* 👇 auto fade out */
-  animation: splashOut .45s ease forwards;
-  animation-delay: .9s; /* cuánto dura visible */
+  animation: splashOut .5s ease forwards;
+  animation-delay: 1s;
+}
+
+@keyframes splashOut{
+  to{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
 }
 
 @keyframes splashOut{
