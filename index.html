@@ -540,6 +540,7 @@ a, button, .imgBox, .card{
   color:#fff;
 }
 /* --- SPLASH --- */
+/* --- SPLASH (AUTO-HIDE, NO DEPENDE DE JS) --- */
 #splash{
   position:fixed;
   inset:0;
@@ -548,12 +549,21 @@ a, button, .imgBox, .card{
   align-items:center;
   justify-content:center;
   z-index:9999;
-  transition: opacity .4s ease;
+
+  /* 👇 auto fade out */
+  animation: splashOut .45s ease forwards;
+  animation-delay: .9s; /* cuánto dura visible */
 }
 
-.splashBox{
-  text-align:center;
+@keyframes splashOut{
+  to{
+    opacity:0;
+    visibility:hidden;     /* deja de “existir” visualmente */
+    pointer-events:none;   /* no bloquea clics */
+  }
 }
+
+.splashBox{ text-align:center; }
 
 .splashLogo{
   font-size:56px;
@@ -1014,24 +1024,7 @@ if (btnTheme){
   };
 }
 
-// SPLASH (VERSIÓN ROBUSTA)
-window.addEventListener("load", () => {
 
-  setTimeout(() => {
-
-    const s = document.getElementById("splash");
-
-    if (s){
-      s.style.opacity = "0";
-
-      setTimeout(() => {
-        s.remove();
-      }, 400);
-    }
-
-  }, 700);
-
-});
 }
 </script>
 </body>
