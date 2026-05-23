@@ -768,7 +768,13 @@ function setQty(p, q){
   q=Math.max(0, q|0);
   const k=p.ARTICULO;
   if(!k) return;
-  if(q===0) CART.delete(k); else CART.set(k,{q,p});
+
+  if(q===0) CART.delete(k); 
+  else CART.set(k,{q,p});
+
+  // ✅ guardar en localStorage
+  localStorage.setItem("tm_cart", JSON.stringify([...CART]));
+
   totals();
   render();
 }
@@ -974,7 +980,15 @@ document.getElementById("btnCopyTop").onclick=async ()=>{
 };
 
 // Vaciar
-document.getElementById("btnEmpty").onclick=()=>{ CART.clear(); totals(); render(); };
+document.getElementById("btnEmpty").onclick=()=>{
+  CART.clear();
+
+  // ✅ borrar storage
+  localStorage.removeItem("tm_cart");
+
+  totals();
+  render();
+};
 
 // Load CSV
 fetch(CSV+"?cb="+Date.now())
@@ -993,11 +1007,21 @@ fetch(CSV+"?cb="+Date.now())
 
     const fr=document.getElementById("fRubro");
     rubros.forEach(r=>{ const o=document.createElement("option"); o.value=r;o.textContent=r; fr.appendChild(o); });
+VIEW=[...ALL];
 
-    VIEW=[...ALL];
-    render();
-    totals();
-  })
+// ✅ RECUPERAR CARRITO
+const savedCart = localStorage.getItem("tm_cart");
+
+if (savedCart){
+  const arr = JSON.parse(savedCart);
+  arr.forEach(([k,v])=>{
+    CART.set(k,v);
+  });
+}
+
+render();
+totals();
+      })
   .catch(err=>{
     alert("No pude leer ingresostm_mayo.csv. Revisá que esté en la raíz del repo.");
     console.error(err);
@@ -1008,7 +1032,7 @@ fetch(CSV+"?cb="+Date.now())
   document.getElementById(id).addEventListener("input", apply);
   document.getElementById(id).addEventListener("change", apply);
 });
-
+  
 // THEME
 const btnTheme = document.getElementById("btnTheme");
 
