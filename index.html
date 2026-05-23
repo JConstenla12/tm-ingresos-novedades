@@ -133,6 +133,12 @@ body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text
   /* “feel app”: una línea interna suave, sin sombra pesada */
   box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
 }
+  .card{
+  transition: transform .12s ease;
+}
+.card:active{
+  transform: scale(.995);
+}
 
 /* en modo claro: borde más fino y limpio */
 body.theme-light .card{
@@ -442,13 +448,13 @@ a, button, .imgBox, .card{
 @media (max-width: 700px){
 
   .card{
-    grid-template-columns: 1fr;   /* 👈 pasa a una sola columna */
+    grid-template-columns: 1fr;   /* 1 columna */
   }
 
   .imgBox{
     width:100%;
     height:auto;
-    aspect-ratio:1 / 1;           /* mantiene cuadrado prolijo */
+    aspect-ratio:1 / 1;
   }
 
   .buyRow{
@@ -458,14 +464,15 @@ a, button, .imgBox, .card{
   }
 
   .qty{
-    align-self:flex-end;          /* botones a la derecha */
+    align-self:flex-end;
   }
-  @media (hover:hover){
-  .btn:hover{ filter: brightness(1.08); }
-  .iconBtn:hover{ filter: brightness(1.08); }
-
 }
 
+/* 👇 hover SOLO en dispositivos con mouse (PC/notebook) */
+@media (hover:hover){
+  .btn:hover{ filter: brightness(1.08); }
+  .iconBtn:hover{ filter: brightness(1.08); }
+}
 </style>
 </head>
 
@@ -890,7 +897,7 @@ if (btnTheme){
 
   if (saved === "light"){
     document.body.classList.add("theme-light");
-    btnTheme.textContent = "☀️";
+   
   }
 
   btnTheme.onclick = () => {
