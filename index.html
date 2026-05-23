@@ -973,6 +973,7 @@ fetch(CSV+"?cb="+Date.now())
 
     const fm=document.getElementById("fMarca");
     marcas.forEach(m=>{ const o=document.createElement("option"); o.value=m;o.textContent=m; fm.appendChild(o); });
+
     const fr=document.getElementById("fRubro");
     rubros.forEach(r=>{ const o=document.createElement("option"); o.value=r;o.textContent=r; fr.appendChild(o); });
 
@@ -985,20 +986,21 @@ fetch(CSV+"?cb="+Date.now())
     console.error(err);
   });
 
+// filtros
 ["q","fMarca","fRubro","fStk"].forEach(id=>{
   document.getElementById(id).addEventListener("input", apply);
   document.getElementById(id).addEventListener("change", apply);
 });
-  const btnTheme = document.getElementById("btnTheme");
+
+// THEME
+const btnTheme = document.getElementById("btnTheme");
 
 if (btnTheme){
 
-  // estado guardado
   const saved = localStorage.getItem("tm_theme");
 
   if (saved === "light"){
     document.body.classList.add("theme-light");
-   
   }
 
   btnTheme.onclick = () => {
@@ -1008,7 +1010,11 @@ if (btnTheme){
     const isLight = document.body.classList.contains("theme-light");
 
     localStorage.setItem("tm_theme", isLight ? "light" : "dark");
-   
+
+  };
+}
+
+// SPLASH (✅ ahora está BIEN ubicado)
 window.addEventListener("load", () => {
   const s = document.getElementById("splash");
   setTimeout(()=>{
@@ -1016,7 +1022,6 @@ window.addEventListener("load", () => {
     setTimeout(()=> s.remove(), 400);
   }, 700);
 });
-
 }
 </script>
 </body>
