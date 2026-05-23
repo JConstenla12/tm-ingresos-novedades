@@ -7,7 +7,7 @@
 
 <style>
 :root{
-  --bg:#070b14;
+  --bg: radial-gradient(circle at top left, #0a1a3a, #070b14 70%);
   --panel:#0b1220;
   --card:#0f1930;
   --stroke:rgba(255,255,255,.10);
@@ -20,14 +20,13 @@
   --bad:#ef4444;
 }
 body.theme-light{
-  --bg:#f5f7fb;
+  --bg: linear-gradient(135deg,#f8fafc,#e2e8f0);
   --panel:#ffffff;
   --card:#ffffff;
   --stroke:rgba(0,0,0,.12);
   --text:#0b1220;
   --muted:#4b5563;
 }
-
 body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);}
 
 .top{
@@ -296,6 +295,10 @@ body.force-desktop .grid{grid-template-columns:repeat(2,minmax(0,1fr));}
   display:flex;
   align-items:center;
   cursor:pointer;
+   margin-left:8px;
+padding:4px;
+background:rgba(255,255,255,.04);
+border-radius:999px;
 }
 
 .switchTrack{
@@ -304,7 +307,7 @@ body.force-desktop .grid{grid-template-columns:repeat(2,minmax(0,1fr));}
   height:32px;
   border-radius:999px;
 
-  background:linear-gradient(135deg,#0a0f1f,#1f2937);
+  background:linear-gradient(135deg,#0f172a,#1e3a8a);
 
   display:flex;
   align-items:center;
@@ -338,7 +341,7 @@ body.force-desktop .grid{grid-template-columns:repeat(2,minmax(0,1fr));}
   
   /* MODO CLARO ACTIVO */
 body.theme-light .switchTrack{
-  background:linear-gradient(135deg,#f59e0b,#fde68a);
+  background:linear-gradient(135deg,#f59e0b,#fcd34d);
 }
 
 body.theme-light .switchKnob{
