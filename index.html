@@ -91,32 +91,40 @@ body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text
 .totals b{color:var(--text);}
 
 .content{max-width:1100px;margin:0 auto;padding:12px 12px 120px;}
-grid-template-columns:150px 1fr;
+  .grid{
+  display:flex;
+  flex-direction:column;
+  gap:14px;                 /* 👈 separación REAL entre productos */
+  padding:12px;             /* aire interno tipo app */
+  border-radius:18px;
+
+  background: rgba(255,255,255,.03);   /* “panel” suave como totales */
+  border:1px solid var(--stroke);
+}
+
 
 .card{
-  background: rgba(255,255,255,0.03);  /* MUY sutil */
-  border: 1px solid rgba(255,255,255,0.06); /* casi invisible */
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,.06); /* sutil, no protagonista */
   border-radius: 18px;
-
   padding:16px;
-  margin-bottom:16px;
 
   display:grid;
   grid-template-columns:210px 1fr;
   gap:16px;
   align-items:start;
+
+  /* “feel app”: una línea interna suave, sin sombra pesada */
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
 }
-.card + .card{
-  margin-top: 4px; /* evita que se "peguen raro" */
-  transition: all 0.2s ease;
-  
+
+/* en modo claro: borde más fino y limpio */
+body.theme-light .card{
+  border: 1px solid rgba(0,0,0,.08);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.85);
 }
-  .card:active{
-  transform: scale(0.995);
-}
-  .card:hover{
-  border:1px solid rgba(255,255,255,0.18);
-}
+
+
 .imgBox{
   width:210px;
   height:210px;
@@ -230,7 +238,11 @@ grid-template-columns:150px 1fr;
 body.force-desktop .grid{grid-template-columns:repeat(2,minmax(0,1fr));}
 @media (min-width: 900px){
   .tools{grid-template-columns:1.4fr 1fr 1fr 1fr;}
-  .grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+  }
 }
   .brandLeft{
   display:flex;
@@ -378,6 +390,9 @@ body:not(.theme-light) .moon{
 
 body.theme-light .sun{
   text-shadow:0 0 10px rgba(255,200,0,.9), 0 0 20px rgba(255,200,0,.6);
+  a, button, .imgBox, .card{
+  -webkit-tap-highlight-color: transparent;
+
 }
 
 </style>
