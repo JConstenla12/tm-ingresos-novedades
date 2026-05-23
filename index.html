@@ -388,9 +388,15 @@ body:not(.theme-light) .moon{
 
 body.theme-light .sun{
   text-shadow:0 0 10px rgba(255,200,0,.9), 0 0 20px rgba(255,200,0,.6);
-  a, button, .imgBox, .card{
+}
+ 
+/* 👇 elimina highlight feo */
+a, button, .imgBox, .card{
   -webkit-tap-highlight-color: transparent;
-    @media (max-width: 700px){
+}
+
+/* 👇 mobile real */
+@media (max-width: 700px){
 
   .card{
     grid-template-columns: 1fr;   /* 👈 pasa a una sola columna */
