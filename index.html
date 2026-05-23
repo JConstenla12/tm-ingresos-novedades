@@ -299,6 +299,7 @@ body.force-desktop .grid{grid-template-columns:repeat(2,minmax(0,1fr));}
 padding:4px;
 background:rgba(255,255,255,.04);
 border-radius:999px;
+   margin-top:-6px;
 }
 
 .switchTrack{
@@ -329,7 +330,8 @@ border-radius:999px;
   height:26px;
   border-radius:50%;
 
-  background:#fff;
+ background:linear-gradient(145deg,#ffffff,#e5e7eb);
+  border:1px solid rgba(0,0,0,.15);
 
   left:3px;
   top:3px;
@@ -342,10 +344,12 @@ border-radius:999px;
   /* MODO CLARO ACTIVO */
 body.theme-light .switchTrack{
   background:linear-gradient(135deg,#f59e0b,#fcd34d);
+  box-shadow:0 8px 20px rgba(0,0,0,.15);
 }
 
 body.theme-light .switchKnob{
   left:40px;
+  box-shadow:0 4px 10px rgba(0,0,0,.25);
 }
   .moon{
   color:#fff;
