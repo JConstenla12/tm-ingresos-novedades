@@ -292,41 +292,72 @@ body.force-desktop .grid{grid-template-columns:repeat(2,minmax(0,1fr));}
   border:1px solid rgba(255,255,255,.15);
   z-index:3;
 }
-  .themeSwitch{
-  cursor:pointer;
+ .themeSwitch{
   display:flex;
   align-items:center;
+  cursor:pointer;
 }
 
 .switchTrack{
-  width:60px;
-  height:30px;
-  background:#111827; /* oscuro fuerte */
-  border-radius:999px;
   position:relative;
-  transition:all .25s ease;
-  border:2px solid rgba(255,255,255,.2);
+  width:70px;
+  height:32px;
+  border-radius:999px;
+
+  background:linear-gradient(135deg,#0a0f1f,#1f2937);
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:0 8px;
+
+  box-shadow:0 6px 20px rgba(0,0,0,.4);
+}
+
+.switchTrack span{
+  font-size:14px;
+  z-index:2;
 }
 
 .switchKnob{
-  width:22px;
-  height:22px;
-  background:#fff;
-  border-radius:50%;
   position:absolute;
-  top:3px;
+  width:26px;
+  height:26px;
+  border-radius:50%;
+
+  background:#fff;
+
   left:3px;
+  top:3px;
+
   transition:all .25s ease;
-  box-shadow:0 3px 10px rgba(0,0,0,.5);
+
+  box-shadow:0 4px 12px rgba(0,0,0,.4);
 }
-/* MODO CLARO ACTIVO */
+  
+  /* MODO CLARO ACTIVO */
 body.theme-light .switchTrack{
-  background:#f59e0b; /* naranja TM */
-  border-color:#f59e0
+  background:linear-gradient(135deg,#f59e0b,#fde68a);
 }
 
 body.theme-light .switchKnob{
-  left:34px
+  left:40px;
+}
+  .moon{
+  color:#fff;
+}
+
+.sun{
+  color:#fff;
+}
+
+body:not(.theme-light) .moon{
+  text-shadow:0 0 10px rgba(255,255,255,.9), 0 0 20px rgba(255,255,255,.5);
+}
+
+body.theme-light .sun{
+  text-shadow:0 0 10px rgba(255,200,0,.9), 0 0 20px rgba(255,200,0,.6);
 }
 
 </style>
@@ -354,8 +385,12 @@ body.theme-light .switchKnob{
       <div class="rightBtns">
        <div class="themeSwitch" id="btnTheme">
   <div class="switchTrack">
+    <span class="moon">🌙</span>
+    <span class="sun">☀️</span>
     <div class="switchKnob"></div>
   </div>
+</div>
+
 </div>
       </div>
     </div>
