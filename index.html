@@ -241,10 +241,21 @@ body.theme-light .card{
   display:flex;justify-content:space-between;align-items:center;
   padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.12);
 }
-.modalTop b{font-size:13px}
-.modalTop button{padding:8px 10px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;cursor:pointer}
-.modalBody{flex:1;position:relative;display:flex;align-items:center;justify-content:center;background:#030611;}
-.modalBody img{max-width:100%;max-height:100%;object-fit:contain;object-position:center;}
+.modalTop button{
+  padding:8px 12px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.10);
+  color:#fff;
+  cursor:pointer;
+  font-weight:700;
+  transition: all .15s ease;
+}
+
+.modalTop button:active{
+  transform: scale(.96);
+  background: rgba(245,158,11,.25);
+}
 .nav{
   position:absolute;
  top:65%;
@@ -470,9 +481,41 @@ a, button, .imgBox, .card{
 
 /* 👇 hover SOLO en dispositivos con mouse (PC/notebook) */
 @media (hover:hover){
-  .btn:hover{ filter: brightness(1.08); }
-  .iconBtn:hover{ filter: brightness(1.08); }
+
+  .btn:hover{
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0,0,0,.25);
+  }
+
+  .iconBtn:hover{
+    transform: scale(1.1);
+    background: rgba(255,255,255,.15);
+  }
+
+  .qbtn:hover{
+    background: rgba(245,158,11,.12);
+  }
+
 }
+  /* Facebook */
+.iconBtn[href*="facebook"]:active{
+  background:#1877f2;
+  color:#fff;
+}
+
+/* Instagram */
+.iconBtn[href*="instagram"]:active{
+  background: linear-gradient(45deg,#f58529,#dd2a7b,#8134af,#515bd4);
+  color:#fff;
+}
+
+/* YouTube */
+.iconBtn[href*="youtube"]:active{
+  background:#ff0000;
+  color:#fff;
+}
+
 </style>
 </head>
 
