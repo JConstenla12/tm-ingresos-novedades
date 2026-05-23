@@ -1014,13 +1014,23 @@ if (btnTheme){
   };
 }
 
-// SPLASH (✅ ahora está BIEN ubicado)
+// SPLASH (VERSIÓN ROBUSTA)
 window.addEventListener("load", () => {
-  const s = document.getElementById("splash");
-  setTimeout(()=>{
-    s.style.opacity = "0";
-    setTimeout(()=> s.remove(), 400);
+
+  setTimeout(() => {
+
+    const s = document.getElementById("splash");
+
+    if (s){
+      s.style.opacity = "0";
+
+      setTimeout(() => {
+        s.remove();
+      }, 400);
+    }
+
   }, 700);
+
 });
 }
 </script>
