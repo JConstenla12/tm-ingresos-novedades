@@ -824,7 +824,7 @@ function card(p){
         <span class="badge"><b>${rub||"—"}</b></span>
         ${badgeStock(p.STOCK_TXT)}
         ${off>0 ? `<span class="badge offTag">${Math.round(off*100)}% OFF</span>` : ``}
-        <span class="badge">IVA: <b>${Math.round(iva*100)}%</b></span>
+        <span class="badge">IVA: <b>${(iva*100).toLocaleString("es-AR", { maximumFractionDigits: 1 })}%</b></span>
         <span class="badge">II: <b>${Math.round(ii*100)}%</b></span>
         ${Number.isFinite(pvL)?`<span class="badge">PVL: <b>${ars(pvL)}</b></span>`:""}
         ${mk>0?`<span class="badge">MKUP: <b>${Math.round(mk*100)}%</b></span>`:""}
