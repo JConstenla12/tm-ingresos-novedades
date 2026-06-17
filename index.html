@@ -346,26 +346,24 @@ body.force-desktop .grid{grid-template-columns:repeat(2,minmax(0,1fr));}
   margin-left:0;
 }
   @media (max-width:520px){
+  .tools{
+    grid-template-columns:1fr 1fr 1fr;
+  }
 
-.tools{
-  grid-template-columns:1fr 1fr 1fr;
-}
-
-.tools select{
-  padding:6px 8px;
-  font-size:11.5px;
-  border-radius:10px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-}
-  .tools select, .tools .inp{
+  .tools select,
+  .tools .inp{
     padding:8px 10px;
     font-size:12px;
     border-radius:10px;
   }
 
+  .tools select{
+    padding:6px 8px;
+    font-size:11.5px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
 }
 .offTag{
   background: #ef4444;          /* rojo fuerte */
@@ -530,6 +528,99 @@ a, button, .imgBox, .card{
 }
 
 
+}
+  /* =========================
+   NOTEBOOK / DESKTOP PRO
+   ========================= */
+@media (min-width: 1024px){
+
+  .wrap,
+  .content,
+  .cartInner{
+    max-width: 1280px;
+  }
+
+  .wrap{
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+
+  .content{
+    padding: 18px 28px 120px;
+  }
+
+  .brandRow{
+    align-items: center;
+  }
+
+  .addr{
+    max-width: 780px;
+  }
+
+  .hTitle{
+    margin-top: 14px;
+    align-items: center;
+  }
+
+  .hTitle .sub{
+    max-width: 420px;
+    text-align: right;
+  }
+
+  .tools{
+    grid-template-columns: minmax(320px, 2.2fr) repeat(3, minmax(170px, 1fr));
+    gap: 12px;
+    align-items: center;
+  }
+
+  .tools .inp{
+    grid-column: auto;
+  }
+
+  .inp,
+  select{
+    min-height: 46px;
+  }
+
+  .totals{
+    display: grid;
+    grid-template-columns: repeat(5, max-content) 1fr auto auto;
+    align-items: center;
+    column-gap: 18px;
+    row-gap: 10px;
+    padding: 12px 16px;
+  }
+
+  .totals span{
+    white-space: nowrap;
+  }
+
+  #wa,
+  #btnCopyTop{
+    justify-self: end;
+  }
+
+  .grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    padding: 18px;
+  }
+
+  .card{
+    min-height: 320px;
+  }
+}
+
+@media (min-width: 1360px){
+  .wrap,
+  .content,
+  .cartInner{
+    max-width: 1360px;
+  }
+
+  .grid{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
   /* Facebook */
 .iconBtn[href*="facebook"]:active{
