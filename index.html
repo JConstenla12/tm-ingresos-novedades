@@ -485,7 +485,8 @@ a, button, .imgBox, .card{
 @media (max-width: 700px){
 
   .card{
-    grid-template-columns: 1fr;   /* 1 columna */
+    grid-template-columns: 1fr;
+    padding: 14px;
   }
 
   .imgBox{
@@ -494,14 +495,40 @@ a, button, .imgBox, .card{
     aspect-ratio:1 / 1;
   }
 
-  .buyRow{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:8px;
+  .cardInfo{
+    min-width: 0;
+  }
+
+  .pTitle{
+    font-size: 13px;
+    line-height: 1.25;
+  }
+
+  .pDesc{
+    font-size: 11px;
+    -webkit-line-clamp: 3;
+  }
+
+  .prod-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:10px;
+    flex-wrap:nowrap;
   }
 
   .qty{
     align-self:flex-end;
+    flex-shrink:0;
+  }
+
+  .qbtn{
+    width:38px;
+    height:38px;
+  }
+
+  .qval{
+    width:24px;
   }
 }
 
@@ -568,7 +595,7 @@ a, button, .imgBox, .card{
   }
 
   .tools{
-    grid-template-columns: minmax(320px, 2.2fr) repeat(3, minmax(170px, 1fr));
+    grid-template-columns: minmax(260px, 1.5fr) repeat(3, minmax(140px, 1fr));
     gap: 12px;
     align-items: center;
   }
@@ -608,18 +635,6 @@ a, button, .imgBox, .card{
 
   .card{
     min-height: 320px;
-  }
-}
-
-@media (min-width: 1360px){
-  .wrap,
-  .content,
-  .cartInner{
-    max-width: 1360px;
-  }
-
-  .grid{
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
   /* Facebook */
@@ -955,58 +970,43 @@ function card(p){
   return `
   <div class="card ${inCart}" data-k="${art}">
     <div class="imgBox" data-z="1">
-      ${off>0 ? `<div class="stickerOff">${Math.round(off*100)}% OFF</div>` : ``}
+      ${off > 0 ? `<div class="stickerOff">${Math.round(off*100)}% OFF</div>` : ``}
       <img src="${im}" onerror="this.onerror=null;this.src='${PLACE}'">
     </div>
 
-    <div>
+    <div class="cardInfo">
       <div class="pTitle">${marca} · ${art}</div>
       <p class="pDesc">${desc}</p>
 
-     <div class="prod-block">
+      <div class="prod-block">
 
-  <!-- RUBRO -->
-  <div class="prod-rubro">
-    ${rub || "—"}
-  </div>
+        <div class="prod-rubro">${rub || "—"}</div>
 
-  <!-- STOCK + IMPUESTOS -->
-  <div class="prod-line">
-    ${badgeStock(p.STOCK_TXT)}
-    <span class="mini">IVA ${ (iva*100).toLocaleString("es-AR",{maximumFractionDigits:1}) }%</span>
-    <span class="mini">II ${ Math.round(ii*100) }%</span>
-  </div>
-
-  <!-- PVL + MKUP -->
-  <div class="prod-line">
-    ${Number.isFinite(pvL)?`<span class="mini">PVL ${ars(pvL)}</span>`:""}
-    ${mk>0?`<span class="mini">MKUP ${Math.round(mk*100)}%</span>`:""}
-  </div>
-
-  <!-- PRECIO + CARRITO -->
-  <div class="prod-bottom">
-
-    <div>
-      ${off>0 ? `<div class="oldPrice">PVC: ${ars(num(p.PVC))}</div>` : ``}
-      <div class="priceBig">${ars(net)}</div>
-      <div class="netLabel">PVC Neto</div>
-    </div>
-
-    <div class="qty">
-      <button class="qbtn" data-a="d">–</button>
-      <div class="qval">${q}</div>
-      <button class="qbtn" data-a="i">+</button>
-    </div>
-
-  </div>
-
-</div>
-
-        <div class="qty">
-          <button class="qbtn" data-a="d">–</button>
-          <div class="qval">${q}</div>
-          <button class="qbtn" data-a="i">+</button>
+        <div class="prod-line">
+          ${badgeStock(p.STOCK_TXT)}
+          <span class="mini">IVA ${ (iva*100).toLocaleString("es-AR",{maximumFractionDigits:1}) }%</span>
+          <span class="mini">II ${ Math.round(ii*100) }%</span>
         </div>
+
+        <div class="prod-line">
+          ${Number.isFinite(pvL) ? `<span class="mini">PVL ${ars(pvL)}</span>` : ""}
+          ${mk > 0 ? `<span class="mini">MKUP ${Math.round(mk*100)}%</span>` : ""}
+        </div>
+
+        <div class="prod-bottom">
+          <div>
+            ${off > 0 ? `<div class="oldPrice">PVC: ${ars(num(p.PVC))}</div>` : ``}
+            <div class="priceBig">${ars(net)}</div>
+            <div class="netLabel">PVC Neto</div>
+          </div>
+
+          <div class="qty">
+            <button class="qbtn" data-a="d">–</button>
+            <div class="qval">${q}</div>
+            <button class="qbtn" data-a="i">+</button>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>`;
