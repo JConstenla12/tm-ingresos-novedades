@@ -568,11 +568,12 @@ a, button, .imgBox, .card{
   .content,
   .cartInner{
     max-width: 920px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .wrap{
-    padding-left: 28px;
-    padding-right: 28px;
+    padding: 6px 28px;
   }
 
   .content{
@@ -581,14 +582,18 @@ a, button, .imgBox, .card{
 
   .brandRow{
     align-items: center;
+    margin-bottom: 6px;
   }
 
   .addr{
-    max-width: 780px;
+    margin: 4px 0;
+    font-size: 11px;
+    line-height: 1.2;
+    max-width: 600px;
   }
 
   .hTitle{
-    margin-top: 14px;
+    margin: 6px 0;
     align-items: center;
   }
 
@@ -598,9 +603,9 @@ a, button, .imgBox, .card{
   }
 
   .tools{
+    margin-top: 6px;
+    gap: 10px;
     grid-template-columns: minmax(260px, 1.5fr) repeat(3, minmax(140px, 1fr));
-    gap: 12px;
-    align-items: center;
   }
 
   .tools .inp{
@@ -613,21 +618,21 @@ a, button, .imgBox, .card{
   }
 
   .totals{
-    display: grid;
-    grid-template-columns: repeat(5, max-content) 1fr auto auto;
-    align-items: center;
-    column-gap: 18px;
-    row-gap: 10px;
-    padding: 12px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-top:8px;
+    padding:10px 14px;
   }
 
   .totals span{
-    white-space: nowrap;
+    white-space:nowrap;
   }
 
-  #wa,
-  #btnCopyTop{
-    justify-self: end;
+  #wa{
+    margin-left:auto;
   }
 
   .grid{
@@ -639,41 +644,12 @@ a, button, .imgBox, .card{
   .card{
     min-height: 0;
   }
+
   .top{
     padding-top: 10px;
     padding-bottom: 12px;
   }
 
-  .wrap{
-    padding-top: 6px;
-    padding-bottom: 6px;
-  }
-
-  .brandRow{
-    margin-bottom: 6px;
-  }
-
-  .addr{
-    margin-top: 4px;
-    margin-bottom: 6px;
-    font-size: 11px;
-    line-height: 1.2;
-  }
-
-  .hTitle{
-    margin-top: 6px;
-    margin-bottom: 6px;
-  }
-
-  .tools{
-    margin-top: 6px;
-    gap: 10px;
-  }
-
-  .totals{
-    margin-top: 8px;
-    padding: 10px 14px;
-  }
 }
   /* Facebook */
 .iconBtn[href*="facebook"]:active{
@@ -705,15 +681,6 @@ a, button, .imgBox, .card{
 
   animation: splashOut .5s ease forwards;
   animation-delay: 1s;
-}
-@media (min-width: 1024px){
-
-  body{
-    padding-left: 80px;
-    padding-right: 80px;
-    box-sizing: border-box;
-  }
-
 }
 @keyframes splashOut{
   to{
@@ -855,7 +822,7 @@ Tel. +54 9 (11) 5565-7500 - <a href="https://todomusica.com.ar/" target="_blank"
       <span>Imp. Int: <b id="ii">$0</b></span>
       <span>Total: <b id="tot">$0</b></span>
       <a class="btn primary" id="wa" href="#" target="_blank" rel="noopener">WhatsApp</a>
-      <button class="btn primary" id="btnCopyTop">Copiar pedido</button>
+     
     </div>
   </div>
 </div>
@@ -1180,18 +1147,6 @@ document.getElementById("modal").onclick=(e)=>{ if(e.target.id==="modal") closeM
 document.getElementById("mR").onclick=(e)=>{ e.stopPropagation(); next(); }
 document.getElementById("mL").onclick=(e)=>{ e.stopPropagation(); prev(); }
 
-// Copiar pedido (botón arriba)
-document.getElementById("btnCopyTop").onclick=async ()=>{
-  const sub = num(document.getElementById("sub").textContent.replace(/[^\d,.-]/g,""))||0; // no crítico
-  const txt = buildWA(
-    num(document.getElementById("sub").textContent.replace(/[^\d,.-]/g,""))||0,
-    num(document.getElementById("iva").textContent.replace(/[^\d,.-]/g,""))||0,
-    num(document.getElementById("ii").textContent.replace(/[^\d,.-]/g,""))||0,
-    num(document.getElementById("tot").textContent.replace(/[^\d,.-]/g,""))||0
-  );
-  try{ await navigator.clipboard.writeText(txt); alert("Pedido copiado."); }
-  catch{ window.prompt("Copiá el pedido:", txt); }
-};
 
 // Vaciar
 document.getElementById("btnEmpty").onclick=()=>{
