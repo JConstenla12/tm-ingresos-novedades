@@ -687,6 +687,50 @@ a, button, .imgBox, .card{
   color:#9db0d4;
   font-size:14px;
 }
+  .prod-block{
+  margin-top:10px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.prod-rubro{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  border:1px solid var(--stroke);
+  background:rgba(255,255,255,.05);
+  width:max-content;
+}
+
+.prod-line{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.mini{
+  padding:4px 8px;
+  border-radius:999px;
+  border:1px solid var(--stroke);
+  background:rgba(255,255,255,.04);
+}
+
+.priceBig{
+  font-size:18px;
+  font-weight:900;
+}
+
+.prod-bottom{
+  margin-top:6px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
 </style>
 </head>
 
@@ -919,22 +963,44 @@ function card(p){
       <div class="pTitle">${marca} · ${art}</div>
       <p class="pDesc">${desc}</p>
 
-      <div class="badges">
-        <span class="badge"><b>${rub||"—"}</b></span>
-        ${badgeStock(p.STOCK_TXT)}
-        ${off>0 ? `<span class="badge offTag">${Math.round(off*100)}% OFF</span>` : ``}
-        <span class="badge">IVA: <b>${(iva*100).toLocaleString("es-AR", { maximumFractionDigits: 1 })}%</b></span>
-        <span class="badge">II: <b>${Math.round(ii*100)}%</b></span>
-        ${Number.isFinite(pvL)?`<span class="badge">PVL: <b>${ars(pvL)}</b></span>`:""}
-        ${mk>0?`<span class="badge">MKUP: <b>${Math.round(mk*100)}%</b></span>`:""}
-      </div>
+     <div class="prod-block">
 
-      <div class="buyRow">
-        <div>
-          ${off>0 ? `<div class="oldPrice">PVC: ${ars(num(p.PVC))}</div>` : ``}
-          <div class="price">${ars(net)}</div>
-          <div class="netLabel">PVC Neto</div>
-        </div>
+  <!-- RUBRO -->
+  <div class="prod-rubro">
+    ${rub || "—"}
+  </div>
+
+  <!-- STOCK + IMPUESTOS -->
+  <div class="prod-line">
+    ${badgeStock(p.STOCK_TXT)}
+    <span class="mini">IVA ${ (iva*100).toLocaleString("es-AR",{maximumFractionDigits:1}) }%</span>
+    <span class="mini">II ${ Math.round(ii*100) }%</span>
+  </div>
+
+  <!-- PVL + MKUP -->
+  <div class="prod-line">
+    ${Number.isFinite(pvL)?`<span class="mini">PVL ${ars(pvL)}</span>`:""}
+    ${mk>0?`<span class="mini">MKUP ${Math.round(mk*100)}%</span>`:""}
+  </div>
+
+  <!-- PRECIO + CARRITO -->
+  <div class="prod-bottom">
+
+    <div>
+      ${off>0 ? `<div class="oldPrice">PVC: ${ars(num(p.PVC))}</div>` : ``}
+      <div class="priceBig">${ars(net)}</div>
+      <div class="netLabel">PVC Neto</div>
+    </div>
+
+    <div class="qty">
+      <button class="qbtn" data-a="d">–</button>
+      <div class="qval">${q}</div>
+      <button class="qbtn" data-a="i">+</button>
+    </div>
+
+  </div>
+
+</div>
 
         <div class="qty">
           <button class="qbtn" data-a="d">–</button>
