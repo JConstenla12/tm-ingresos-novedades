@@ -184,6 +184,16 @@ a, button, .imgBox, .card{
   justify-content:center;
   font-weight:900;
 }
+  /* =========================
+   FILA 3 - MES + TITULO
+   ========================= */
+.rowMonth{
+  margin-top:12px;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  gap:10px;
+  align-items:center;
+}
 
 /* =========================
    FILA 3
@@ -1039,6 +1049,19 @@ body.theme-light .card{
     <span>Tel. +54 9 (11) 5565-7500</span>
     <a href="https://todomusica.com.ar/" target="_blank">www.todomusica.com.ar</a>
   </div>
+</div>
+
+      <!-- FILA 3 - Mes + Título -->
+<div class="shellBlock rowMonth">
+
+  <button class="btn monthBtn" id="btnMonth">
+    MES
+  </button>
+
+  <div class="titleBox">
+    <h1 id="ttl">Ingresos de Mayo</h1>
+  </div>
+
 </div>
       <!-- FILA 3 -->
       <div class="shellBlock row3">
