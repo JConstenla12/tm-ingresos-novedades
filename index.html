@@ -293,29 +293,50 @@ select{
   justify-content:center;
   padding:0;
 }
-#wa{
-  background:#22c55e; /* verde WhatsApp */
+/* BOTÓN WHATSAPP PRO */
+.waBtn{
+  width:100%;
+  height:100%;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+
+  background:#22c55e;
   color:#fff;
 
-  display:inline-flex;
+  border-radius:16px;
+  text-decoration:none;
+
+  box-shadow:0 8px 22px rgba(34,197,94,.35);
+
+  padding:10px 8px;
+  gap:2px;
+}
+
+.waMain{
+  display:flex;
   align-items:center;
-  justify-content:center;
-
-  border:none;
-  border-radius:14px;
-
-  padding:12px 16px;
-
-  font-weight:800;
-
-  box-shadow:0 6px 18px rgba(34,197,94,.35);
+  gap:6px;
+  font-weight:900;
 }
 
-#wa:active{
+.waIcon{
+  width:18px;
+  height:18px;
+}
+
+.waSub{
+  font-size:10px;
+  color:#062b12; /* negro verdoso elegante */
+  opacity:.8;
+}
+
+.waBtn:active{
   transform:scale(.96);
-  box-shadow:0 4px 12px rgba(34,197,94,.25);
+  box-shadow:0 5px 14px rgba(34,197,94,.25);
 }
-
 /* =========================
    BOTONES / SWITCH
    ========================= */
@@ -1134,11 +1155,16 @@ body.theme-light .card{
 
   <!-- WhatsApp -->
   <div class="totItem totItemWA">
-    <a class="btn primary" id="wa" href="#" target="_blank">
-<svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;margin-right:6px">
-  <path d="M20.5 3.5A11 11 0 0 0 3.6 17.1L2 22l5-1.6A11 11 0 1 0 20.5 3.5zm-8.5 17a8 8 0 0 1-4.1-1.1l-.3-.2-3 .9.9-3-.2-.3A8 8 0 1 1 12 20.5zm4.4-6.1c-.2-.1-1.2-.6-1.4-.7s-.3-.1-.5.1-.5.7-.6.8-.3.2-.5.1a6.6 6.6 0 0 1-2-1.2 7.2 7.2 0 0 1-1.3-1.7c-.1-.2 0-.3.1-.5.1-.1.2-.3.3-.4.1-.1.1-.3 0-.5s-.5-1.3-.7-1.7c-.2-.4-.4-.3-.5-.3h-.5c-.2 0-.5.1-.7.3s-.9.9-.9 2.1.9 2.3 1 2.5a9.8 9.8 0 0 0 3.8 3.5c.5.2.9.4 1.3.5a3 3 0 0 0 1.4.1c.4-.1 1.2-.5 1.4-1 .2-.5.2-.9.1-1-.1-.2-.2-.2-.4-.3z"/>
-</svg>
-<span>WhatsApp</span>
+    <a class="waBtn" id="wa" href="#" target="_blank">
+  <div class="waMain">
+    <svg viewBox="0 0 24 24" fill="currentColor" class="waIcon">
+      <path d="M20.5 3.5A11 11 0 0 0 3.6 17.1L2 22l5-1.6A11 11 0 1 0 20.5 3.5z"/>
+    </svg>
+    <span>WhatsApp</span>
+  </div>
+  <div class="waSub">
+    Enviar pedido
+  </div>
 </a>
   </div>
 
