@@ -242,105 +242,59 @@ select{
   margin-top:12px;
 }
 
-/* TARJETAS DE TOTALES (FILA 6,7,8) */
+/* =========================
+   FILAS 6, 7 y 8 - TOTALES
+   ========================= */
 .totCard{
   border:1px solid var(--stroke);
   background:rgba(255,255,255,.04);
   border-radius:18px;
-  padding:12px;
+  padding:12px 14px;
   margin-top:8px;
 }
 
 .totRow{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:10px;
+  gap:14px;
   font-size:12px;
   color:var(--muted);
   align-items:center;
 }
 
-.totRow b{
-  color:var(--text);
-}
-
-.totalFinalRow{
-  align-items:center;
-}
-
-#wa{
-  justify-self:end;
-  padding:10px 14px;
-}
-
-.totRow{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  font-size:12px;
-  color:var(--muted);
-}
-
-.totRow b{
-  color:var(--text);
-}
-
-.totalFinalRow{
-  align-items:center;
-}
-
-.waBig{
-  height:56px;
-  font-size:14px;
-}
-  .totGrid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:8px 16px;
-  font-size:12px;
-  color:var(--muted);
-}
-
-.totGrid b{
-  color:var(--text);
-}
-
-.totFinal{
-  grid-column:1 / -1;
-  font-size:14px;
-}
-
-#wa{
-  height:100%;
+.totRow > div{
   display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  min-width:0;
+}
+
+.totRow b{
+  color:var(--text);
+  white-space:nowrap;
+}
+
+.totalFinalRow{
+  grid-template-columns:1fr auto;
+  gap:12px;
+  align-items:center;
+}
+
+.totalFinalRow > div{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+#wa{
+  white-space:nowrap;
+  display:inline-flex;
   align-items:center;
   justify-content:center;
-  padding:0 14px;
+  padding:10px 16px;
 }
-
-
-.totalList{
-  min-width:0;
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px 14px;
-  align-items:center;
-  color:var(--muted);
-  font-size:12px;
-}
-
-.totalList span{
-  white-space:nowrap;
-}
-
-.totalList b{
-  color:var(--text);
-}
-
-#wa{
-  white-space:nowrap;
-}
-
 /* =========================
    BOTONES / SWITCH
    ========================= */
@@ -1111,48 +1065,29 @@ body.theme-light .card{
         <div class="legal">Los precios están sujetos a modificaciones sin previo aviso</div>
       </div>
 
- <!-- FILA 6 - Ítems y Subtotal -->
-<div class="totCard">
-  <div class="totRow">
-    <div>Ítems<br><b id="it">0</b></div>
-    <div>Subt.<br><b id="sub">$0</b></div>
-  </div>
-</div>
+<!-- FILA 6 - Ítems y Subtotal -->
+      <div class="totCard">
+        <div class="totRow">
+          <div><span>Ítems:</span><b id="it">0</b></div>
+          <div><span>Subt.:</span><b id="sub">$0</b></div>
+        </div>
+      </div>
 
-<!-- FILA 7 - Impuestos -->
-<div class="totCard">
-  <div class="totRow">
-    <div>IVA<br><b id="iva">$0</b></div>
-    <div>II<br><b id="ii">$0</b></div>
-  </div>
-</div>
+      <!-- FILA 7 - Impuestos -->
+      <div class="totCard">
+        <div class="totRow">
+          <div><span>IVA:</span><b id="iva">$0</b></div>
+          <div><span>II:</span><b id="ii">$0</b></div>
+        </div>
+      </div>
 
-<!-- FILA 8 - Total + WhatsApp -->
-<div class="totCard">
-  <div class="totRow totalFinalRow">
-    <div>Total<br><b id="tot">$0</b></div>
-
-    <a class="btn primary" id="wa" href="#" target="_blank" rel="noopener">
-      WhatsApp
-    </a>
-  </div>
-</div>
-
-  <!-- FILA 7 -->
-  <div class="totRow">
-    <div>IVA<br><b id="iva">$0</b></div>
-    <div>II<br><b id="ii">$0</b></div>
-  </div>
-
-  <!-- FILA 8 -->
-  <div class="totRow totalFinalRow">
-    <div>Total<br><b id="tot">$0</b></div>
-
-    <a class="btn primary waBig" id="wa" href="#">WhatsApp</a>
-  </div>
-
-</div>
-
+      <!-- FILA 8 - Total + WhatsApp -->
+      <div class="totCard">
+        <div class="totRow totalFinalRow">
+          <div><span>Total:</span><b id="tot">$0</b></div>
+          <a class="btn primary" id="wa" href="#" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+      </div>
       <!-- PRODUCTOS -->
       <div class="shellBlock products">
         <div class="grid" id="grid"></div>
