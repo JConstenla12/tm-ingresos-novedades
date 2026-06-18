@@ -228,15 +228,35 @@ select{
   margin-top:12px;
 }
 
-.totals{
+.headerTotals{
   border:1px solid var(--stroke);
   background:rgba(255,255,255,.04);
   border-radius:18px;
   padding:12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.totRow{
   display:grid;
-  grid-template-columns:1fr auto;
-  gap:12px;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.totRow b{
+  color:var(--text);
+}
+
+.totalFinalRow{
   align-items:center;
+}
+
+.waBig{
+  height:56px;
+  font-size:14px;
 }
   .totGrid{
   display:grid;
@@ -993,46 +1013,44 @@ body.theme-light .card{
   <div class="top">
     <div class="appShell">
 
-    <!-- FILA 1 -->
+   <!-- FILA 1 - Logo + redes + theme -->
 <div class="shellBlock row1">
+
   <div class="brandLeft">
     <div class="logo">todomusica</div>
 
     <div class="social">
-      <a class="iconBtn" target="_blank" rel="noopener" href="https://www.facebook.com/people/Todomusica-SA/100064115318334/" aria-label="Facebook">
+      <a class="iconBtn" target="_blank" rel="noopener" href="https://www.facebook.com/people/Todomusica-SA/100064115318334/">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.5V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg>
       </a>
-      <a class="iconBtn" target="_blank" rel="noopener" href="https://www.instagram.com/todomusicasa/" aria-label="Instagram">
+      <a class="iconBtn" target="_blank" rel="noopener" href="https://www.instagram.com/todomusicasa/">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zm5.2-2.2a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/></svg>
       </a>
-      <a class="iconBtn" target="_blank" rel="noopener" href="https://www.youtube.com/@TodomusicaS.A" aria-label="YouTube">
+      <a class="iconBtn" target="_blank" rel="noopener" href="https://www.youtube.com/@TodomusicaS.A">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.7 4.6 12 4.6 12 4.6s-5.7 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.8.5 7.5.5 7.5.5s5.7 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8zM10 15.5v-7l6 3.5-6 3.5z"/></svg>
       </a>
     </div>
   </div>
 
+  <div class="rightBtns">
+    <div class="themeSwitch" id="btnTheme">
+      <div class="switchTrack">
+        <span class="moon">🌙</span>
+        <span class="sun">☀️</span>
+        <div class="switchKnob"></div>
+      </div>
+    </div>
+  </div>
+
+</div>   
+     <!-- FILA 2 - Dirección -->
+<div class="shellBlock row2addr">
   <div class="addr">
     Av. Martin Garcia 463 | CABA<br>
     Tel. +54 9 (11) 5565-7500<br>
     <a href="https://todomusica.com.ar/" target="_blank">www.todomusica.com.ar</a>
   </div>
 </div>
-      <!-- FILA 2 -->
-      <div class="shellBlock row2">
-        <div class="themeSwitch" id="btnTheme">
-          <div class="switchTrack">
-            <span class="moon">🌙</span>
-            <span class="sun">☀️</span>
-            <div class="switchKnob"></div>
-          </div>
-        </div>
-
-        <button class="btn monthBtn" id="btnMonth" type="button">MES</button>
-
-        <div class="titleBox">
-          <h1 id="ttl">Ingresos de Mayo</h1>
-        </div>
-      </div>
 
       <!-- FILA 3 -->
       <div class="shellBlock row3">
@@ -1059,19 +1077,27 @@ body.theme-light .card{
         <div class="legal">Los precios están sujetos a modificaciones sin previo aviso</div>
       </div>
 
-      <!-- FILA 5 -->
-     <div class="totals">
-  <div class="totGrid">
+   <!-- FILA 6 -->
+<div class="headerTotals">
+
+  <div class="totRow">
     <div>Ítems<br><b id="it">0</b></div>
     <div>Subt.<br><b id="sub">$0</b></div>
-
-    <div>IVA<br><b id="iva">$0</b></div>
-    <div>II<br><b id="ii">$0</b></div>
-
-    <div class="totFinal">Total<br><b id="tot">$0</b></div>
   </div>
 
-  <a class="btn primary" id="wa" href="#" target="_blank" rel="noopener">WhatsApp</a>
+  <!-- FILA 7 -->
+  <div class="totRow">
+    <div>IVA<br><b id="iva">$0</b></div>
+    <div>II<br><b id="ii">$0</b></div>
+  </div>
+
+  <!-- FILA 8 -->
+  <div class="totRow totalFinalRow">
+    <div>Total<br><b id="tot">$0</b></div>
+
+    <a class="btn primary waBig" id="wa" href="#">WhatsApp</a>
+  </div>
+
 </div>
 
       <!-- PRODUCTOS -->
