@@ -252,83 +252,53 @@ select{
   margin-top:12px;
 }
 
-  /* =========================
-   FILAS 6, 7 y 8 - TOTALES (PREMIUM)
+ /* =========================
+   TOTALES - GRID MODULAR
    ========================= */
-.totCard{
-  border:1px solid rgba(255,255,255,.08);
-  background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-  border-radius:20px;
-
-  padding:14px 16px;
-  margin-top:12px;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.05),
-    0 8px 24px rgba(0,0,0,.25);
-}
-
-.totRow{
+.totBlock{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:16px;
-
-  font-size:13px;
-  color:var(--muted);
-  align-items:center;
-}
-
-.totRow > div{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
   gap:10px;
+  margin-top:12px;
 }
 
-.totRow span{
-  opacity:.85;
+.totItem{
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.03);
+  border-radius:14px;
+
+  padding:10px 12px;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  font-size:12px;
+  color:var(--muted);
 }
 
-.totRow b{
+.totItem b{
   color:var(--text);
   font-weight:900;
-  letter-spacing:.3px;
 }
 
-.totalFinalRow{
-  grid-template-columns:1fr auto;
-  gap:14px;
+.totItemTotal{
+  grid-column:1 / 2;
 }
 
-.totalFinalRow span{
-  font-size:14px;
-}
-
-.totalFinalRow b{
-  font-size:15px;
+.totItemWA{
+  grid-column:2 / 3;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
 }
 
 #wa{
-  background:var(--accent);
-  color:#111;
-
-  font-weight:900;
+  width:100%;
+  height:100%;
   border-radius:14px;
-
-  padding:12px 18px;
-
-  box-shadow:
-    0 6px 18px rgba(245,158,11,.35);
-
-  transition: transform .12s ease, box-shadow .12s ease;
-}
-
-#wa:active{
-  transform: scale(.96);
-  box-shadow:
-    0 4px 14px rgba(245,158,11,.25);
-}
-  
+}  
 /* =========================
    BOTONES / SWITCH
    ========================= */
@@ -1112,29 +1082,45 @@ body.theme-light .card{
         <div class="legal">Los precios están sujetos a modificaciones sin previo aviso</div>
       </div>
 
-<!-- FILA 6 - Ítems y Subtotal -->
-      <div class="totCard">
-        <div class="totRow">
-          <div><span>Ítems:</span><b id="it">0</b></div>
-          <div><span>Subt.:</span><b id="sub">$0</b></div>
-        </div>
-      </div>
+<!-- FILA 6,7,8 - GRID DE TOTALES MODULAR -->
+<div class="totBlock">
 
-      <!-- FILA 7 - Impuestos -->
-      <div class="totCard">
-        <div class="totRow">
-          <div><span>IVA:</span><b id="iva">$0</b></div>
-          <div><span>II:</span><b id="ii">$0</b></div>
-        </div>
-      </div>
+  <!-- Ítems -->
+  <div class="totItem">
+    <span>Ítems</span>
+    <b id="it">0</b>
+  </div>
 
-      <!-- FILA 8 - Total + WhatsApp -->
-      <div class="totCard">
-        <div class="totRow totalFinalRow">
-          <div><span>Total:</span><b id="tot">$0</b></div>
-          <a class="btn primary" id="wa" href="#" target="_blank" rel="noopener">WhatsApp</a>
-        </div>
-      </div>
+  <!-- Subtotal -->
+  <div class="totItem">
+    <span>Subt.</span>
+    <b id="sub">$0</b>
+  </div>
+
+  <!-- IVA -->
+  <div class="totItem">
+    <span>IVA</span>
+    <b id="iva">$0</b>
+  </div>
+
+  <!-- II -->
+  <div class="totItem">
+    <span>II</span>
+    <b id="ii">$0</b>
+  </div>
+
+  <!-- TOTAL -->
+  <div class="totItem totItemTotal">
+    <span>Total</span>
+    <b id="tot">$0</b>
+  </div>
+
+  <!-- WhatsApp -->
+  <div class="totItem totItemWA">
+    <a class="btn primary" id="wa" href="#" target="_blank">WhatsApp</a>
+  </div>
+
+</div>
       <!-- PRODUCTOS -->
       <div class="shellBlock products">
         <div class="grid" id="grid"></div>
