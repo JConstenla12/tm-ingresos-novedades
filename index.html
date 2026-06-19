@@ -1378,7 +1378,31 @@ body.theme-light .dot.on{
     0 0 0 3px rgba(239,68,68,.2),
     0 8px 20px rgba(0,0,0,.25);
 }
-  
+  /* =========================/* =================ROS ACTIVOS — GLOBAL
+   ========================= */
+.inp.active,
+select.active{
+  border-color:rgba(245,158,11,.7);
+
+  box-shadow:
+    0 0 0 2px rgba(245,158,11,.25);
+
+  background:rgba(245,158,11,.08);
+}
+
+/* =========================
+   FILTROS ACTIVOS — LIGHT MODE
+   ========================= */
+body.theme-light .inp.active,
+body.theme-light select.active{
+  border-color:#f59e0b;
+
+  box-shadow:
+    0 0 0 2px rgba(245,158,11,.25);
+
+  background:rgba(245,158,11,.12);
+}
+
 </style>
 </head>
 
@@ -2291,21 +2315,30 @@ document.getElementById("q").addEventListener("change", () => {
   document.getElementById(id).addEventListener("change", apply);
 });
 
-  function checkFiltersActive(){
-  const q = document.getElementById("q").value.trim();
-  const m = document.getElementById("fMarca").value;
-  const r = document.getElementById("fRubro").value;
-  const s = document.getElementById("fStk").value;
+ function checkFiltersActive(){
+  const q = document.getElementById("q");
+  const m = document.getElementById("fMarca");
+  const r = document.getElementById("fRubro");
+  const s = document.getElementById("fStk");
 
   const btn = document.getElementById("btnClearFilters");
 
-  if(q || m || r || s){
+  /* limpiar estados */
+  [q, m, r, s].forEach(el => el.classList.remove("active"));
+
+  /* activar según valor */
+  if(q.value.trim()) q.classList.add("active");
+  if(m.value) m.classList.add("active");
+  if(r.value) r.classList.add("active");
+  if(s.value) s.classList.add("active");
+
+  /* botón limpiar (lo dejamos como ya estaba) */
+  if(q.value.trim() || m.value || r.value || s.value){
     btn.classList.add("active");
   }else{
     btn.classList.remove("active");
   }
 }
-
   document.getElementById("btnClearFilters").onclick = () => {
   document.getElementById("q").value = "";
   document.getElementById("fMarca").value = "";
