@@ -253,6 +253,11 @@ a, button, .imgBox, .card{
 
 .titleBox{
   min-width:0;
+
+  /* 👇 CLAVE */
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
 
 .titleBox h1{
@@ -1261,7 +1266,10 @@ body.theme-light .dot.on{
 </select>
   <div class="titleBox">
     <h1 id="ttl">Ingresos de Mayo</h1>
-    <button class="iconBtn" id="btnPVL" title="Vista Cliente (PVL)">👁</button>
+    
+<!-- 👁 BOTÓN VISTA CLIENTE -->
+  <button class="iconBtn" id="btnPVL" title="Vista Cliente (PVL)">👁</button>
+
   </div>
 
 </div>
