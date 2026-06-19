@@ -1949,20 +1949,20 @@ const marcas = [...marcaMap.values()]
       });
 
       VIEW=[...ALL];
-
-     /* =========================
-   CART — PRESERVAR ENTRE MESES (PASO 11)
+/* =========================
+   CART — REHIDRATAR DESDE STORAGE (PASO 12)
    ========================= */
-const savedCart = new Map(CART);
 
 CART.clear();
 
-for(const [k,v] of savedCart.entries()){
+const saved = JSON.parse(localStorage.getItem("tm_cart") || "[]");
+
+saved.forEach(([k, v]) => {
   const existe = ALL.find(x => x.ARTICULO === k);
   if(existe){
-    CART.set(k, { q:v.q, p:existe });
+    CART.set(k, { q: v.q, p: existe });
   }
-}
+});
       render();
       totals();
 
