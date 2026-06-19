@@ -1220,10 +1220,12 @@ body.theme-light .dot.on{
       <!-- FILA 3 - Mes + Título -->
 <div class="shellBlock rowMonth">
 
-  <button class="btn monthBtn" id="btnMonth">
-    MES
-  </button>
-
+  <!-- =========================
+     FILA MES — SELECT (PASO 4.1)
+     ========================= -->
+<select class="inp monthBtn" id="selMonth">
+  <!-- se carga dinámicamente -->
+</select>
   <div class="titleBox">
     <h1 id="ttl">Ingresos de Mayo</h1>
   </div>
@@ -1755,27 +1757,41 @@ if(btnTheme){
     document.body.classList.add("theme-light");
   }
 
-  /* =========================
-   INIT (PASO 3.3)
+/* =========================
+   MES — UI + SELECT (PASO 4.2)
    ========================= */
 
 function updateMonthUI(){
   const m = MONTHS[currentMonthIndex];
+
+  /* título */
   document.getElementById("ttl").textContent = `Ingresos de ${m.name}`;
-  document.getElementById("btnMonth").textContent = m.name.toUpperCase();
+
+  /* select */
+  const sel = document.getElementById("selMonth");
+
+  /* limpiar opciones */
+  sel.innerHTML = "";
+
+  MONTHS.forEach((m, i)=>{
+    const o = document.createElement("option");
+    o.value = i;
+    o.textContent = m.name;
+    sel.appendChild(o);
+  });
+
+  /* seleccionar actual */
+  sel.value = currentMonthIndex;
 }
 
-loadCSV();
-
-  /* =========================
-   BOTÓN MES (PASO 3.4)
-   ========================= */
-
-document.getElementById("btnMonth").onclick = () => {
-  currentMonthIndex = (currentMonthIndex + 1) % MONTHS.length;
+/* evento del select */
+document.getElementById("selMonth").addEventListener("change", (e)=>{
+  currentMonthIndex = parseInt(e.target.value);
   loadCSV();
-};
+});
 
+/* INIT */
+loadCSV();
   btnTheme.onclick = () => {
     document.body.classList.toggle("theme-light");
     const isLight = document.body.classList.contains("theme-light");
