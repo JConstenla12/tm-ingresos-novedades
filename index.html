@@ -1755,6 +1755,18 @@ if(btnTheme){
     document.body.classList.add("theme-light");
   }
 
+  /* =========================
+   INIT (PASO 3.3)
+   ========================= */
+
+function updateMonthUI(){
+  const m = MONTHS[currentMonthIndex];
+  document.getElementById("ttl").textContent = `Ingresos de ${m.name}`;
+  document.getElementById("btnMonth").textContent = m.name.toUpperCase();
+}
+
+loadCSV();
+
   btnTheme.onclick = () => {
     document.body.classList.toggle("theme-light");
     const isLight = document.body.classList.contains("theme-light");
