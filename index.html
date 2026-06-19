@@ -201,6 +201,17 @@ a, button, .imgBox, .card{
   color:var(--text);
   transition:transform .12s ease, background .12s ease, box-shadow .12s ease, border-color .12s ease;
 }
+  /* =========================
+   BOTÓN PVL (PASO 9.2)
+   ========================= */
+#btnPVL{
+  display:flex;       /* 👈 importante para alinear icono + texto */
+  align-items:center;
+  gap:6px;            /* espacio entre 👁 y PVC */
+  font-size:12px;
+  padding:0 10px;
+}
+
 
 .iconBtn svg{
   width:15px;
@@ -1268,7 +1279,9 @@ body.theme-light .dot.on{
     <h1 id="ttl">Ingresos de Mayo</h1>
     
 <!-- 👁 BOTÓN VISTA CLIENTE -->
-  <button class="iconBtn" id="btnPVL" title="Vista Cliente (PVL)">👁</button>
+  <button class="iconBtn" id="btnPVL" title="Cambiar vista (PVC / PVL)">
+  👁 <span id="lblPVL">PVC</span>
+</button>
 
   </div>
 
