@@ -1720,7 +1720,11 @@ function card(p){
 
           <div class="prod-bottom">
             <div>
-              <div class="priceBig">${Number.isFinite(pvL) && pvL > 0 ? ars(pvL) : "Consultar"}</div>
+              <div class="priceBig">
+  ${Number.isFinite(pvL) && pvL > 0 
+    ? ars(pvL) 
+    : '<span class="priceConsultar">Consultar</span>'}
+</div>
 <div class="netLabel">${Number.isFinite(pvL) && pvL > 0 ? "PVL sugerido" : ""}</div>
             </div>
           </div>
