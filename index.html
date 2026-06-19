@@ -1950,9 +1950,19 @@ const marcas = [...marcaMap.values()]
 
       VIEW=[...ALL];
 
-      CART.clear();
-      localStorage.removeItem("tm_cart");
+     /* =========================
+   CART — PRESERVAR ENTRE MESES (PASO 11)
+   ========================= */
+const savedCart = new Map(CART);
 
+CART.clear();
+
+for(const [k,v] of savedCart.entries()){
+  const existe = ALL.find(x => x.ARTICULO === k);
+  if(existe){
+    CART.set(k, { q:v.q, p:existe });
+  }
+}
       render();
       totals();
 
