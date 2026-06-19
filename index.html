@@ -1686,53 +1686,60 @@ document.getElementById("btnEmpty").onclick=()=>{
 };
 
 /* Load CSV */
-fetch(CSV+"?cb="+Date.now())
-  .then(r=>r.text())
-  .then(t=>{
-    const first=t.split(/\r?\n/)[0]||"";
-    const delim = first.includes(";") ? ";" : ",";
-    ALL = rowsToObj(parseCSV(t, delim));
+/* =========================
+   LOAD CSV POR MES (PASO 3.2)
+   ========================= */
 
-    const marcas=[...new Set(ALL.map(x=>(x.MARCA||"").trim()).filter(Boolean))]
-      .sort((a,b)=>a.localeCompare(b,"es",{sensitivity:"base"}));
+function loadCSV(){
+  const file = MONTHS[currentMonthIndex].file;
 
-    const rubros=[...new Set(ALL.map(x=>(x.RUBRO||"").trim()).filter(Boolean))]
-      .sort((a,b)=>a.localeCompare(b,"es",{sensitivity:"base"}));
+  fetch(file+"?cb="+Date.now())
+    .then(r=>r.text())
+    .then(t=>{
 
-    const fm=document.getElementById("fMarca");
-    marcas.forEach(m=>{
-      const o=document.createElement("option");
-      o.value=m;
-      o.textContent=m;
-      fm.appendChild(o);
-    });
+      const first=t.split(/\r?\n/)[0]||"";
+      const delim = first.includes(";") ? ";" : ",";
+      ALL = rowsToObj(parseCSV(t, delim));
 
-    const fr=document.getElementById("fRubro");
-    rubros.forEach(r=>{
-      const o=document.createElement("option");
-      o.value=r;
-      o.textContent=r;
-      fr.appendChild(o);
-    });
+      const marcas=[...new Set(ALL.map(x=>(x.MARCA||"").trim()).filter(Boolean))]
+        .sort((a,b)=>a.localeCompare(b,"es",{sensitivity:"base"}));
 
-    VIEW=[...ALL];
+      const rubros=[...new Set(ALL.map(x=>(x.RUBRO||"").trim()).filter(Boolean))]
+        .sort((a,b)=>a.localeCompare(b,"es",{sensitivity:"base"}));
 
-    const savedCart = localStorage.getItem("tm_cart");
-    if(savedCart){
-      const arr = JSON.parse(savedCart);
-      arr.forEach(([k,v])=>{
-        CART.set(k,v);
+      /* limpiar selects */
+      document.getElementById("fMarca").innerHTML = '<option value="">Marca</option>';
+      document.getElementById("fRubro").innerHTML = '<option value="">Rubro</option>';
+
+      marcas.forEach(m=>{
+        const o=document.createElement("option");
+        o.value=m;
+        o.textContent=m;
+        fMarca.appendChild(o);
       });
-    }
 
-    render();
-    totals();
-  })
-  .catch(err=>{
-    alert("No pude leer ingresostm_mayo.csv. Revisá que esté en la raíz del repo.");
-    console.error(err);
-  });
+      rubros.forEach(r=>{
+        const o=document.createElement("option");
+        o.value=r;
+        o.textContent=r;
+        fRubro.appendChild(o);
+      });
 
+      VIEW=[...ALL];
+
+      CART.clear();
+      localStorage.removeItem("tm_cart");
+
+      render();
+      totals();
+
+      updateMonthUI(); /* 👈 importante */
+    })
+    .catch(err=>{
+      alert("No pude leer el CSV del mes.");
+      console.error(err);
+    });
+}
 /* Filtros */
 ["q","fMarca","fRubro","fStk"].forEach(id=>{
   document.getElementById(id).addEventListener("input", apply);
