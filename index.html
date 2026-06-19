@@ -1843,6 +1843,10 @@ function totals(){
 
 function buildWA(sub, iva, ii, tot){
   const lines = [];
+  function padLabel(label, value){
+  return (label + ":").padEnd(16) + " " + value;
+}
+  
 
   ALL_CARTS = JSON.parse(localStorage.getItem("tm_carts") || "{}");
 
@@ -1878,10 +1882,7 @@ function buildWA(sub, iva, ii, tot){
 
     const mTot = mSub + mIva + mIi;
 
-    /* subtotal por mes */
-    function padLabel(label, value){
-  return (label + ":").padEnd(14) + " " + value;
-}
+   
 
     lines.push(padLabel("Subtotal", ars(mSub)));
 lines.push(padLabel("IVA", ars(mIva)));
