@@ -1496,6 +1496,11 @@ const PLACE = "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns='http:
 const CART = new Map();
 let ALL = [], VIEW = [];
 
+  /* =========================
+   MODO PVL (PASO 10)
+   ========================= */
+let modoPVL = false;
+
 function num(v){
   if(v==null) return NaN;
   let s=String(v).replace(/\r/g,'').trim();
@@ -1977,6 +1982,25 @@ loadCSV();
     localStorage.setItem("tm_theme", isLight ? "light" : "dark");
   };
 }
+  /* =========================
+   BOTÓN PVL — TOGGLE (PASO 10.1)
+   ========================= */
+
+const btnPVL = document.getElementById("btnPVL");
+const lblPVL = document.getElementById("lblPVL");
+
+btnPVL.onclick = () => {
+
+  /* toggle flag */
+  modoPVL = !modoPVL;
+
+  /* texto */
+  lblPVL.textContent = modoPVL ? "PVL" : "PVC";
+
+  /* estado visual */
+  btnPVL.classList.toggle("active", modoPVL);
+
+};
 </script>
 </body>
 </html>
