@@ -1852,6 +1852,10 @@ function buildWA(sub, iva, ii, tot){
 
     if(!monthCart.length) return;
 
+    let mSub = 0;
+    let mIva = 0;
+    let mIi  = 0;
+
     lines.push(`Pedido — Ingresos de ${m.name} (Todomusica)`);
     lines.push("");
 
@@ -1859,6 +1863,11 @@ function buildWA(sub, iva, ii, tot){
       const p = v.p;
       const q = v.q;
       const net = pvcNeto(p);
+      const line = net * q;
+
+      mSub += line;
+      mIva += line * pct(p.IVA);
+      mIi  += line * pct(p.II);
 
       lines.push(`${p.MARCA || ""}`);
       lines.push(`${p.ARTICULO || ""}`);
@@ -1867,20 +1876,31 @@ function buildWA(sub, iva, ii, tot){
       lines.push("");
     });
 
+    const mTot = mSub + mIva + mIi;
+
+    /* subtotal por mes */
+    lines.push(`Subtotal: ${ars(mSub)}`);
+    lines.push(`IVA: ${ars(mIva)}`);
+    lines.push(`Imp. Int: ${ars(mIi)}`);
+    lines.push(`Total: ${ars(mTot)}`);
+    lines.push("");
+
     lines.push("--------------------------------");
     lines.push("");
   });
 
-  lines.push(`Subtotal: ${ars(sub)}`);
+  /* total general */
+  lines.push(`SUBTOTAL GENERAL: ${ars(sub)}`);
   lines.push(`IVA: ${ars(iva)}`);
-  lines.push(`Imp. Int: ${ars(ii)}`);
-  lines.push(`TOTAL: ${ars(tot)}`);
+  lines.push(`IMP. INT: ${ars(ii)}`);
+  lines.push(`TOTAL FINAL: ${ars(tot)}`);
   lines.push("");
+
   lines.push("Los precios están sujetos a modificaciones sin previo aviso");
 
   return lines.join("\n");
 }
-/* Modal */
+  /* Modal */
 let M_P=null, M_A=[], M_I=0;
 
 function dots(){
