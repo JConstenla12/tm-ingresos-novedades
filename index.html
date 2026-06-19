@@ -1919,6 +1919,8 @@ const marcas = [...marcaMap.values()]
       render();
       totals();
 
+      syncModoPVLUI();
+
       updateMonthUI(); /* 👈 importante */
     })
     .catch(err=>{
@@ -1986,8 +1988,32 @@ loadCSV();
    BOTÓN PVL — TOGGLE (PASO 10.1)
    ========================= */
 
+/* =========================
+   BOTÓN PVL — TOGGLE (PASO 10.1)
+   ========================= */
 const btnPVL = document.getElementById("btnPVL");
 const lblPVL = document.getElementById("lblPVL");
+
+/* =========================
+   MODO PVL — UI GENERAL (PASO 10.2)
+   ========================= */
+function syncModoPVLUI(){
+  const totBlock = document.querySelector(".totBlock");
+  const cartBar  = document.querySelector(".cartBar");
+  const waBtn    = document.getElementById("wa");
+
+  if(totBlock){
+    totBlock.style.display = modoPVL ? "none" : "";
+  }
+
+  if(cartBar){
+    cartBar.style.display = modoPVL ? "none" : "";
+  }
+
+  if(waBtn){
+    waBtn.style.display = modoPVL ? "none" : "";
+  }
+}
 
 btnPVL.onclick = () => {
 
@@ -1999,6 +2025,9 @@ btnPVL.onclick = () => {
 
   /* estado visual */
   btnPVL.classList.toggle("active", modoPVL);
+
+  /* aplicar visibilidad */
+  syncModoPVLUI();
 
 };
 </script>
