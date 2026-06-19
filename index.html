@@ -1716,8 +1716,8 @@ function card(p){
 
           <div class="prod-bottom">
             <div>
-              <div class="priceBig">${Number.isFinite(pvL) ? ars(pvL) : "—"}</div>
-              <div class="netLabel">PVL sugerido</div>
+              <div class="priceBig">${Number.isFinite(pvL) && pvL > 0 ? ars(pvL) : "Consultar"}</div>
+<div class="netLabel">${Number.isFinite(pvL) && pvL > 0 ? "PVL sugerido" : ""}</div>
             </div>
           </div>
         </div>
@@ -1755,22 +1755,17 @@ function card(p){
 
         <div class="prod-bottom">
           <div>
-            ${off > 0 ? `<div class="oldPrice">PVC: ${ars(num(p.PVC))}</div>` : ``}
-            <div class="priceBig">
-  ${net === null ? "Consultar" : ars(net)}
-</div>
-<div class="netLabel">
-  ${net === null ? "" : "PVC Neto"}
-</div>
-
+            ${off > 0 && net !== null ? `<div class="oldPrice">PVC: ${ars(num(p.PVC))}</div>` : ``}
+            <div class="priceBig">${net === null ? "Consultar" : ars(net)}</div>
+            <div class="netLabel">${net === null ? "" : "PVC Neto"}</div>
+          </div>
 
           <div class="qty">
             <button class="qbtn" data-a="d">–</button>
             <div class="qval">${q}</div>
             <button class="qbtn" data-a="i">+</button>
           </div>
-        </div>
-      </div>
+        </div>      </div>
     </div>
   </div>`;
 }
