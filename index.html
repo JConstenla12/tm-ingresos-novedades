@@ -1402,6 +1402,25 @@ body.theme-light select.active{
 
   background:rgba(245,158,11,.12);
 }
+  /* =========================
+   FIX SELECT DROPDOWN (DESKTOP)
+   ========================= */
+select{
+  color:var(--text);
+}
+
+/* opciones del dropdown */
+select option{
+  color:#111;            /* texto negro siempre */
+  background:#fff;       /* fondo blanco limpio */
+}
+
+/* cuando está seleccionado */
+select option:checked{
+  background:#3b82f6;
+  color:#fff;
+}
+
 
 </style>
 </head>
