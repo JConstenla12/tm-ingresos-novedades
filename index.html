@@ -1808,18 +1808,7 @@ function render(){
   });
 }
   async function apply(){
-  const q = (document.getElementById("q").value || "").toLowerCase().trim();
-    if(!q){
-  document.getElementById("fMarca").value = "";
-  document.getElementById("fRubro").value = "";
-  document.getElementById("fStk").value = "";
-
-  VIEW = [...ALL];
-  render();
-  totals();
-  return;
-}
-  let m = document.getElementById("fMarca").value;
+const q = (document.getElementById("q").value || "").toLowerCase().trim();  let m = document.getElementById("fMarca").value;
   const r = document.getElementById("fRubro").value;
   const s = document.getElementById("fStk").value;
 
@@ -2164,7 +2153,31 @@ document.getElementById("selMonth").addEventListener("change", async (e)=>{
 });
 
 /* Filtros */
-["q","fMarca","fRubro","fStk"].forEach(id=>{
+document.getElementById("q").addEventListener("input", () => {
+  const q = (document.getElementById("q").value || "").trim();
+
+  if(q === ""){
+    document.getElementById("fMarca").value = "";
+    document.getElementById("fRubro").value = "";
+    document.getElementById("fStk").value = "";
+  }
+
+  apply();
+});
+
+document.getElementById("q").addEventListener("change", () => {
+  const q = (document.getElementById("q").value || "").trim();
+
+  if(q === ""){
+    document.getElementById("fMarca").value = "";
+    document.getElementById("fRubro").value = "";
+    document.getElementById("fStk").value = "";
+  }
+
+  apply();
+});
+
+["fMarca","fRubro","fStk"].forEach(id=>{
   document.getElementById(id).addEventListener("input", apply);
   document.getElementById(id).addEventListener("change", apply);
 });
