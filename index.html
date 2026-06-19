@@ -1630,11 +1630,11 @@ function badgeStock(v){
 }
 
 function card(p){
-  const marca = p.MARCA || "";
-const marcaOp = marcaOpLabel(p);
-const art   = p.ARTICULO || "";
-const desc  = p.DESCRIPCION || "";
-const rub   = p.RUBRO || "";
+  const marca   = p.MARCA || "";
+  const marcaOp = marcaOpLabel(p);
+  const art     = p.ARTICULO || "";
+  const desc    = p.DESCRIPCION || "";
+  const rub     = p.RUBRO || "";
 
   const net = pvcNeto(p);
   const off = pct(p.OFF);
@@ -1644,10 +1644,48 @@ const rub   = p.RUBRO || "";
   const ii  = pct(p.II);
 
   const q = qty(p);
-  const inCart = q > 0 ? "inCart" : "";
+
+  /* en PVL no queremos resaltar carrito */
+  const inCart = (!modoPVL && q > 0) ? "inCart" : "";
 
   const im = (p.IMAGEN_URL_1 || "").trim() || PLACE;
 
+  /* =========================
+     CARD — MODO PVL
+     ========================= */
+  if(modoPVL){
+    return `
+    <div class="card ${inCart}" data-k="${art}">
+      <div class="imgBox" data-z="1">
+        ${off > 0 ? `<div class="stickerOff">${Math.round(off*100)}% OFF</div>` : ``}
+        <img src="${im}" onerror="this.onerror=null;this.src='${PLACE}'">
+      </div>
+
+      <div class="cardInfo">
+        <div class="pTitle">${marcaOp} · ${art}</div>
+        <p class="pDesc">${desc}</p>
+
+        <div class="prod-block">
+          <div class="prod-rubro">${rub || "—"}</div>
+
+          <div class="prod-line">
+            ${badgeStock(p.STOCK_TXT)}
+          </div>
+
+          <div class="prod-bottom">
+            <div>
+              <div class="priceBig">${Number.isFinite(pvL) ? ars(pvL) : "—"}</div>
+              <div class="netLabel">PVL sugerido</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  /* =========================
+     CARD — MODO PVC
+     ========================= */
   return `
   <div class="card ${inCart}" data-k="${art}">
     <div class="imgBox" data-z="1">
@@ -1690,7 +1728,6 @@ const rub   = p.RUBRO || "";
     </div>
   </div>`;
 }
-
 function render(){
   const g=document.getElementById("grid");
   g.innerHTML = VIEW.map(card).join("");
@@ -2028,6 +2065,11 @@ btnPVL.onclick = () => {
 
   /* aplicar visibilidad */
   syncModoPVLUI();
+
+  
+/* re-render cards */
+  render();
+
 
 };
 </script>
