@@ -246,6 +246,35 @@ a, button, .imgBox, .card{
     0 0 0 3px rgba(245,158,11,.22),
     0 8px 20px rgba(245,158,11,.18);
 }
+  /* =========================
+   BOTÓN PVL — ESTADO ACTIVO
+   ========================= */
+#btnPVL.active{
+  background:linear-gradient(135deg,#f59e0b,#fbbf24);
+  color:#111;
+  border-color:rgba(0,0,0,.2);
+
+  box-shadow:
+    0 0 0 3px rgba(245,158,11,.25),
+    0 10px 25px rgba(245,158,11,.35);
+
+  transform:translateY(-1px);
+}
+
+/* efecto brillo suave */
+#btnPVL.active span{
+  text-shadow:0 0 6px rgba(255,200,0,.6);
+}
+body.theme-light #btnPVL.active{
+  background:linear-gradient(135deg,#f59e0b,#fcd34d);
+  color:#111;
+  border-color:rgba(0,0,0,.15);
+
+  box-shadow:
+    0 6px 16px rgba(245,158,11,.25),
+    0 0 0 3px rgba(245,158,11,.18);
+}
+
 /* =========================
    BOTÓN PVL — LIGHT MODE
    ========================= */
