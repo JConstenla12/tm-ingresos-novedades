@@ -1465,7 +1465,24 @@ function stkNorm(v){
   if(s==="<10" || s===" <10") return "<10";
   return s || "";
 }
+/* =========================
+   MARCA + OP (PASO 8.1)
+   ========================= */
 
+/* arma el texto visible: "PRESONUS 5591" */
+function marcaOpLabel(p){
+  const marca = (p.MARCA || "").trim();
+  const op = String(p.OP || "").trim();
+
+  return op ? `${marca} ${op}` : marca;
+}
+
+/* devuelve OP como número para ordenar */
+function opNum(p){
+  const n = parseInt(String(p.OP || "").trim(), 10);
+  return Number.isFinite(n) ? n : 0;
+}
+  
 function pvcNeto(p){
   const pvc=num(p.PVC);
   const off=pct(p.OFF);
@@ -1501,9 +1518,10 @@ function badgeStock(v){
 
 function card(p){
   const marca = p.MARCA || "";
-  const art   = p.ARTICULO || "";
-  const desc  = p.DESCRIPCION || "";
-  const rub   = p.RUBRO || "";
+const marcaOp = marcaOpLabel(p);
+const art   = p.ARTICULO || "";
+const desc  = p.DESCRIPCION || "";
+const rub   = p.RUBRO || "";
 
   const net = pvcNeto(p);
   const off = pct(p.OFF);
@@ -1525,7 +1543,7 @@ function card(p){
     </div>
 
     <div class="cardInfo">
-      <div class="pTitle">${marca} · ${art}</div>
+      <div class="pTitle">${marcaOp} · ${art}</div>
       <p class="pDesc">${desc}</p>
 
       <div class="prod-block">
@@ -1589,7 +1607,7 @@ function apply(){
   const s=document.getElementById("fStk").value;
 
   VIEW = ALL.filter(p=>{
-    if(m && (p.MARCA||"")!==m) return false;
+   if(m && marcaOpLabel(p)!==m) return false
     if(r && (p.RUBRO||"")!==r) return false;
     if(s){
       const st=stkNorm(p.STOCK_TXT);
@@ -1732,8 +1750,32 @@ function loadCSV(){
       const delim = first.includes(";") ? ";" : ",";
       ALL = rowsToObj(parseCSV(t, delim));
 
-      const marcas=[...new Set(ALL.map(x=>(x.MARCA||"").trim()).filter(Boolean))]
-        .sort((a,b)=>a.localeCompare(b,"es",{sensitivity:"base"}));
+     /* =========================
+   FILTRO MARCA — MARCA + OP (PASO 8.4)
+   ========================= */
+
+const marcaMap = new Map();
+
+ALL.forEach(x=>{
+  const label = marcaOpLabel(x);
+  if(!label) return;
+
+  if(!marcaMap.has(label)){
+    marcaMap.set(label, {
+      label,
+      marca: (x.MARCA || "").trim(),
+      op: opNum(x)
+    });
+  }
+});
+
+const marcas = [...marcaMap.values()]
+  .sort((a,b)=>{
+    const cmpMarca = a.marca.localeCompare(b.marca, "es", { sensitivity:"base" });
+    if(cmpMarca !== 0) return cmpMarca;
+    return a.op - b.op;
+  })
+  .map(x=>x.label);
 
       const rubros=[...new Set(ALL.map(x=>(x.RUBRO||"").trim()).filter(Boolean))]
         .sort((a,b)=>a.localeCompare(b,"es",{sensitivity:"base"}));
