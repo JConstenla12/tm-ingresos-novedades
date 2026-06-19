@@ -1749,7 +1749,7 @@ function card(p){
         </div>
 
         <div class="prod-line">
-          ${Number.isFinite(pvL) ? `<span class="mini">PVL ${ars(pvL)}</span>` : ""}
+          ${Number.isFinite(pvL) && pvL > 0 ? `<span class="mini">PVL ${ars(pvL)}</span>` : ""}
           ${mk > 0 ? `<span class="mini">MKUP ${Math.round(mk*100)}%</span>` : ""}
         </div>
 
@@ -1765,7 +1765,8 @@ function card(p){
             <div class="qval">${q}</div>
             <button class="qbtn" data-a="i">+</button>
           </div>
-        </div>      </div>
+        </div>
+</div>
     </div>
   </div>`;
 }
