@@ -819,19 +819,6 @@ body.theme-light .card{
   font-weight:900;
 }
 
-  .rowFiltersReset{
-  margin-top:8px;
-  display:flex;
-  justify-content:center;
-}
-
-.btnReset{
-  font-size:12px;
-  padding:8px 12px;
-  border-radius:12px;
-  font-weight:800;
-  gap:6px;
-}
   .priceConsultar{
   color:#fbbf24; /* amarillo advertencia */
   font-weight:900;
@@ -1368,14 +1355,6 @@ body.theme-light .dot.on{
       <!-- FILA 3 - Mes + Título -->
 <div class="shellBlock rowMonth">
 
-  <!-- FILA FILTROS RESET -->
-<div class="shellBlock rowFiltersReset">
-  <button class="btn btnReset" id="btnResetFilters">
-    🧹 Limpiar filtros
-  </button>
-</div>
-
-
   <!-- =========================
      FILA MES — SELECT (PASO 4.1)
      ========================= -->
@@ -1413,15 +1392,13 @@ body.theme-light .dot.on{
         </select>
       </div>
 
-   
+      <!-- FILA 4 -->
+      <div class="shellBlock row4">
+        <div class="legal">Los precios están sujetos a modificaciones sin previo aviso</div>
+      </div>
+
 <!-- FILA 6,7,8 - GRID DE TOTALES MODULAR -->
 <div class="totBlock">
-
-  <div class="shellBlock" style="margin-top:10px;">
-  <div class="legal" style="text-align:center;">
-    Los precios están sujetos a modificaciones sin previo aviso
-  </div>
-</div>
 
   <!-- Ítems -->
   <div class="totItem">
@@ -2231,15 +2208,6 @@ document.getElementById("q").addEventListener("change", () => {
   document.getElementById(id).addEventListener("input", apply);
   document.getElementById(id).addEventListener("change", apply);
 });
-
-  document.getElementById("btnResetFilters").onclick = () => {
-  document.getElementById("q").value = "";
-  document.getElementById("fMarca").value = "";
-  document.getElementById("fRubro").value = "";
-  document.getElementById("fStk").value = "";
-
-  apply();
-};
 
 /* THEME */
 const btnTheme = document.getElementById("btnTheme");
