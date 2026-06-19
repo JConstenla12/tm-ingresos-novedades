@@ -28,13 +28,70 @@
   --radius-md: 14px;
 }
 
+/* =========================
+   THEME LIGHT — BASE (PASO 1)
+   ========================= */
 body.theme-light{
-  --bg: linear-gradient(135deg,#f8fafc,#e2e8f0);
-  --panel:#ffffff;
-  --card:#ffffff;
-  --stroke:rgba(0,0,0,.12);
-  --text:#0b1220;
-  --muted:#4b5563;
+
+  /* FONDO GENERAL (más suave, menos plano) */
+  --bg: linear-gradient(180deg,#f1f5f9,#e2e8f0);
+
+  /* CAPAS */
+  --panel:#ffffff;          /* header / zonas principales */
+  --card:#ffffff;           /* cards */
+
+  /* BORDE */
+  --stroke:rgba(0,0,0,.08); /* más sutil */
+
+  /* TEXTO */
+  --text:#0f172a;           /* más oscuro */
+  --muted:#64748b;          /* gris más elegante */
+
+}
+
+/* =========================
+   THEME LIGHT — SUPERFICIES
+   ========================= */
+
+/* CARDS (productos) */
+body.theme-light .card{
+  border:1px solid rgba(0,0,0,.06);
+
+  /* 👇 sombra real pero suave */
+  box-shadow:
+    0 6px 18px rgba(0,0,0,.08),
+    inset 0 1px 0 rgba(255,255,255,.9);
+
+  /* separación visual */
+  background:#ffffff;
+}
+
+/* INPUTS / SELECTS */
+body.theme-light .inp,
+body.theme-light select{
+  background:#f8fafc; /* leve gris para diferenciar */
+  border:1px solid rgba(0,0,0,.10);
+}
+
+/* TOTALES (bloques tipo tarjeta) */
+body.theme-light .totItem{
+  background:#ffffff;
+
+  border:1px solid rgba(0,0,0,.08);
+
+  /* 👇 clave para que “floten” */
+  box-shadow:0 4px 10px rgba(0,0,0,.06);
+}
+
+/* BOTONES */
+body.theme-light .btn{
+  background:#ffffff;
+  border:1px solid rgba(0,0,0,.10);
+}
+
+/* BOTÓN ACTIVO */
+body.theme-light .btn:active{
+  background:rgba(245,158,11,.15);
 }
 
 *{box-sizing:border-box}
