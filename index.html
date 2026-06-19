@@ -1342,7 +1342,16 @@ body.theme-light .dot.on{
   </div>
 
 <script>
-const CSV = "ingresostm_mayo.csv";
+/* =========================
+   MES — CONFIG (PASO 3.1)
+   ========================= */
+
+const MONTHS = [
+  { name: "Mayo",  file: "ingresostm_mayo.csv" },
+  { name: "Junio", file: "ingresostm_junio.csv" }
+];
+
+let currentMonthIndex = 1; // arranca en Junio
 const PLACE = "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='640' height='480'><rect width='100%' height='100%' fill='#0b1220'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='26' fill='#9db0d4'>Sin imagen</text></svg>`);
 
 const CART = new Map();
