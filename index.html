@@ -1784,7 +1784,7 @@ function apply(){
       if(st!==s) return false;
     }
     if(!q) return true;
-    const blob=[p.MARCA,p.ARTICULO,p.DESCRIPCION,p.RUBRO].join(" ").toLowerCase();
+    const blob=[p.MARCA,p.ARTICULO,p.DESCRIPCION,p.RUBRO,p.OP].join(" ").toLowerCase();
     return blob.includes(q);
   });
 
@@ -2068,6 +2068,7 @@ function updateMonthUI(){
 
   /* título */
   document.getElementById("ttl").textContent = `Ingresos de ${m.name}`;
+  document.title = `Todomusica — Ingresos de ${m.name}`;
 
   /* select */
   const sel = document.getElementById("selMonth");
