@@ -1767,6 +1767,15 @@ function updateMonthUI(){
 
 loadCSV();
 
+  /* =========================
+   BOTÓN MES (PASO 3.4)
+   ========================= */
+
+document.getElementById("btnMonth").onclick = () => {
+  currentMonthIndex = (currentMonthIndex + 1) % MONTHS.length;
+  loadCSV();
+};
+
   btnTheme.onclick = () => {
     document.body.classList.toggle("theme-light");
     const isLight = document.body.classList.contains("theme-light");
