@@ -1634,12 +1634,15 @@ function opNum(p){
 }
   
 function pvcNeto(p){
-  const pvc=num(p.PVC);
-  const off=pct(p.OFF);
-  if(!Number.isFinite(pvc)) return 0;
-  return pvc*(1-off);
-}
+  const pvc = num(p.PVC);
+  const off = pct(p.OFF);
 
+  if(!Number.isFinite(pvc) || pvc === 0){
+    return null; // 👈 clave
+  }
+
+  return pvc * (1 - off);
+}
 function qty(p){
   return CART.get(p.ARTICULO)?.q ?? 0;
 }
@@ -1753,9 +1756,13 @@ function card(p){
         <div class="prod-bottom">
           <div>
             ${off > 0 ? `<div class="oldPrice">PVC: ${ars(num(p.PVC))}</div>` : ``}
-            <div class="priceBig">${ars(net)}</div>
-            <div class="netLabel">PVC Neto</div>
-          </div>
+            <div class="priceBig">
+  ${net === null ? "Consultar" : ars(net)}
+</div>
+<div class="netLabel">
+  ${net === null ? "" : "PVC Neto"}
+</div>
+
 
           <div class="qty">
             <button class="qbtn" data-a="d">–</button>
@@ -1866,11 +1873,15 @@ function totals(){
       const q = v.q;
 
       const net = pvcNeto(p);
-      const line = net * q;
 
-      sub += line;
-      iva += line * pct(p.IVA);
-      ii  += line * pct(p.II);
+if(net !== null){
+  const line = net * q;
+
+  sub += line;
+  iva += line * pct(p.IVA);
+  ii  += line * pct(p.II);
+}
+
       items += q;
     });
   });
@@ -1925,8 +1936,18 @@ function buildWA(sub, iva, ii, tot){
     monthCart.forEach(([k, v]) => {
       const p = v.p;
       const q = v.q;
-      const net = pvcNeto(p);
-      const line = net * q;
+     const net = pvcNeto(p);
+
+if(net === null){
+  lines.push(`${p.MARCA || ""}`);
+  lines.push(`${p.ARTICULO || ""}`);
+  lines.push(`Cant: ${q}`);
+  lines.push(`Consultar`);
+  lines.push("");
+  return;
+}
+
+const line = net * q;
 
       mSub += line;
       mIva += line * pct(p.IVA);
