@@ -1495,6 +1495,7 @@ const PLACE = "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns='http:
 
 const CART = new Map();
 let ALL = [], VIEW = [];
+const MONTH_DATA = {};
 
 /* =========================
    CARTS GLOBAL POR MES (PASO 13)
@@ -1508,6 +1509,24 @@ function monthKeyByIndex(i){
 function currentMonthKey(){
   return monthKeyByIndex(currentMonthIndex);
 }
+  async function getMonthData(i){
+  const key = monthKeyByIndex(i);
+
+  if(MONTH_DATA[key]){
+    return MONTH_DATA[key];
+  }
+
+  const file = MONTHS[i].file;
+  const t = await fetch(file + "?cb=" + Date.now()).then(r => r.text());
+
+  const first = t.split(/\r?\n/)[0] || "";
+  const delim = first.includes(";") ? ";" : ",";
+  const data = rowsToObj(parseCSV(t, delim));
+
+  MONTH_DATA[key] = data;
+  return data;
+}
+
 
 function saveCurrentMonthCart(){
   ALL_CARTS[currentMonthKey()] = [...CART];
@@ -1748,6 +1767,25 @@ function card(p){
     </div>
   </div>`;
 }
+  function applyFilters(data, q, m, r, s){
+  return data.filter(p => {
+    if(m && marcaOpLabel(p) !== m) return false;
+    if(r && (p.RUBRO || "") !== r) return false;
+
+    if(s){
+      const st = stkNorm(p.STOCK_TXT);
+      if(st !== s) return false;
+    }
+
+    if(!q) return true;
+
+    const blob = [p.MARCA, p.ARTICULO, p.DESCRIPCION, p.RUBRO, p.OP]
+      .join(" ")
+      .toLowerCase();
+
+    return blob.includes(q);
+  });
+}
 function render(){
   const g=document.getElementById("grid");
   g.innerHTML = VIEW.map(card).join("");
@@ -1769,28 +1807,52 @@ function render(){
     if(z) z.onclick=()=>openModal(p);
   });
 }
+  async function apply(){
+  const q = (document.getElementById("q").value || "").toLowerCase().trim();
+  let m = document.getElementById("fMarca").value;
+  const r = document.getElementById("fRubro").value;
+  const s = document.getElementById("fStk").value;
 
-function apply(){
-  const q=(document.getElementById("q").value||"").toLowerCase().trim();
-  const m=document.getElementById("fMarca").value;
-  const r=document.getElementById("fRubro").value;
-  const s=document.getElementById("fStk").value;
+  let result = applyFilters(ALL, q, m, r, s);
 
-  VIEW = ALL.filter(p=>{
-   if(m && marcaOpLabel(p)!==m) return false
-    if(r && (p.RUBRO||"")!==r) return false;
-    if(s){
-      const st=stkNorm(p.STOCK_TXT);
-      if(st!==s) return false;
+  /* -------------------------------------------------
+     SI HAY TEXTO Y NO ENCUENTRA EN EL MES ACTUAL,
+     BUSCAR EN LOS OTROS MESES Y CAMBIAR AUTOMÁTICAMENTE
+     ------------------------------------------------- */
+  if(q && result.length === 0){
+    for(let i = 0; i < MONTHS.length; i++){
+      if(i === currentMonthIndex) continue;
+
+      const altData = await getMonthData(i);
+      const altResult = applyFilters(altData, q, m, r, s);
+
+      if(altResult.length > 0){
+        currentMonthIndex = i;
+        await loadCSV();
+        return;
+      }
     }
-    if(!q) return true;
-    const blob=[p.MARCA,p.ARTICULO,p.DESCRIPCION,p.RUBRO,p.OP].join(" ").toLowerCase();
-    return blob.includes(q);
-  });
+  }
 
+  /* -------------------------------------------------
+     SI EL TEXTO ENCUENTRA UN SOLO MARCA+OP,
+     REFLEJARLO TAMBIÉN EN EL SELECT DE MARCA
+     ------------------------------------------------- */
+  if(q && !m && result.length > 0){
+    const labels = [...new Set(result.map(x => marcaOpLabel(x)).filter(Boolean))];
+
+    if(labels.length === 1){
+      document.getElementById("fMarca").value = labels[0];
+      m = labels[0];
+      result = applyFilters(ALL, q, m, r, s);
+    }
+  }
+
+  VIEW = result;
   render();
   totals();
 }
+
 /* =========================
    TOTALES GLOBALES + WHATSAPP POR MES (PASO 13 FIX)
    ========================= */
@@ -1957,109 +2019,107 @@ document.getElementById("btnEmpty").onclick = () => {
    LOAD CSV POR MES (PASO 3.2)
    ========================= */
 
-function loadCSV(){
-  const file = MONTHS[currentMonthIndex].file;
+async function loadCSV(){
+  const prevMarca = document.getElementById("fMarca").value;
+  const prevRubro = document.getElementById("fRubro").value;
+  const prevStk   = document.getElementById("fStk").value;
 
-  fetch(file+"?cb="+Date.now())
-    .then(r=>r.text())
-    .then(t=>{
+  try{
+    ALL = await getMonthData(currentMonthIndex);
 
-      const first=t.split(/\r?\n/)[0]||"";
-      const delim = first.includes(";") ? ";" : ",";
-      ALL = rowsToObj(parseCSV(t, delim));
+    /* =========================
+       FILTRO MARCA — MARCA + OP
+       ========================= */
+    const marcaMap = new Map();
 
-     /* =========================
-   FILTRO MARCA — MARCA + OP (PASO 8.4)
-   ========================= */
+    ALL.forEach(x => {
+      const label = marcaOpLabel(x);
+      if(!label) return;
 
-const marcaMap = new Map();
-
-ALL.forEach(x=>{
-  const label = marcaOpLabel(x);
-  if(!label) return;
-
-  if(!marcaMap.has(label)){
-    marcaMap.set(label, {
-      label,
-      marca: (x.MARCA || "").trim(),
-      op: opNum(x)
+      if(!marcaMap.has(label)){
+        marcaMap.set(label, {
+          label,
+          marca: (x.MARCA || "").trim(),
+          op: opNum(x)
+        });
+      }
     });
-  }
-});
 
-const marcas = [...marcaMap.values()]
-  .sort((a,b)=>{
-    const cmpMarca = a.marca.localeCompare(b.marca, "es", { sensitivity:"base" });
-    if(cmpMarca !== 0) return cmpMarca;
-    return a.op - b.op;
-  })
-  .map(x=>x.label);
+    const marcas = [...marcaMap.values()]
+      .sort((a,b) => {
+        const cmpMarca = a.marca.localeCompare(b.marca, "es", { sensitivity:"base" });
+        if(cmpMarca !== 0) return cmpMarca;
+        return a.op - b.op;
+      })
+      .map(x => x.label);
 
-      const rubros=[...new Set(ALL.map(x=>(x.RUBRO||"").trim()).filter(Boolean))]
-        .sort((a,b)=>a.localeCompare(b,"es",{sensitivity:"base"}));
+    const rubros = [...new Set(ALL.map(x => (x.RUBRO || "").trim()).filter(Boolean))]
+      .sort((a,b) => a.localeCompare(b, "es", { sensitivity:"base" }));
 
-      /* limpiar selects */
-      document.getElementById("fMarca").innerHTML = '<option value="">Marca</option>';
-      document.getElementById("fRubro").innerHTML = '<option value="">Rubro</option>';
+    const fMarca = document.getElementById("fMarca");
+    const fRubro = document.getElementById("fRubro");
+    const fStk   = document.getElementById("fStk");
 
-      marcas.forEach(m=>{
-        const o=document.createElement("option");
-        o.value=m;
-        o.textContent=m;
-        fMarca.appendChild(o);
-      });
+    fMarca.innerHTML = '<option value="">Marca</option>';
+    fRubro.innerHTML = '<option value="">Rubro</option>';
 
-      rubros.forEach(r=>{
-        const o=document.createElement("option");
-        o.value=r;
-        o.textContent=r;
-        fRubro.appendChild(o);
-      });
-
-      VIEW=[...ALL];
-/* =========================
-   CART — REHIDRATAR MES ACTUAL DESDE CART GLOBAL (PASO 13.1)
-   ========================= */
-CART.clear();
-
-ALL_CARTS = JSON.parse(localStorage.getItem("tm_carts") || "{}");
-
-const savedMonthCart = ALL_CARTS[currentMonthKey()] || [];
-
-savedMonthCart.forEach(([k, v]) => {
-  const existe = ALL.find(x => x.ARTICULO === k);
-  if(existe){
-    CART.set(k, { q: v.q, p: existe });
-  }
-});
-      render();
-      totals();
-
-      syncModoPVLUI();
-
-      updateMonthUI(); /* 👈 importante */
-    })
-    .catch(err=>{
-      alert("No pude leer el CSV del mes.");
-      console.error(err);
+    marcas.forEach(m => {
+      const o = document.createElement("option");
+      o.value = m;
+      o.textContent = m;
+      fMarca.appendChild(o);
     });
+
+    rubros.forEach(r => {
+      const o = document.createElement("option");
+      o.value = r;
+      o.textContent = r;
+      fRubro.appendChild(o);
+    });
+
+    /* restaurar filtros si siguen existiendo en ese mes */
+    if(marcas.includes(prevMarca)){
+      fMarca.value = prevMarca;
+    }else{
+      fMarca.value = "";
+    }
+
+    if(rubros.includes(prevRubro)){
+      fRubro.value = prevRubro;
+    }else{
+      fRubro.value = "";
+    }
+
+    fStk.value = prevStk;
+
+    /* =========================
+       CART — REHIDRATAR MES ACTUAL
+       ========================= */
+    CART.clear();
+
+    ALL_CARTS = JSON.parse(localStorage.getItem("tm_carts") || "{}");
+    const savedMonthCart = ALL_CARTS[currentMonthKey()] || [];
+
+    savedMonthCart.forEach(([k, v]) => {
+      const existe = ALL.find(x => x.ARTICULO === k);
+      if(existe){
+        CART.set(k, { q: v.q, p: existe });
+      }
+    });
+
+    syncModoPVLUI();
+    updateMonthUI();
+
+    /* IMPORTANTE:
+       al cambiar de mes, volver a aplicar lo que ya está escrito/seleccionado */
+    await apply();
+
+  }catch(err){
+    alert("No pude leer el CSV del mes.");
+    console.error(err);
+  }
 }
-/* Filtros */
-["q","fMarca","fRubro","fStk"].forEach(id=>{
-  document.getElementById(id).addEventListener("input", apply);
-  document.getElementById(id).addEventListener("change", apply);
-});
-
-/* THEME */
-const btnTheme = document.getElementById("btnTheme");
-
-if(btnTheme){
-  const saved = localStorage.getItem("tm_theme");
-  if(saved === "light"){
-    document.body.classList.add("theme-light");
-  }
-
-/* =========================
+  /* =========================
    MES — UI + SELECT (PASO 4.2)
    ========================= */
 
