@@ -1496,6 +1496,24 @@ const PLACE = "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns='http:
 const CART = new Map();
 let ALL = [], VIEW = [];
 
+/* =========================
+   CARTS GLOBAL POR MES (PASO 13)
+   ========================= */
+let ALL_CARTS = JSON.parse(localStorage.getItem("tm_carts") || "{}");
+
+function monthKeyByIndex(i){
+  return MONTHS[i]?.file || String(i);
+}
+
+function currentMonthKey(){
+  return monthKeyByIndex(currentMonthIndex);
+}
+
+function saveCurrentMonthCart(){
+  ALL_CARTS[currentMonthKey()] = [...CART];
+  localStorage.setItem("tm_carts", JSON.stringify(ALL_CARTS));
+}
+
   /* =========================
    MODO PVL (PASO 10)
    ========================= */
@@ -1608,14 +1626,16 @@ function qty(p){
 }
 
 function setQty(p, q){
-  q=Math.max(0, q|0);
-  const k=p.ARTICULO;
+  q = Math.max(0, q|0);
+  const k = p.ARTICULO;
   if(!k) return;
 
-  if(q===0) CART.delete(k);
-  else CART.set(k,{q,p});
+  if(q === 0) CART.delete(k);
+  else CART.set(k, { q, p });
 
-  localStorage.setItem("tm_cart", JSON.stringify([...CART]));
+  /* guardar solo el carrito del mes actual dentro del global */
+  saveCurrentMonthCart();
+
   totals();
   render();
 }
@@ -1771,19 +1791,46 @@ function apply(){
   render();
   totals();
 }
-
 function totals(){
-  let sub=0, iva=0, ii=0, items=0;
+  let sub = 0, iva = 0, ii = 0, items = 0;
 
-  for(const [k,v] of CART.entries()){
-    const p=v.p, q=v.q;
-    const net=pvcNeto(p);
-    const line=net*q;
-    sub += line;
-    iva += line*pct(p.IVA);
-    ii  += line*pct(p.II);
-    items += q;
+  ALL_CARTS = JSON.parse(localStorage.getItem("tm_carts") || "{}");
+
+  Object.values(ALL_CARTS).forEach(monthCart => {
+    (monthCart || []).forEach(([k, v]) => {
+      const p = v.p;
+      const q = v.q;
+
+      const net = pvcNeto(p);
+      const line = net * q;
+
+      sub += line;
+      iva += line * pct(p.IVA);
+      ii  += line * pct(p.II);
+      items += q;
+    });
+  });
+
+  const tot = sub + iva + ii;
+
+  document.getElementById("it").textContent  = String(items);
+  document.getElementById("sub").textContent = ars(sub);
+  document.getElementById("iva").textContent = ars(iva);
+  document.getElementById("ii").textContent  = ars(ii);
+  document.getElementById("tot").textContent = ars(tot);
+
+  const cart = document.getElementById("cart");
+  if(items > 0){
+    cart.style.display = "flex";
+    document.getElementById("cIt").textContent = `${items} ítems`;
+    document.getElementById("cTot").textContent = `Total: ${ars(tot)}`;
+  }else{
+    cart.style.display = "none";
   }
+
+  const txt = buildWA(sub, iva, ii, tot);
+  document.getElementById("wa").href = "https://wa.me/?text=" + encodeURIComponent(txt);
+}
 
   const tot=sub+iva+ii;
 
@@ -1808,20 +1855,43 @@ function totals(){
 
 function buildWA(sub, iva, ii, tot){
   const lines = [];
-  lines.push("Pedido — Ingresos de Mayo (Todomusica)");
-  lines.push("");
 
-  for(const [k, v] of CART.entries()){
-    const p = v.p;
-    const q = v.q;
-    const net = pvcNeto(p);
+  ALL_CARTS = JSON.parse(localStorage.getItem("tm_carts") || "{}");
 
-    lines.push(`${p.MARCA || ""}`);
-    lines.push(`${p.ARTICULO || ""}`);
-    lines.push(`Cant: ${q}`);
-    lines.push(`${ars(net)}`);
+  MONTHS.forEach((m, i) => {
+    const key = monthKeyByIndex(i);
+    const monthCart = ALL_CARTS[key] || [];
+
+    if(!monthCart.length) return;
+
+    lines.push(`Pedido — Ingresos de ${m.name} (Todomusica)`);
     lines.push("");
-  }
+
+    monthCart.forEach(([k, v]) => {
+      const p = v.p;
+      const q = v.q;
+      const net = pvcNeto(p);
+
+      lines.push(`${p.MARCA || ""}`);
+      lines.push(`${p.ARTICULO || ""}`);
+      lines.push(`Cant: ${q}`);
+      lines.push(`${ars(net)}`);
+      lines.push("");
+    });
+
+    lines.push("--------------------------------");
+    lines.push("");
+  });
+
+  lines.push(`Subtotal: ${ars(sub)}`);
+  lines.push(`IVA: ${ars(iva)}`);
+  lines.push(`Imp. Int: ${ars(ii)}`);
+  lines.push(`TOTAL: ${ars(tot)}`);
+  lines.push("");
+  lines.push("Los precios están sujetos a modificaciones sin previo aviso");
+
+  return lines.join("\n");
+}
 
   lines.push("--------------------------------");
   lines.push("");
@@ -1877,9 +1947,10 @@ document.getElementById("mR").onclick=(e)=>{ e.stopPropagation(); next(); }
 document.getElementById("mL").onclick=(e)=>{ e.stopPropagation(); prev(); }
 
 /* Vaciar */
-document.getElementById("btnEmpty").onclick=()=>{
+document.getElementById("btnEmpty").onclick = () => {
   CART.clear();
-  localStorage.removeItem("tm_cart");
+  ALL_CARTS = {};
+  localStorage.removeItem("tm_carts");
   totals();
   render();
 };
@@ -1950,14 +2021,15 @@ const marcas = [...marcaMap.values()]
 
       VIEW=[...ALL];
 /* =========================
-   CART — REHIDRATAR DESDE STORAGE (PASO 12)
+   CART — REHIDRATAR MES ACTUAL DESDE CART GLOBAL (PASO 13.1)
    ========================= */
-
 CART.clear();
 
-const saved = JSON.parse(localStorage.getItem("tm_cart") || "[]");
+ALL_CARTS = JSON.parse(localStorage.getItem("tm_carts") || "{}");
 
-saved.forEach(([k, v]) => {
+const savedMonthCart = ALL_CARTS[currentMonthKey()] || [];
+
+savedMonthCart.forEach(([k, v]) => {
   const existe = ALL.find(x => x.ARTICULO === k);
   if(existe){
     CART.set(k, { q: v.q, p: existe });
