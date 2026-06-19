@@ -819,6 +819,10 @@ body.theme-light .card{
   font-weight:900;
 }
 
+  .priceConsultar{
+  color:#fbbf24; /* amarillo advertencia */
+  font-weight:900;
+}
 .prod-bottom{
   margin-top:6px;
   display:flex;
@@ -1756,7 +1760,9 @@ function card(p){
         <div class="prod-bottom">
           <div>
             ${off > 0 && net !== null ? `<div class="oldPrice">PVC: ${ars(num(p.PVC))}</div>` : ``}
-            <div class="priceBig">${net === null ? "Consultar" : ars(net)}</div>
+            <div class="priceBig">
+  ${net === null ? '<span class="priceConsultar">Consultar</span>' : ars(net)}
+</div>
             <div class="netLabel">${net === null ? "" : "PVC Neto"}</div>
           </div>
 
