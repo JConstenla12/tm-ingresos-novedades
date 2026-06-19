@@ -1809,6 +1809,16 @@ function render(){
 }
   async function apply(){
   const q = (document.getElementById("q").value || "").toLowerCase().trim();
+    if(!q){
+  document.getElementById("fMarca").value = "";
+  document.getElementById("fRubro").value = "";
+  document.getElementById("fStk").value = "";
+
+  VIEW = [...ALL];
+  render();
+  totals();
+  return;
+}
   let m = document.getElementById("fMarca").value;
   const r = document.getElementById("fRubro").value;
   const s = document.getElementById("fStk").value;
@@ -1824,12 +1834,12 @@ function render(){
       if(i === currentMonthIndex) continue;
 
       const altData = await getMonthData(i);
-      const altResult = applyFilters(altData, q, m, r, s);
+      const altResult = applyFilters(altData, q, "", "", "");
 
       if(altResult.length > 0){
         currentMonthIndex = i;
         await loadCSV();
-        return;
+        return apply();
       }
     }
   }
