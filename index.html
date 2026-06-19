@@ -1811,23 +1811,7 @@ function totals(){
     });
   });
 
-  const tot = sub + iva + ii;
-
-  document.getElementById("it").textContent  = String(items);
-  document.getElementById("sub").textContent = ars(sub);
-  document.getElementById("iva").textContent = ars(iva);
-  document.getElementById("ii").textContent  = ars(ii);
-  document.getElementById("tot").textContent = ars(tot);
-
-  const cart = document.getElementById("cart");
-  if(items > 0){
-    cart.style.display = "flex";
-    document.getElementById("cIt").textContent = `${items} ítems`;
-    document.getElementById("cTot").textContent = `Total: ${ars(tot)}`;
-  }else{
-    cart.style.display = "none";
-  }
-
+ 
   const txt = buildWA(sub, iva, ii, tot);
   document.getElementById("wa").href = "https://wa.me/?text=" + encodeURIComponent(txt);
 }
@@ -1879,20 +1863,7 @@ function buildWA(sub, iva, ii, tot){
       lines.push("");
     });
 
-    lines.push("--------------------------------");
-    lines.push("");
-  });
-
-  lines.push(`Subtotal: ${ars(sub)}`);
-  lines.push(`IVA: ${ars(iva)}`);
-  lines.push(`Imp. Int: ${ars(ii)}`);
-  lines.push(`TOTAL: ${ars(tot)}`);
-  lines.push("");
-  lines.push("Los precios están sujetos a modificaciones sin previo aviso");
-
-  return lines.join("\n");
-}
-
+   
   lines.push("--------------------------------");
   lines.push("");
   lines.push(`Subtotal: ${ars(sub)}`);
