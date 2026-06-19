@@ -1351,103 +1351,104 @@ body.theme-light .dot.on{
     <a href="https://todomusica.com.ar/" target="_blank">www.todomusica.com.ar</a>
   </div>
 </div>
-
-      <!-- FILA 3 - Mes + Título -->
+<!-- FILA MES / TITULO / PVL -->
 <div class="shellBlock rowMonth">
 
-  <!-- =========================
-     FILA MES — SELECT (PASO 4.1)
-     ========================= -->
-<select class="inp monthBtn" id="selMonth">
-  <!-- se carga dinámicamente -->
-</select>
+  <select class="inp monthBtn" id="selMonth"></select>
+
   <div class="titleBox">
     <h1 id="ttl">Ingresos de Mayo</h1>
-    
-<!-- 👁 BOTÓN VISTA CLIENTE -->
-  <button class="iconBtn" id="btnPVL" title="Cambiar vista (PVC / PVL)">
-  👁 <span id="lblPVL">PVC</span>
-</button>
 
+    <button class="iconBtn" id="btnPVL" title="Cambiar vista (PVC / PVL)">
+      👁 <span id="lblPVL">PVC</span>
+    </button>
   </div>
 
 </div>
-      <!-- FILA 3 -->
-      <div class="shellBlock row3">
-        <input class="inp" id="q" placeholder="Buscar..." />
 
-        <select id="fMarca">
-          <option value="">Marca</option>
-        </select>
+<!-- NUEVA FILA — LIMPIAR FILTROS -->
+<div class="shellBlock row4">
+  <button class="btn" id="btnClearFilters">
+    🧹 Limpiar filtros
+  </button>
+</div>
 
-        <select id="fRubro">
-          <option value="">Rubro</option>
-        </select>
+<!-- FILA BUSCADOR + FILTROS -->
+<div class="shellBlock row3">
 
-        <select id="fStk">
-          <option value="">Stock</option>
-          <option value=">10">&gt;10</option>
-          <option value="<10">&lt;10</option>
-          <option value="INGRESANDO">Ingresando</option>
-        </select>
-      </div>
+  <input class="inp" id="q" placeholder="Buscar..." />
 
-      <!-- FILA 4 -->
-      <div class="shellBlock row4">
-        <div class="legal">Los precios están sujetos a modificaciones sin previo aviso</div>
-      </div>
+  <select id="fMarca">
+    <option value="">Marca</option>
+  </select>
 
-<!-- FILA 6,7,8 - GRID DE TOTALES MODULAR -->
+  <select id="fRubro">
+    <option value="">Rubro</option>
+  </select>
+
+  <select id="fStk">
+    <option value="">Stock</option>
+    <option value=">10">&gt;10</option>
+    <option value="<10">&lt;10</option>
+    <option value="INGRESANDO">Ingresando</option>
+  </select>
+
+</div>
+
+<!-- TOTALES -->
 <div class="totBlock">
 
-  <!-- Ítems -->
   <div class="totItem">
     <span>Ítems</span>
     <b id="it">0</b>
   </div>
 
-  <!-- Subtotal -->
   <div class="totItem">
     <span>Subtotal.</span>
     <b id="sub">$0</b>
   </div>
 
-  <!-- IVA -->
   <div class="totItem">
     <span>IVA</span>
     <b id="iva">$0</b>
   </div>
 
-  <!-- II -->
   <div class="totItem">
     <span>Imp. Int.</span>
     <b id="ii">$0</b>
   </div>
 
-  <!-- TOTAL -->
   <div class="totItem totItemTotal">
     <span>Total + imp.</span>
     <b id="tot">$0</b>
   </div>
 
-  <!-- WhatsApp -->
   <div class="totItem totItemWA">
     <a class="waBtn" id="wa" href="#" target="_blank">
-  <div class="waMain">
-  <svg viewBox="0 0 32 32" fill="none" stroke="#fff" stroke-width="2.4" class="waIconReal">
-  <path d="M16 3C9.4 3 4 8.4 4 15c0 2.5.8 4.9 2.2 6.9L4.5 28l6.3-1.6C12.7 27.5 14.3 28 16 28c6.6 0 12-5.4 12-12S22.6 3 16 3z"/>
-  <path d="M12 11c.3-.6.6-.6 1-.6h.8c.2 0 .5.1.6.4l1.2 2.9c.1.3.1.5-.1.7l-.6.7c-.2.2-.2.4-.1.6.4.8 1.2 1.8 2 2.5.8.7 1.6 1.1 2.2 1.3.3.1.4 0 .6-.1l.8-1c.2-.2.4-.3.7-.2l2.8 1.3c.2.1.4.4.3.6-.2.9-.9 2-2.2 2.3-.7.2-1.6.2-2.6-.2-1.6-.6-3.7-2.1-5.3-3.8-1.5-1.7-2.5-3.5-2.9-5-.3-1.1-.1-2 .2-2.6z"/>
-</svg>
 
-  <span>WhatsApp</span>
-</div>
+      <div class="waMain">
+        <svg viewBox="0 0 32 32" fill="none" stroke="#fff" stroke-width="2.4" class="waIconReal">
+          <path d="M16 3C9.4 3 4 8.4 4 15c0 2.5.8 4.9 2.2 6.9L4.5 28l6.3-1.6C12.7 27.5 14.3 28 16 28c6.6 0 12-5.4 12-12S22.6 3 16 3z"/>
+          <path d="M12 11c.3-.6.6-.6 1-.6h.8c.2 0 .5.1.6.4l1.2 2.9c.1.3.1.5-.1.7l-.6.7c-.2.2-.2.4-.1.6.4.8 1.2 1.8 2 2.5.8.7 1.6 1.1 2.2 1.3.3.1.4 0 .6-.1l.8-1c.2-.2.4-.3.7-.2l2.8 1.3c.2.1.4.4.3.6-.2.9-.9 2-2.2 2.3-.7.2-1.6.2-2.6-.2-1.6-.6-3.7-2.1-5.3-3.8-1.5-1.7-2.5-3.5-2.9-5-.3-1.1-.1-2 .2-2.6z"/>
+        </svg>
 
-<div class="waSub">
-  <strong>Enviar pedido</strong>
-</div>
+        <span>WhatsApp</span>
+      </div>
+
+      <div class="waSub">
+        <strong>Enviar pedido</strong>
+      </div>
+
     </a>
   </div>
 
+</div>
+
+<!-- NUEVA FILA — LEYENDA ABAJO -->
+<div class="shellBlock row4">
+  <div class="legal">
+    Los precios están sujetos a modificaciones sin previo aviso
+  </div>
 </div>
       <!-- PRODUCTOS -->
       <div class="shellBlock products">
@@ -2208,6 +2209,14 @@ document.getElementById("q").addEventListener("change", () => {
   document.getElementById(id).addEventListener("input", apply);
   document.getElementById(id).addEventListener("change", apply);
 });
+
+  document.getElementById("btnClearFilters").onclick = () => {
+  document.getElementById("q").value = "";
+  document.getElementById("fMarca").value = "";
+  document.getElementById("fRubro").value = "";
+  document.getElementById("fStk").value = "";
+  apply();
+};
 
 /* THEME */
 const btnTheme = document.getElementById("btnTheme");
