@@ -1504,6 +1504,31 @@ body.theme-light select.active{
 
   display:none;
 }
+  /* =========================
+   BOTONES SUPERIORES (NUEVOS + LIMPIAR)
+   ========================= */
+.rowBtnsTop{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+/* botón nuevos ingresos */
+#btnNewIngresos{
+  display:none;
+
+  background:linear-gradient(135deg,#f59e0b,#fbbf24);
+  color:#111;
+
+  border:1px solid rgba(0,0,0,.2);
+
+  font-weight:900;
+
+  box-shadow:
+    0 0 0 3px rgba(245,158,11,.25),
+    0 10px 25px rgba(245,158,11,.35);
+}
+
 </style>
 </head>
 
@@ -1572,14 +1597,18 @@ body.theme-light select.active{
 </div>
 
 <!-- NUEVA FILA — LIMPIAR FILTROS -->
-<div class="shellBlock row4">
+<div class="shellBlock row4 rowBtnsTop">
+
+  <button class="btn" id="btnNewIngresos">
+    🔥 Nuevos ingresos
+  </button>
+
   <button class="btn" id="btnClearFilters">
-    <div id="newIngresoTxt" class="newIngresoTxt">
-  Nuevos ingresos 🔥
-</div>
     🧹 Limpiar filtros
   </button>
+
 </div>
+
 
 <!-- NUEVA FILA — BUSCAR SOLO -->
 <div class="shellBlock row3 row3Search">
@@ -2018,11 +2047,11 @@ function card(p){
     (p.NUEVO_INGRESO || "").trim().toUpperCase() === "SI"
   );
 
-  const el = document.getElementById("newIngresoTxt");
+  const el = document.getElementById("btnNewIngresos");
 
   if(!el) return;
 
-  el.style.display = hasNew ? "block" : "none";
+  el.style.display = hasNew ? "inline-flex" : "none";
 }
   function buildMarcaOptions(data){
   const marcaMap = new Map();
