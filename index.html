@@ -1433,7 +1433,40 @@ select option:checked{
 .row3Search{
   grid-template-columns:1fr;
 }
+/* =========================
+   FILTROS ACTIVOS — PRO (DARK)
+   ========================= */
+.inp.active,
+select.active{
 
+  border-color:#f59e0b;
+
+  box-shadow:
+    0 0 0 2px rgba(245,158,11,.25),
+    0 8px 20px rgba(245,158,11,.25);
+
+  background:rgba(245,158,11,.12);
+
+  transform:translateY(-1px);
+}
+
+
+/* =========================
+   FILTROS ACTIVOS — PRO (LIGHT)
+   ========================= */
+body.theme-light .inp.active,
+body.theme-light select.active{
+
+  border-color:#f59e0b;
+
+  box-shadow:
+    0 6px 16px rgba(245,158,11,.25),
+    0 0 0 3px rgba(245,158,11,.18);
+
+  background:rgba(245,158,11,.12);
+
+  transform:translateY(-1px);
+}
 
 </style>
 </head>
