@@ -1473,6 +1473,37 @@ body.theme-light select.active{
 
   transform:translateY(-1px);
 }
+  /* =========================
+   BADGE NUEVO INGRESO
+   ========================= */
+.badgeNew{
+  margin-left:8px;
+
+  font-size:11px;
+  font-weight:900;
+
+  padding:4px 8px;
+  border-radius:999px;
+
+  background:linear-gradient(135deg,#f59e0b,#fbbf24);
+  color:#111;
+
+  box-shadow:
+    0 4px 10px rgba(245,158,11,.35);
+}
+  /* =========================
+   TEXTO NUEVOS INGRESOS
+   ========================= */
+.newIngresoTxt{
+  margin-top:6px;
+
+  font-size:12px;
+  font-weight:900;
+
+  color:#f59e0b;
+
+  display:none;
+}
 </style>
 </head>
 
@@ -1543,6 +1574,9 @@ body.theme-light select.active{
 <!-- NUEVA FILA — LIMPIAR FILTROS -->
 <div class="shellBlock row4">
   <button class="btn" id="btnClearFilters">
+    <div id="newIngresoTxt" class="newIngresoTxt">
+  Nuevos ingresos 🔥
+</div>
     🧹 Limpiar filtros
   </button>
 </div>
@@ -1855,6 +1889,7 @@ function card(p){
   const marcaOp = marcaOpLabel(p);
   const art     = p.ARTICULO || "";
   const desc    = p.DESCRIPCION || "";
+  const esNuevo = (p.NUEVO_INGRESO || "").trim().toUpperCase() === "SI";
   const rub     = p.RUBRO || "";
 
   const net = pvcNeto(p);
@@ -1883,7 +1918,11 @@ function card(p){
       </div>
 
       <div class="cardInfo">
-        <div class="pTitle">${marcaOp} · ${art}</div>
+        <div class="pTitle">
+  ${marcaOp} · ${art}
+  ${esNuevo ? '<span class="badgeNew">Nuevo 🔥</span>' : ''}
+</div>
+
         <p class="pDesc">${desc}</p>
 
         <div class="prod-block">
@@ -1973,6 +2012,17 @@ function card(p){
 
     return blob.includes(q);
   });
+}
+  function updateNewIngresoBanner(){
+  const hasNew = ALL.some(p =>
+    (p.NUEVO_INGRESO || "").trim().toUpperCase() === "SI"
+  );
+
+  const el = document.getElementById("newIngresoTxt");
+
+  if(!el) return;
+
+  el.style.display = hasNew ? "block" : "none";
 }
   function buildMarcaOptions(data){
   const marcaMap = new Map();
@@ -2178,14 +2228,15 @@ if(net !== null){
 
   const txt = buildWA(sub, iva, ii, tot);
 
-  const wa = document.getElementById("wa");
+ const wa = document.getElementById("wa");
   if(wa){
     wa.href = items > 0
       ? "https://wa.me/?text=" + encodeURIComponent(txt)
       : "#";
   }
-}
 
+  updateNewIngresoBanner();
+}
 function buildWA(sub, iva, ii, tot){
   const lines = [];
   
