@@ -1974,6 +1974,89 @@ function card(p){
     return blob.includes(q);
   });
 }
+  function buildMarcaOptions(data){
+  const marcaMap = new Map();
+
+  data.forEach(x => {
+    const label = marcaOpLabel(x);
+    if(!label) return;
+
+    if(!marcaMap.has(label)){
+      marcaMap.set(label, {
+        label,
+        marca: (x.MARCA || "").trim(),
+        op: opNum(x)
+      });
+    }
+  });
+
+  return [...marcaMap.values()]
+    .sort((a,b) => {
+      const cmpMarca = a.marca.localeCompare(b.marca, "es", { sensitivity:"base" });
+      if(cmpMarca !== 0) return cmpMarca;
+      return a.op - b.op;
+    })
+    .map(x => x.label);
+}
+
+function buildRubroOptions(data){
+  return [...new Set(
+    data.map(x => (x.RUBRO || "").trim()).filter(Boolean)
+  )].sort((a,b) => a.localeCompare(b, "es", { sensitivity:"base" }));
+}
+
+function refillSelect(selectEl, placeholder, values, keepValue){
+  selectEl.innerHTML = `<option value="">${placeholder}</option>`;
+
+  values.forEach(v => {
+    const o = document.createElement("option");
+    o.value = v;
+    o.textContent = v;
+    selectEl.appendChild(o);
+  });
+
+  selectEl.value = values.includes(keepValue) ? keepValue : "";
+}
+
+function rebuildDependentFilters(){
+  const q = (document.getElementById("q").value || "").toLowerCase().trim();
+  let m = document.getElementById("fMarca").value;
+  let r = document.getElementById("fRubro").value;
+  const s = document.getElementById("fStk").value;
+
+  const fMarca = document.getElementById("fMarca");
+  const fRubro = document.getElementById("fRubro");
+
+  /* 1) validar marca contra el contexto actual (ignorando la propia marca) */
+  let marcas = buildMarcaOptions(
+    applyFilters(ALL, q, "", r, s)
+  );
+
+  if(!marcas.includes(m)){
+    m = "";
+  }
+
+  /* 2) validar rubro contra el contexto actual (ignorando el propio rubro) */
+  let rubros = buildRubroOptions(
+    applyFilters(ALL, q, m, "", s)
+  );
+
+  if(!rubros.includes(r)){
+    r = "";
+  }
+
+  /* 3) reconstrucción final ya con valores válidos */
+  marcas = buildMarcaOptions(
+    applyFilters(ALL, q, "", r, s)
+  );
+
+  rubros = buildRubroOptions(
+    applyFilters(ALL, q, m, "", s)
+  );
+
+  refillSelect(fMarca, "Marca", marcas, m);
+  refillSelect(fRubro, "Rubro", rubros, r);
+}
 function render(){
   const g=document.getElementById("grid");
   g.innerHTML = VIEW.map(card).join("");
@@ -1995,9 +2078,12 @@ function render(){
     if(z) z.onclick=()=>openModal(p);
   });
 }
-  async function apply(){
-const q = (document.getElementById("q").value || "").toLowerCase().trim();  let m = document.getElementById("fMarca").value;
-  const r = document.getElementById("fRubro").value;
+ async function apply(){
+  rebuildDependentFilters();
+
+  const q = (document.getElementById("q").value || "").toLowerCase().trim();
+  let m = document.getElementById("fMarca").value;
+  let r = document.getElementById("fRubro").value;
   const s = document.getElementById("fStk").value;
 
   let result = applyFilters(ALL, q, m, r, s);
@@ -2022,7 +2108,7 @@ const q = (document.getElementById("q").value || "").toLowerCase().trim();  let 
   }
 
   /* -------------------------------------------------
-     SI EL TEXTO ENCUENTRA UN SOLO MARCA+OP,
+     SI EL TEXTO ENCUENTRA UNA SOLA MARCA+OP,
      REFLEJARLO TAMBIÉN EN EL SELECT DE MARCA
      ------------------------------------------------- */
   if(q && !m && result.length > 0){
@@ -2030,7 +2116,12 @@ const q = (document.getElementById("q").value || "").toLowerCase().trim();  let 
 
     if(labels.length === 1){
       document.getElementById("fMarca").value = labels[0];
-      m = labels[0];
+
+      rebuildDependentFilters();
+
+      m = document.getElementById("fMarca").value;
+      r = document.getElementById("fRubro").value;
+
       result = applyFilters(ALL, q, m, r, s);
     }
   }
@@ -2038,9 +2129,9 @@ const q = (document.getElementById("q").value || "").toLowerCase().trim();  let 
   VIEW = result;
   render();
   totals();
-      checkFiltersActive();
-}
 
+  checkFiltersActive();
+}
 /* =========================
    TOTALES GLOBALES + WHATSAPP POR MES (PASO 13 FIX)
    ========================= */
