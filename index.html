@@ -1528,7 +1528,33 @@ body.theme-light select.active{
     0 0 0 3px rgba(245,158,11,.25),
     0 10px 25px rgba(245,158,11,.35);
 }
+/* =========================
+   BOTON NUEVOS INGRESOS — ACTIVO
+   ========================= */
+#btnNewIngresos.active{
+  background:linear-gradient(135deg,#f97316,#facc15);
+  color:#111;
 
+  border-color:rgba(0,0,0,.22);
+
+  box-shadow:
+    0 0 0 3px rgba(249,115,22,.28),
+    0 12px 28px rgba(249,115,22,.38);
+
+  transform:translateY(-1px);
+}
+
+body.theme-light #btnNewIngresos.active{
+  background:linear-gradient(135deg,#f97316,#fcd34d);
+  color:#111;
+
+  border-color:rgba(0,0,0,.16);
+
+  box-shadow:
+    0 6px 16px rgba(249,115,22,.26),
+    0 0 0 3px rgba(249,115,22,.18);
+}
+  
 </style>
 </head>
 
@@ -1779,6 +1805,7 @@ function saveCurrentMonthCart(){
    MODO PVL (PASO 10)
    ========================= */
 let modoPVL = false;
+  let filtroNuevosIngresos = false;
 
 function num(v){
   if(v==null) return NaN;
@@ -1987,7 +2014,10 @@ function card(p){
     </div>
 
     <div class="cardInfo">
-      <div class="pTitle">${marcaOp} · ${art}</div>
+      <div class="pTitle">
+  ${marcaOp} · ${art}
+  ${esNuevo ? '<span class="badgeNew">Nuevo 🔥</span>' : ''}
+</div>
       <p class="pDesc">${desc}</p>
 
       <div class="prod-block">
@@ -2025,6 +2055,10 @@ function card(p){
 }
   function applyFilters(data, q, m, r, s){
   return data.filter(p => {
+
+    const esNuevoIngreso = (p.NUEVO_INGRESO || "").trim().toUpperCase() === "SI";
+
+    if(filtroNuevosIngresos && !esNuevoIngreso) return false;
     if(m && marcaOpLabel(p) !== m) return false;
     if(r && (p.RUBRO || "") !== r) return false;
 
@@ -2158,8 +2192,14 @@ function render(){
   });
 }
  async function apply(){
-  rebuildDependentFilters();
 
+  if(filtroNuevosIngresos && !ALL.some(p =>
+    (p.NUEVO_INGRESO || "").trim().toUpperCase() === "SI"
+  )){
+    filtroNuevosIngresos = false;
+  }
+
+  rebuildDependentFilters();
   const q = (document.getElementById("q").value || "").toLowerCase().trim();
   let m = document.getElementById("fMarca").value;
   let r = document.getElementById("fRubro").value;
@@ -2556,35 +2596,70 @@ document.getElementById("q").addEventListener("change", () => {
   document.getElementById(id).addEventListener("change", apply);
 });
 
- function checkFiltersActive(){
+function checkFiltersActive(){
   const q = document.getElementById("q");
   const m = document.getElementById("fMarca");
   const r = document.getElementById("fRubro");
   const s = document.getElementById("fStk");
 
-  const btn = document.getElementById("btnClearFilters");
+  const btnClear = document.getElementById("btnClearFilters");
+  const btnNew   = document.getElementById("btnNewIngresos");
 
   /* limpiar estados */
   [q, m, r, s].forEach(el => el.classList.remove("active"));
 
-  /* activar según valor */
+  /* activar filtros según valor */
   if(q.value.trim()) q.classList.add("active");
   if(m.value) m.classList.add("active");
   if(r.value) r.classList.add("active");
   if(s.value) s.classList.add("active");
 
-  /* botón limpiar (lo dejamos como ya estaba) */
-  if(q.value.trim() || m.value || r.value || s.value){
-    btn.classList.add("active");
-  }else{
-    btn.classList.remove("active");
+  /* activar botón Nuevos ingresos */
+  if(btnNew){
+    btnNew.classList.toggle("active", filtroNuevosIngresos);
   }
-}
-  document.getElementById("btnClearFilters").onclick = () => {
+
+  /* activar botón limpiar si hay cualquier filtro */
+  if(q.value.trim() || m.value || r.value || s.value || filtroNuevosIngresos){
+    btnClear.classList.add("active");
+  }else{
+    btnClear.classList.remove("active");
+  }
+} 
+   document.getElementById("btnClearFilters").onclick = () => {
+  filtroNuevosIngresos = false;
+
   document.getElementById("q").value = "";
   document.getElementById("fMarca").value = "";
   document.getElementById("fRubro").value = "";
   document.getElementById("fStk").value = "";
+
+  apply();
+};
+   document.getElementById("btnNewIngresos").onclick = () => {
+  filtroNuevosIngresos = !filtroNuevosIngresos;
+
+  document.getElementById("q").value = "";
+  document.getElementById("fRubro").value = "";
+  document.getElementById("fStk").value = "";
+
+  const marcasNuevas = [...new Set(
+    ALL
+      .filter(p => (p.NUEVO_INGRESO || "").trim().toUpperCase() === "SI")
+      .map(p => marcaOpLabel(p))
+      .filter(Boolean)
+  )];
+
+  /*
+    Si hay una sola marca nueva, la seleccionamos en Marca
+    y se ilumina el filtro de Marca.
+  */
+  if(filtroNuevosIngresos && marcasNuevas.length === 1){
+    document.getElementById("fMarca").value = marcasNuevas[0];
+  }else{
+    document.getElementById("fMarca").value = "";
+  }
+
   apply();
 };
 
