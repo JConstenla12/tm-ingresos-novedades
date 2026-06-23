@@ -430,6 +430,13 @@ body.theme-light #btnPVL:active{
   gap:8px;
   align-items:center;
 }
+  /* =========================
+   FILTROS (3 COLUMNAS)
+   ========================= */
+.row3Filters{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
 
 .inp, select{
   width:100%;
@@ -1496,11 +1503,13 @@ select option:checked{
   </button>
 </div>
 
-<!-- FILA BUSCADOR + FILTROS -->
+<!-- NUEVA FILA — BUSCAR SOLO -->
 <div class="shellBlock row3">
-
   <input class="inp" id="q" placeholder="Buscar..." />
+</div>
 
+<!-- NUEVA FILA — FILTROS -->
+<div class="shellBlock row3 row3Filters">
   <select id="fMarca">
     <option value="">Marca</option>
   </select>
@@ -1515,9 +1524,7 @@ select option:checked{
     <option value="<10">&lt;10</option>
     <option value="INGRESANDO">Ingresando</option>
   </select>
-
 </div>
-
 <!-- TOTALES -->
 <div class="totBlock">
 
