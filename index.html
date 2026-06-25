@@ -196,7 +196,7 @@ a, button, .imgBox, .card{
 
 .logo{
   font-weight:900;
-  font-size:clamp(22px,7vw,32px);
+  font-size:clamp(28px,9vw,42px);
   letter-spacing:.2px;
   line-height:1;
   white-space:nowrap;
@@ -213,15 +213,27 @@ a, button, .imgBox, .card{
   width:30px;
   height:30px;
   border-radius:999px;
+
   border:1px solid var(--stroke);
-  background:rgba(255,255,255,.06);
+
+  background:rgba(255,255,255,.05);
+
   display:inline-flex;
   align-items:center;
   justify-content:center;
+
   text-decoration:none;
-  color:var(--text);
-  transition:transform .12s ease, background .12s ease, box-shadow .12s ease, border-color .12s ease;
+
+  color:var(--muted); /* 👈 gris base */
+
+  transition:
+    transform .12s ease,
+    background .12s ease,
+    box-shadow .12s ease,
+    border-color .12s ease,
+    filter .12s ease;
 }
+
 /* =========================
    BOTÓN PVL (PASO 9.2 — VISUAL PRO)
    ========================= */
@@ -334,9 +346,8 @@ body.theme-light #btnPVL:active{
 .iconBtn svg{
   width:15px;
   height:15px;
-  opacity:.95;
+  opacity:.75;
 }
-
 .iconBtn:active{
   transform:scale(.92);
   box-shadow:0 0 0 3px rgba(245,158,11,.3), 0 6px 18px rgba(245,158,11,.25);
@@ -401,8 +412,9 @@ body.theme-light #btnPVL:active{
 }
 
 .monthBtn{
-  min-width:64px;
-  justify-content:center;
+  width:100%;
+  min-height:42px;
+  font-size:13.5px;
   font-weight:900;
 }
   /* =========================
@@ -411,14 +423,20 @@ body.theme-light #btnPVL:active{
 .rowMonth{
   margin-top:12px;
   display:grid;
-
-  /* 👇 AHORA 3 COLUMNAS */
-  grid-template-columns:auto minmax(0,1fr) auto;
-
+  grid-template-columns:auto minmax(0,1fr);
   gap:10px;
   align-items:center;
 }
-
+/* =========================
+   FILA PVL / CARRITO
+   ========================= */
+.rowPVLCart{
+  margin-top:10px;
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:10px;
+}
 
 /* =========================
    FILA 3
@@ -441,15 +459,26 @@ body.theme-light #btnPVL:active{
 .inp, select{
   width:100%;
   min-width:0;
-  padding:10px 10px;
+  padding:10px 12px;
+
+  height:42px;
+
   border-radius:14px;
-  border:1px solid var(--stroke);
-  background:var(--card);
+
+  border:1px solid rgba(255,255,255,.14); /* más visible */
+  background:rgba(255,255,255,.06);       /* más sólido */
+
   color:var(--text);
   outline:none;
+
   font-size:12.5px;
   line-height:1;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 4px 10px rgba(0,0,0,.18);  /* leve profundidad */
 }
+
 
 .inp::placeholder{
   color:var(--muted);
@@ -489,14 +518,18 @@ select{
    ========================= */
 .totBlock{
   display:grid;
-  grid-template-columns:1fr 1fr;
+ grid-template-columns:1fr 1fr;
+align-items:stretch;
+
   gap:10px;
   margin-top:12px;
 }
 
 .totItem{
-  border:1px solid rgba(255,255,255,.08);
-  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.04);
+
+  background:rgba(255,255,255,.015); /* más suave que antes */
+
   border-radius:14px;
 
   padding:10px 12px;
@@ -506,14 +539,18 @@ select{
   align-items:center;
 
   font-size:12px;
-  color:var(--muted);
+
+  color:rgba(255,255,255,.65); /* 👇 más apagado */
+
+  box-shadow:none;
 }
+
 
 .totItem b{
   color:var(--text);
   font-weight:900;
+  font-size:13px;
 }
-
 .totItemTotal{
   grid-column:1 / 2;
 }
@@ -607,11 +644,13 @@ select{
   border-radius:14px;
   cursor:pointer;
   font-size:12px;
+  height:42px;
   transition:transform .12s ease, filter .12s ease, background .12s ease, box-shadow .12s ease, border-color .12s ease;
   display:inline-flex;
   align-items:center;
   justify-content:center;
   text-decoration:none;
+  
 }
 
 .btn:active{
@@ -918,6 +957,8 @@ body.theme-light .card{
   padding:10px 10px 12px;
   background:linear-gradient(180deg,transparent,rgba(0,0,0,.65));
   z-index:40;
+  display:flex;
+justify-content:center;
 }
 
 .cartInner{
@@ -1040,6 +1081,8 @@ body.theme-light .nav{
   justify-content:center;
   background:#030611;
   overflow:hidden;
+  min-height:0;
+
 }
 
 .modalBody img{
@@ -1198,9 +1241,12 @@ body.theme-light .dot.on{
     gap:6px;
   }
 
-  .titleBox h1{
-    font-size:16px;
-  }
+ .titleBox h1{
+  margin:0;
+  font-size:clamp(20px,6.5vw,28px);
+  font-weight:900;
+}
+
 
   .monthBtn{
     min-width:58px;
@@ -1240,12 +1286,10 @@ body.theme-light .dot.on{
    DESKTOP BÁSICO (sin premium todavía)
    ========================= */
 @media (min-width: 768px){
-  .appShell{
-    width:min(calc(100% - 36px), var(--shell-max-desktop));
-    padding-top:18px;
-    padding-bottom:36px;
-  }
-
+.appShell{
+  width:min(calc(100% - (var(--shell-side) * 2)), var(--shell-max-desktop));
+  margin:0 auto;
+}
   .row1{
     grid-template-columns:auto minmax(0,1fr);
     gap:12px 18px;
@@ -1282,7 +1326,7 @@ body.theme-light .dot.on{
 
   .row3{
     margin-top:14px;
-    grid-template-columns:minmax(280px,1.35fr) repeat(3,minmax(150px,1fr));
+    grid-template-columns:repeat(4, minmax(0,1fr));
     gap:10px;
   }
 
@@ -1321,6 +1365,8 @@ body.theme-light .dot.on{
 
   .products{
     margin-top:20px;
+    max-width:100%;
+
   }
 
   .cartInner{
@@ -1328,20 +1374,25 @@ body.theme-light .dot.on{
   }
 }
 
-/* Redes activas */
+/* Facebook */
 .iconBtn[href*="facebook"]:active{
   background:#1877f2;
   color:#fff;
+  box-shadow:0 0 0 3px rgba(24,119,242,.25);
 }
 
+/* Instagram */
 .iconBtn[href*="instagram"]:active{
   background:linear-gradient(45deg,#f58529,#dd2a7b,#8134af,#515bd4);
   color:#fff;
+  box-shadow:0 0 0 3px rgba(221,42,123,.25);
 }
 
+/* YouTube */
 .iconBtn[href*="youtube"]:active{
   background:#ff0000;
   color:#fff;
+  box-shadow:0 0 0 3px rgba(255,0,0,.25);
 }
 /* =========================
    BOTON LIMPIAR FILTROS — PRO
@@ -1430,6 +1481,13 @@ select option:checked{
 /* =========================
    BUSCAR FULL WIDTH
    ========================= */
+  .rowSearchCart{
+  margin-top:10px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+  align-items:center;
+}
 .row3Search{
   grid-template-columns:1fr;
 }
@@ -1517,16 +1575,16 @@ body.theme-light select.active{
 #btnNewIngresos{
   display:none;
 
-  background:linear-gradient(135deg,#f59e0b,#fbbf24);
-  color:#111;
+  background:rgba(255,255,255,.06);
+  color:var(--text);
 
-  border:1px solid rgba(0,0,0,.2);
+  border:1px solid var(--stroke);
 
   font-weight:900;
 
   box-shadow:
-    0 0 0 3px rgba(245,158,11,.25),
-    0 10px 25px rgba(245,158,11,.35);
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 4px 10px rgba(0,0,0,.18);
 }
 /* =========================
    BOTON NUEVOS INGRESOS — ACTIVO
@@ -1554,6 +1612,859 @@ body.theme-light #btnNewIngresos.active{
     0 6px 16px rgba(249,115,22,.26),
     0 0 0 3px rgba(249,115,22,.18);
 }
+
+ /* =========================
+   BOTON CARRITO — PRO
+   ========================= */
+#btnCart{
+  min-width:76px;
+  padding:11px 16px;
+
+  font-size:13px;
+  font-weight:900;
+
+  border-radius:999px;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+
+  white-space:nowrap;
+
+  box-shadow:
+    0 6px 16px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+#cartCount{
+  display:inline-block;
+  min-width:24px;
+  text-align:center;
+}
+
+#btnCart.active{
+  background:linear-gradient(135deg,#f59e0b,#fbbf24);
+  color:#111;
+
+  box-shadow:
+    0 0 0 3px rgba(245,158,11,.25),
+    0 10px 25px rgba(245,158,11,.35);
+
+  transform:translateY(-1px);
+}
+  /* =========================
+   MODAL CARRITO — PRO
+   ========================= */
+
+#cartModal .modalBox{
+  width:min(620px,96vw);
+  height:calc(100dvh - 20px);
+
+  display:flex;
+  flex-direction:column;
+
+  overflow:hidden;
+}
+#cartModal .modalTop{
+  flex:0 0 auto;
+}
+
+#cartModal .cartModalBody{
+  flex:1 1 auto;
+
+  display:block;
+
+  min-height:0;
+
+  padding:12px;
+
+  overflow-y:auto;
+  overflow-x:hidden;
+
+  -webkit-overflow-scrolling:touch;
+
+  justify-content:flex-start !important;
+  align-items:stretch !important;
+}
+
+#cartContent{
+  width:100%;
+  display:block;
+}
+
+  
+#cartContent{
+  width:100%;
+}
+
+.cartHeaderRow{
+  display:grid;
+  grid-template-columns:minmax(0,1.4fr) 94px 96px 106px 38px;
+  gap:8px;
+  align-items:center;
+
+  padding:10px 12px;
+  margin-bottom:10px;
+
+  border-radius:12px;
+  background:rgba(255,255,255,.06);
+  color:var(--muted);
+
+  font-size:12px;
+  font-weight:900;
+}
+
+.cartItemRow{
+  display:grid;
+  grid-template-columns:minmax(0,1.4fr) 94px 96px 106px 38px;
+  gap:8px;
+  align-items:center;
+
+  padding:12px;
+  margin-bottom:10px;
+
+  border-radius:14px;
+  border:1px solid var(--stroke);
+  background:rgba(255,255,255,.04);
+}
+
+.cartProdTitle{
+  font-weight:900;
+  font-size:14px;
+  line-height:1.2;
+}
+
+.cartProdArt{
+  margin-top:3px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.cartProdDesc{
+  margin-top:4px;
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.25;
+}
+
+.cartQtyBox{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+.cartQtyBox .qbtn{
+  width:34px;
+  height:34px;
+  border-radius:12px;
+}
+
+.cartPriceBox{
+  text-align:right;
+  font-weight:900;
+  font-size:13px;
+}
+
+.cartSubBox{
+  text-align:right;
+  font-weight:900;
+  font-size:13px;
+}
+
+.cartTrash{
+  width:34px;
+  height:34px;
+  border-radius:12px;
+
+  border:1px solid rgba(239,68,68,.35);
+  background:rgba(239,68,68,.12);
+  color:#ef4444;
+
+  font-size:16px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.cartTrash:active{
+  transform:scale(.94);
+  background:rgba(239,68,68,.22);
+  box-shadow:0 0 0 3px rgba(239,68,68,.18);
+}
+
+.cartTotalsBox{
+  margin-top:14px;
+  padding:12px;
+
+  border:1px solid var(--stroke);
+  border-radius:14px;
+  background:rgba(255,255,255,.04);
+}
+
+.cartTotalLine{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:8px;
+  font-size:13px;
+}
+
+.cartTotalLine span{
+  color:var(--muted);
+}
+
+.cartTotalFinal{
+  display:flex;
+  justify-content:space-between;
+
+  margin-top:10px;
+  padding-top:10px;
+
+  border-top:1px solid var(--stroke);
+  font-size:17px;
+  font-weight:900;
+}
+
+.cartTotalFinal b{
+  color:var(--accent);
+}
+
+.cartActions{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:14px;
+}
+
+.cartWAButton{
+  width:100%;
+
+  background:#22c55e !important;
+  color:#fff !important;
+
+  border:1px solid rgba(255,255,255,.18) !important;
+  border-radius:16px;
+
+  font-size:16px;
+  font-weight:900;
+
+  box-shadow:
+    0 0 0 3px rgba(34,197,94,.20),
+    0 10px 24px rgba(34,197,94,.38);
+}
+
+.cartWAButton:active{
+  transform:scale(.97);
+  box-shadow:
+    0 0 0 3px rgba(34,197,94,.22),
+    0 6px 18px rgba(34,197,94,.30);
+}
+/* =========================
+   BOTONES MODAL CARRITO — ACCIONES
+   ========================= */
+
+#cartContinue,
+#cartEmpty{
+  width:100%;
+  min-height:46px;
+
+  font-size:14px;
+  font-weight:900;
+
+  border-radius:14px;
+}
+
+#cartContinue{
+  color:var(--text);
+  background:rgba(255,255,255,.06);
+}
+
+#cartEmpty{
+  border-color:#ef4444 !important;
+  color:#ef4444 !important;
+  background:rgba(239,68,68,.06);
+}
+  
+/* Light mode */
+body.theme-light .cartHeaderRow,
+body.theme-light .cartItemRow,
+body.theme-light .cartTotalsBox{
+  background:#ffffff;
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow:0 4px 12px rgba(0,0,0,.06);
+}
+
+/* Ajuste teléfonos chicos */
+@media (max-width: 430px){
+  /* =========================
+     CARRITO — MOBILE AJUSTADO
+     ========================= */
+
+  .cartHeaderRow{
+    grid-template-columns:minmax(92px,1fr) 68px 78px 82px 28px;
+    gap:4px;
+    padding:9px 8px;
+    font-size:10.5px;
+  }
+
+  .cartItemRow{
+    grid-template-columns:minmax(92px,1fr) 68px 78px 82px 28px;
+    gap:4px;
+    padding:10px 8px;
+    align-items:center;
+  }
+
+  .cartProdTitle{
+    font-size:12.5px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .cartProdArt{
+    font-size:10.5px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .cartProdDesc{
+    display:block;
+    max-width:92px;
+    font-size:10.5px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .cartQtyBox{
+    gap:4px;
+  }
+
+  .cartQtyBox .qbtn{
+    width:28px;
+    height:28px;
+    border-radius:10px;
+    font-size:17px;
+  }
+
+  .cartQtyBox .qval{
+    width:18px;
+    font-size:13px;
+  }
+
+  .cartPriceBox,
+  .cartSubBox{
+    font-size:11.5px;
+    white-space:nowrap;
+  }
+
+  .cartTrash{
+    width:28px;
+    height:28px;
+    font-size:13px;
+  }
+}
+/* =========================================================
+   FIX FINAL HEADER / LAYOUT SUPERIOR — TM INGRESOS
+   ========================================================= */
+
+/* FILA 1: logo grande + theme a la derecha */
+.row1{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto !important;
+  gap:10px !important;
+  align-items:center !important;
+}
+
+.brandLeft{
+  display:flex !important;
+  align-items:center !important;
+  min-width:0 !important;
+}
+
+.logo{
+  font-size:clamp(38px,11.5vw,54px) !important;
+  font-weight:900 !important;
+  line-height:.95 !important;
+  letter-spacing:.1px !important;
+  white-space:nowrap !important;
+}
+
+.rightBtns{
+  display:flex !important;
+  justify-content:flex-end !important;
+  align-items:center !important;
+  flex-wrap:nowrap !important;
+}
+
+/* FILA 2: dirección arriba, web + redes abajo */
+.row2addr{
+  margin-top:6px !important;
+}
+
+.addrStack{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.addrLineTop{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 10px;
+  font-size:11px;
+  color:var(--muted);
+  line-height:1.25;
+}
+
+.addrWebSocial{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.addrWebSocial a{
+  color:#3b82f6;
+  text-decoration:underline;
+  font-size:11px;
+  white-space:nowrap;
+}
+
+.addrWebSocial .social{
+  display:flex;
+  gap:6px;
+  align-items:center;
+  flex-shrink:0;
+}
+
+.addrWebSocial .iconBtn{
+  width:27px;
+  height:27px;
+}
+
+.addrWebSocial .iconBtn svg{
+  width:14px;
+  height:14px;
+}
+
+/* FILA MES / TÍTULO */
+.rowMonth{
+  margin-top:12px !important;
+  display:grid !important;
+  grid-template-columns:110px minmax(0,1fr) !important;
+  gap:10px !important;
+  align-items:center !important;
+}
+
+.monthBtn{
+  width:100% !important;
+  min-height:42px !important;
+  height:42px !important;
+  padding:10px 12px !important;
+  border-radius:14px !important;
+  font-size:12.5px !important;
+  font-weight:900 !important;
+  width:110px !important;
+flex:0 0 110px !important;
+}
+
+.titleBox{
+  min-width:0 !important;
+  display:flex !important;
+  align-items:center !important;
+}
+
+.titleBox h1{
+  margin:0 !important;
+  font-size:clamp(22px,7vw,30px) !important;
+  font-weight:900 !important;
+  line-height:1.05 !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+
+/* FILA BOTONES PRINCIPALES */
+.rowBtnsTop{
+  margin-top:12px !important;
+  display:grid !important;
+  grid-template-columns:minmax(0,1.2fr) minmax(0,.85fr) auto !important;
+  gap:8px !important;
+  align-items:center !important;
+}
+
+#btnNewIngresos,
+#btnClearFilters{
+  min-height:42px !important;
+  height:42px !important;
+  padding:9px 12px !important;
+  border-radius:999px !important;
+  font-size:12px !important;
+  font-weight:900 !important;
+  white-space:nowrap !important;
+}
+
+.rowBtnsTop #btnPVL{
+  width:auto !important;
+  min-width:76px !important;
+  height:42px !important;
+  padding:0 14px !important;
+  border-radius:999px !important;
+  font-size:12.5px !important;
+}
+
+/* FILA BUSCAR + CARRITO */
+.rowSearchCart{
+  margin-top:10px !important;
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) 130px !important;
+  gap:10px !important;
+  align-items:center !important;
+}
+
+.rowSearchCart #q{
+  min-height:42px !important;
+  height:42px !important;
+}
+
+.rowSearchCart #btnCart{
+  min-width:88px !important;
+  height:42px !important;
+  padding:9px 12px !important;
+  border-radius:999px !important;
+  font-size:13px !important;
+  font-weight:900 !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:6px !important;
+  white-space:nowrap !important;
+}
+
+#cartCount{
+  display:inline-block !important;
+  min-width:22px !important;
+  text-align:center !important;
+}
+
+/* Carrito activo */
+#btnCart.active{
+  background:linear-gradient(135deg,#f59e0b,#fbbf24) !important;
+  color:#111 !important;
+  box-shadow:
+    0 0 0 3px rgba(245,158,11,.25),
+    0 10px 25px rgba(245,158,11,.35) !important;
+  transform:translateY(-1px) !important;
+}
+
+/* Ajustes para celulares chicos */
+@media (max-width:380px){
+  .logo{
+    font-size:clamp(34px,10.5vw,46px) !important;
+  }
+
+  .rowMonth{
+    grid-template-columns:104px minmax(0,1fr) !important;
+  }
+
+  .titleBox h1{
+    font-size:clamp(20px,6.4vw,26px) !important;
+  }
+
+  .rowBtnsTop{
+    grid-template-columns:minmax(0,1.15fr) minmax(0,.8fr) auto !important;
+    gap:7px !important;
+  }
+
+  #btnNewIngresos,
+  #btnClearFilters{
+    font-size:11px !important;
+    padding:8px 10px !important;
+  }
+
+  .rowSearchCart{
+    grid-template-columns:minmax(0,1fr) 82px !important;
+  }
+
+  .rowSearchCart #btnCart{
+    min-width:82px !important;
+    font-size:12px !important;
+  }
+}
+
+  /* =========================================================
+   RESET HEADER FINAL — TM INGRESOS TEST
+   ========================================================= */
+
+
+
+/* FILA 1: logo grande + theme */
+.row1{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto !important;
+  align-items:center !important;
+  gap:10px !important;
+}
+
+.brandLeft{
+  display:flex !important;
+  align-items:center !important;
+  min-width:0 !important;
+}
+
+.logo{
+  font-size:clamp(40px,12vw,56px) !important;
+  font-weight:900 !important;
+  line-height:.95 !important;
+  white-space:nowrap !important;
+  letter-spacing:.1px !important;
+}
+
+.rightBtns{
+  display:flex !important;
+  justify-content:flex-end !important;
+  align-items:center !important;
+  flex-wrap:nowrap !important;
+}
+
+/* FILA 2: dirección */
+.row2addr{
+  margin-top:6px !important;
+}
+
+.addrLineTop{
+  display:flex !important;
+  flex-wrap:wrap !important;
+  gap:6px 10px !important;
+  color:var(--muted) !important;
+  font-size:11px !important;
+  line-height:1.25 !important;
+}
+
+/* FILA 3: web + redes */
+.rowWebSocial{
+  margin-top:4px !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:10px !important;
+  justify-content:flex-start !important;
+}
+
+.rowWebSocial > a{
+  color:#3b82f6 !important;
+  text-decoration:underline !important;
+  font-size:11px !important;
+  white-space:nowrap !important;
+}
+
+.rowWebSocial .social{
+  display:flex !important;
+  gap:6px !important;
+  align-items:center !important;
+  flex-shrink:0 !important;
+}
+
+.rowWebSocial .iconBtn{
+  width:28px !important;
+  height:28px !important;
+}
+
+.rowWebSocial .iconBtn svg{
+  width:14px !important;
+  height:14px !important;
+}
+
+/* FILA MES / TÍTULO */
+.rowMonth{
+  margin-top:12px !important;
+  display:grid !important;
+  grid-template-columns:112px minmax(0,1fr) !important;
+  gap:10px !important;
+  align-items:center !important;
+}
+
+.monthBtn{
+  width:100% !important;
+  height:42px !important;
+  min-height:42px !important;
+  padding:10px 12px !important;
+  border-radius:14px !important;
+  font-size:12.5px !important;
+  font-weight:900 !important;
+}
+
+.titleBox{
+  min-width:0 !important;
+  display:flex !important;
+  align-items:center !important;
+}
+
+.titleBox h1{
+  margin:0 !important;
+  font-size:clamp(22px,7vw,30px) !important;
+  font-weight:900 !important;
+  line-height:1.05 !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+
+/* FILA NUEVOS / QUITAR / PVC */
+.rowBtnsTop{
+  margin-top:12px !important;
+  display:grid !important;
+  grid-template-columns:minmax(0,1.15fr) minmax(0,.75fr) 76px !important;
+  gap:8px !important;
+  align-items:center !important;
+}
+
+#btnNewIngresos,
+#btnClearFilters{
+  width:100% !important;
+  height:42px !important;
+  min-height:42px !important;
+  padding:9px 10px !important;
+  border-radius:999px !important;
+  font-size:12px !important;
+  font-weight:900 !important;
+  white-space:nowrap !important;
+}
+
+.rowBtnsTop #btnPVL{
+  width:76px !important;
+  min-width:76px !important;
+  height:42px !important;
+  padding:0 10px !important;
+  border-radius:999px !important;
+  font-size:12px !important;
+}
+
+/* FILA BUSCAR + CARRITO */
+.rowSearchCart{
+  margin-top:10px !important;
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) 88px !important;
+  gap:10px !important;
+  align-items:center !important;
+}
+
+.rowSearchCart #q{
+  width:100% !important;
+  height:42px !important;
+  min-height:42px !important;
+}
+
+.rowSearchCart #btnCart{
+  width:88px !important;
+  min-width:88px !important;
+  height:42px !important;
+  padding:9px 10px !important;
+  border-radius:999px !important;
+  font-size:13px !important;
+  font-weight:900 !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:6px !important;
+  white-space:nowrap !important;
+}
+
+#cartCount{
+  display:inline-block !important;
+  min-width:22px !important;
+  text-align:center !important;
+}
+
+/* Carrito activo */
+#btnCart.active{
+  background:linear-gradient(135deg,#f59e0b,#fbbf24) !important;
+  color:#111 !important;
+  box-shadow:
+    0 0 0 3px rgba(245,158,11,.25),
+    0 10px 25px rgba(245,158,11,.35) !important;
+  transform:translateY(-1px) !important;
+}
+
+/* Evitar restos de layout anterior */
+.rowPVLCart{
+  display:none !important;
+}
+
+/* Ajuste celulares chicos */
+@media (max-width:380px){
+  .logo{
+    font-size:clamp(34px,11vw,46px) !important;
+  }
+
+  .rowMonth{
+    grid-template-columns:104px minmax(0,1fr) !important;
+  }
+
+  .titleBox h1{
+    font-size:clamp(20px,6.4vw,26px) !important;
+  }
+
+  .rowBtnsTop{
+    grid-template-columns:minmax(0,1.15fr) minmax(0,.72fr) 72px !important;
+    gap:7px !important;
+  }
+
+  #btnNewIngresos,
+  #btnClearFilters{
+    font-size:11px !important;
+    padding:8px 8px !important;
+  }
+
+  .rowBtnsTop #btnPVL{
+    width:72px !important;
+    min-width:72px !important;
+    font-size:11px !important;
+  }
+
+  .rowSearchCart{
+    grid-template-columns:minmax(0,1fr) 82px !important;
+  }
+
+  .rowSearchCart #btnCart{
+    width:82px !important;
+    min-width:82px !important;
+    font-size:12px !important;
+  }
+}
+/* =========================
+   CART FEEDBACK — BOUNCE SEGURO
+   ========================= */
+
+@keyframes cartBounce{
+  0%{
+    transform:scale(1);
+  }
+
+  35%{
+    transform:scale(1.16);
+  }
+
+  70%{
+    transform:scale(.96);
+  }
+
+  100%{
+    transform:scale(1);
+  }
+}
+
+#btnCart.cart-bounce{
+  animation:cartBounce .34s ease;
+}
+
+#btnCart.cart-glow{
+  box-shadow:
+    0 0 0 4px rgba(245,158,11,.28),
+    0 12px 28px rgba(245,158,11,.38) !important;
+}
   
 </style>
 </head>
@@ -1569,23 +2480,11 @@ body.theme-light #btnNewIngresos.active{
   <div class="top">
     <div class="appShell">
 
-   <!-- FILA 1 - Logo + redes + theme -->
+ <!-- FILA 1 - Logo + theme -->
 <div class="shellBlock row1">
 
   <div class="brandLeft">
     <div class="logo">todomusica</div>
-
-    <div class="social">
-      <a class="iconBtn" target="_blank" rel="noopener" href="https://www.facebook.com/people/Todomusica-SA/100064115318334/">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.5V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg>
-      </a>
-      <a class="iconBtn" target="_blank" rel="noopener" href="https://www.instagram.com/todomusicasa/">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zm5.2-2.2a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/></svg>
-      </a>
-      <a class="iconBtn" target="_blank" rel="noopener" href="https://www.youtube.com/@TodomusicaS.A">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.7 4.6 12 4.6 12 4.6s-5.7 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.8.5 7.5.5 7.5.5s5.7 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8zM10 15.5v-7l6 3.5-6 3.5z"/></svg>
-      </a>
-    </div>
   </div>
 
   <div class="rightBtns">
@@ -1598,31 +2497,51 @@ body.theme-light #btnNewIngresos.active{
     </div>
   </div>
 
-</div>   
-   <!-- FILA 2 - Dirección (inline adaptativa) -->
+</div>
+
+<!-- FILA 2 - Dirección -->
 <div class="shellBlock row2addr">
-  <div class="addrLine">
+  <div class="addrLineTop">
     <span>Av. Martin Garcia 463 | CABA</span>
     <span>Tel. +54 9 (11) 5565-7500</span>
-    <a href="https://todomusica.com.ar/" target="_blank">www.todomusica.com.ar</a>
   </div>
 </div>
-<!-- FILA MES / TITULO / PVL -->
+
+<!-- FILA 3 - Web + redes -->
+<div class="shellBlock rowWebSocial">
+
+  <a href="https://todomusica.com.ar/" target="_blank">
+    www.todomusica.com.ar
+  </a>
+
+  <div class="social">
+    <a class="iconBtn" target="_blank" rel="noopener" href="https://www.facebook.com/people/Todomusica-SA/100064115318334/">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.5V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg>
+    </a>
+
+    <a class="iconBtn" target="_blank" rel="noopener" href="https://www.instagram.com/todomusicasa/">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zm5.2-2.2a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/></svg>
+    </a>
+
+    <a class="iconBtn" target="_blank" rel="noopener" href="https://www.youtube.com/@TodomusicaS.A">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a3 3 0 0 0-2.1-2.1C17.7 4.6 12 4.6 12 4.6s-5.7 0-7.5.5A3 3 0 0 0 2.4 7.2 31 31 0 0 0 2 12a31 31 0 0 0 .4 4.8 3 3 0 0 0 2.1 2.1c1.8.5 7.5.5 7.5.5s5.7 0 7.5-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 22 12a31 31 0 0 0-.4-4.8zM10 15.5v-7l6 3.5-6 3.5z"/></svg>
+    </a>
+  </div>
+
+</div>
+
+<!-- FILA MES / TITULO -->
 <div class="shellBlock rowMonth">
 
   <select class="inp monthBtn" id="selMonth"></select>
 
   <div class="titleBox">
     <h1 id="ttl">Ingresos de Mayo</h1>
-
-    <button class="iconBtn" id="btnPVL" title="Cambiar vista (PVC / PVL)">
-      👁 <span id="lblPVL">PVC</span>
-    </button>
   </div>
 
 </div>
 
-<!-- NUEVA FILA — LIMPIAR FILTROS -->
+<!-- FILA BOTONES PRINCIPALES -->
 <div class="shellBlock row4 rowBtnsTop">
 
   <button class="btn" id="btnNewIngresos">
@@ -1630,17 +2549,25 @@ body.theme-light #btnNewIngresos.active{
   </button>
 
   <button class="btn" id="btnClearFilters">
-    🧹 Limpiar filtros
+    🧹 Quitar filtros
+  </button>
+
+  <button class="iconBtn" id="btnPVL" title="Cambiar vista (PVC / PVL)">
+    👁 <span id="lblPVL">PVC</span>
   </button>
 
 </div>
 
+<!-- FILA BUSCAR + CARRITO -->
+<div class="shellBlock rowSearchCart">
 
-<!-- NUEVA FILA — BUSCAR SOLO -->
-<div class="shellBlock row3 row3Search">
   <input class="inp" id="q" placeholder="Buscar..." />
-</div>
 
+  <button class="btn" id="btnCart">
+    🛒 <span id="cartCount">0</span>
+  </button>
+
+</div>                                                        
 <!-- NUEVA FILA — FILTROS -->
 <div class="shellBlock row3 row3Filters">
   <select id="fMarca">
@@ -1747,6 +2674,30 @@ body.theme-light #btnNewIngresos.active{
       </div>
     </div>
   </div>
+
+  <!-- =========================
+     MODAL CARRITO
+     ========================= -->
+<div class="modal" id="cartModal">
+
+  <div class="modalBox">
+
+    <div class="modalTop">
+      <b>🛒 Tu carrito</b>
+      <button id="cartClose">Cerrar ✕</button>
+    </div>
+
+    <div class="modalBody cartModalBody">
+
+      <div id="cartContent">
+        <!-- acá vamos a renderizar los productos -->
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
 
 <script>
 /* =========================
@@ -1917,18 +2868,70 @@ function qty(p){
 }
 
 function setQty(p, q){
+  const oldQ = qty(p);
+
   q = Math.max(0, q|0);
   const k = p.ARTICULO;
   if(!k) return;
 
-  if(q === 0) CART.delete(k);
-  else CART.set(k, { q, p });
+  if(q === 0){
+    CART.delete(k);
+  }else{
+    CART.set(k, { q, p });
+  }
 
   /* guardar solo el carrito del mes actual dentro del global */
   saveCurrentMonthCart();
 
   totals();
   render();
+
+  /* =========================
+     CART FEEDBACK — SOLO AL SUMAR
+     ========================= */
+  if(q > oldQ){
+    cartFeedback();
+  }
+}
+function cartFeedback(){
+  const btnCart = document.getElementById("btnCart");
+
+  if(!btnCart) return;
+
+  btnCart.classList.remove("cart-bounce");
+  btnCart.classList.remove("cart-glow");
+
+  /* reinicia la animación sin romper el layout */
+  void btnCart.offsetWidth;
+
+  btnCart.classList.add("cart-bounce");
+  btnCart.classList.add("cart-glow");
+
+  setTimeout(() => {
+    btnCart.classList.remove("cart-glow");
+  }, 360);
+
+  setTimeout(() => {
+    btnCart.classList.remove("cart-bounce");
+  }, 380);
+}
+
+/* =========================
+   CART FEEDBACK (bounce + glow)
+   ========================= */
+const btnCart = document.getElementById("btnCart");
+
+if(btnCart){
+  btnCart.classList.remove("cart-bounce");
+  void btnCart.offsetWidth; // reset animation
+
+  btnCart.classList.add("cart-bounce");
+  btnCart.classList.add("cart-glow");
+
+  setTimeout(()=>{
+    btnCart.classList.remove("cart-glow");
+  }, 350);
+  
 }
 
 function badgeStock(v){
@@ -2281,6 +3284,15 @@ if(net !== null){
   const tot = sub + iva + ii;
 
   document.getElementById("it").textContent  = String(items);
+  const cartCountEl = document.getElementById("cartCount");
+  const btnCart = document.getElementById("btnCart");
+if(btnCart){
+  btnCart.classList.toggle("active", items > 0);
+}
+
+if(cartCountEl){
+  cartCountEl.textContent = String(items);
+}
   document.getElementById("sub").textContent = ars(sub);
   document.getElementById("iva").textContent = ars(iva);
   document.getElementById("ii").textContent  = ars(ii);
@@ -2734,6 +3746,431 @@ btnPVL.onclick = () => {
 
 
 };
+/* =========================
+   CARRITO — RENDER CONTENIDO
+   ========================= */
+function renderCart(){
+
+  const container = document.getElementById("cartContent");
+  if(!container) return;
+
+  ALL_CARTS = JSON.parse(localStorage.getItem("tm_carts") || "{}");
+
+  const monthEntries = MONTHS
+  .map(m => [m.file, ALL_CARTS[m.file] || []])
+  .filter(([monthKey, monthCart]) => Array.isArray(monthCart) && monthCart.length > 0);
+    
+  if(monthEntries.length === 0){
+    container.innerHTML = `
+      <div style="text-align:center; padding:28px; color:var(--muted);">
+        🛒 Carrito vacío
+      </div>
+    `;
+    return;
+  }
+
+  let html = "";
+
+  let sub = 0;
+  let iva = 0;
+  let ii  = 0;
+  let items = 0;
+
+  html += `
+    <div style="
+      margin-bottom:12px;
+      padding:10px 12px;
+      border-radius:14px;
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--stroke);
+      font-size:12px;
+      font-weight:900;
+      color:var(--muted);
+    ">
+      Detalle del pedido
+    </div>
+  `;
+
+  monthEntries.forEach(([monthKey, monthCart]) => {
+
+    const monthInfo = MONTHS.find(m => m.file === monthKey);
+    const monthName = monthInfo ? monthInfo.name : monthKey;
+
+    html += `
+      <div style="
+        margin:12px 0 8px;
+        font-size:12px;
+        font-weight:900;
+        color:var(--accent);
+      ">
+        Ingresos de ${monthName}
+      </div>
+    `;
+
+    monthCart.forEach(([k, v]) => {
+
+      const p = v.p;
+      const q = v.q;
+
+      const net = pvcNeto(p);
+
+      const price = net === null
+        ? `<span class="priceConsultar">Consultar</span>`
+        : ars(net);
+
+      const lineTotal = net === null
+        ? `<span style="color:var(--muted);">—</span>`
+        : ars(net * q);
+
+      if(net !== null){
+        const line = net * q;
+        sub += line;
+        iva += line * pct(p.IVA);
+        ii  += line * pct(p.II);
+      }
+
+      items += q;
+
+      const descCorta = (p.DESCRIPCION || "").slice(0, 28);
+
+      html += `
+        <div style="
+          padding:12px;
+          margin-bottom:10px;
+          border-radius:16px;
+          border:1px solid var(--stroke);
+          background:rgba(255,255,255,.04);
+        ">
+
+          <div style="
+            display:flex;
+            justify-content:space-between;
+            gap:10px;
+            align-items:flex-start;
+          ">
+
+            <div style="min-width:0; flex:1;">
+              <div style="
+                font-weight:900;
+                font-size:14px;
+                white-space:nowrap;
+                overflow:hidden;
+                text-overflow:ellipsis;
+              ">
+                ${marcaOpLabel(p)}
+              </div>
+
+              <div style="
+                margin-top:3px;
+                font-size:12px;
+                color:var(--muted);
+                white-space:nowrap;
+                overflow:hidden;
+                text-overflow:ellipsis;
+              ">
+                ${p.ARTICULO || ""}
+              </div>
+
+              <div style="
+                margin-top:4px;
+                font-size:12px;
+                color:var(--muted);
+                white-space:nowrap;
+                overflow:hidden;
+                text-overflow:ellipsis;
+              ">
+                ${descCorta}
+              </div>
+            </div>
+
+            <button class="cartTrash" data-cart-month="${monthKey}" data-cart-k="${k}" data-cart-a="x" title="Quitar artículo">
+              🗑
+            </button>
+
+          </div>
+
+          <div style="
+            display:grid;
+            grid-template-columns:1fr 1fr 1fr;
+            gap:8px;
+            margin-top:12px;
+            align-items:end;
+          ">
+
+            <div>
+              <div style="font-size:11px; color:var(--muted); margin-bottom:5px;">
+                Cant.
+              </div>
+
+              <div class="qty" style="gap:6px;">
+                <button class="qbtn" data-cart-month="${monthKey}" data-cart-k="${k}" data-cart-a="d" style="width:30px;height:30px;border-radius:10px;">–</button>
+                <div class="qval" style="width:20px;">${q}</div>
+                <button class="qbtn" data-cart-month="${monthKey}" data-cart-k="${k}" data-cart-a="i" style="width:30px;height:30px;border-radius:10px;">+</button>
+              </div>
+            </div>
+
+            <div style="text-align:right;">
+              <div style="font-size:11px; color:var(--muted); margin-bottom:5px;">
+                Precio
+              </div>
+              <div style="
+                font-weight:900;
+                font-size:12.5px;
+                white-space:nowrap;
+              ">
+                ${price}
+              </div>
+            </div>
+
+            <div style="text-align:right;">
+              <div style="font-size:11px; color:var(--muted); margin-bottom:5px;">
+                Subtotal
+              </div>
+              <div style="
+                font-weight:900;
+                font-size:12.5px;
+                white-space:nowrap;
+              ">
+                ${lineTotal}
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      `;
+    });
+  });
+
+  const total = sub + iva + ii;
+
+  html += `
+    <div style="
+      margin-top:14px;
+      padding:14px;
+      border:1px solid var(--stroke);
+      border-radius:16px;
+      background:rgba(255,255,255,.04);
+    ">
+
+      <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+        <span style="color:var(--muted);">Ítems</span>
+        <b>${items}</b>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+        <span style="color:var(--muted);">Subtotal</span>
+        <b>${ars(sub)}</b>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+        <span style="color:var(--muted);">IVA</span>
+        <b>${ars(iva)}</b>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+        <span style="color:var(--muted);">Imp. Int.</span>
+        <b>${ars(ii)}</b>
+      </div>
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        margin-top:10px;
+        padding-top:10px;
+        border-top:1px solid var(--stroke);
+        font-size:17px;
+        font-weight:900;
+      ">
+        <span>Total + imp.</span>
+        <b style="color:var(--accent);">${ars(total)}</b>
+      </div>
+
+    </div>
+
+    <div style="
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:14px;
+    ">
+
+      <a class="btn" id="cartWA" target="_blank" style="
+        width:100%;
+        min-height:54px;
+        background:#22c55e;
+        color:#fff;
+        border:1px solid rgba(255,255,255,.18);
+        border-radius:16px;
+        font-size:16px;
+        font-weight:900;
+        box-shadow:
+          0 0 0 3px rgba(34,197,94,.22),
+          0 12px 28px rgba(34,197,94,.42);
+      ">
+        📲 Enviar pedido por WhatsApp
+      </a>
+
+      <button class="btn" id="cartContinue" style="
+        width:100%;
+        min-height:46px;
+        font-size:14px;
+        font-weight:900;
+        border-radius:14px;
+      ">
+        Seguir comprando
+      </button>
+
+      <button class="btn" id="cartEmpty" style="
+        width:100%;
+        min-height:46px;
+        font-size:14px;
+        font-weight:900;
+        border-radius:14px;
+        border-color:#ef4444;
+        color:#ef4444;
+        background:rgba(239,68,68,.06);
+      ">
+        🗑 Vaciar carrito
+      </button>
+
+    </div>
+  `;
+
+  container.innerHTML = html;
+
+  /* eventos + / - / quitar artículo */
+  container.querySelectorAll("[data-cart-a]").forEach(b => {
+    b.onclick = () => {
+
+      const monthKey = b.getAttribute("data-cart-month");
+      const k = b.getAttribute("data-cart-k");
+      const act = b.getAttribute("data-cart-a");
+
+      ALL_CARTS = JSON.parse(localStorage.getItem("tm_carts") || "{}");
+
+      const monthCart = ALL_CARTS[monthKey] || [];
+      const idx = monthCart.findIndex(([art]) => art === k);
+
+      if(idx === -1) return;
+
+      const item = monthCart[idx][1];
+
+      if(act === "i"){
+        item.q = item.q + 1;
+      }
+
+      if(act === "d"){
+        item.q = item.q - 1;
+      }
+
+      if(act === "x"){
+        item.q = 0;
+      }
+
+      if(item.q <= 0){
+        monthCart.splice(idx, 1);
+      }else{
+        monthCart[idx][1] = item;
+      }
+
+      if(monthCart.length === 0){
+        delete ALL_CARTS[monthKey];
+      }else{
+        ALL_CARTS[monthKey] = monthCart;
+      }
+
+      localStorage.setItem("tm_carts", JSON.stringify(ALL_CARTS));
+
+      if(monthKey === currentMonthKey()){
+        CART.clear();
+
+        const currentSaved = ALL_CARTS[currentMonthKey()] || [];
+        currentSaved.forEach(([art, val]) => {
+          CART.set(art, val);
+        });
+      }
+
+      totals();
+      render();
+      renderCart();
+    };
+  });
+
+  /* botón seguir comprando */
+  const cartContinue = document.getElementById("cartContinue");
+  if(cartContinue){
+    cartContinue.onclick = () => {
+      const cartModal = document.getElementById("cartModal");
+      if(cartModal){
+        cartModal.style.display = "none";
+      }
+    };
+  }
+
+  /* botón vaciar carrito */
+  const cartEmpty = document.getElementById("cartEmpty");
+  if(cartEmpty){
+    cartEmpty.onclick = () => {
+
+      CART.clear();
+
+      ALL_CARTS = {};
+      localStorage.setItem("tm_carts", JSON.stringify({}));
+
+      totals();
+      render();
+
+      const cartModal = document.getElementById("cartModal");
+      if(cartModal){
+        cartModal.style.display = "none";
+      }
+    };
+  }
+
+  /* botón WhatsApp */
+  const cartWA = document.getElementById("cartWA");
+  if(cartWA){
+    const txt = buildWA(sub, iva, ii, total);
+    cartWA.href = "https://wa.me/?text=" + encodeURIComponent(txt);
+  }
+}
+  /* =========================
+   CARRITO — MODAL OPEN/CLOSE
+   ========================= */
+const btnCartModal = document.getElementById("btnCart");
+const cartModal = document.getElementById("cartModal");
+const cartClose = document.getElementById("cartClose");
+
+if(btnCartModal){
+  btnCartModal.onclick = () => {
+    if(cartModal){
+      renderCart();
+      cartModal.style.display = "flex";
+
+      const body = cartModal.querySelector(".cartModalBody");
+      if(body){
+        body.scrollTop = 0;
+      }
+    }
+  };
+}
+
+if(cartClose){
+  cartClose.onclick = () => {
+    if(cartModal){
+      cartModal.style.display = "none";
+    }
+  };
+}
+
+if(cartModal){
+  cartModal.onclick = (e) => {
+    if(e.target.id === "cartModal"){
+      cartModal.style.display = "none";
+    }
+  };
+}
 </script>
 </body>
 </html>
