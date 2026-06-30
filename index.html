@@ -1978,6 +1978,12 @@ body.theme-light .filterChip{
    MES — CONFIG (PASO 3.1)
    ========================= */
 
+/* =========================
+   MODO MANTENIMIENTO
+   ========================= */
+
+const MODO_MANTENIMIENTO = false; // ← cambiar a true para activar
+
 const MONTHS = [
   { name: "Mayo",  file: "ingresostm_mayo.csv" },
   { name: "Junio", file: "ingresostm_junio.csv" }
@@ -3176,10 +3182,84 @@ if(btnTheme){
     localStorage.setItem("tm_theme", isLight ? "light" : "dark");
   };
 }
+ function mostrarMantenimiento(){
 
+document.body.innerHTML = `
+<style>
+@keyframes fadeLoop{
+  0%{ opacity:.6; }
+  50%{ opacity:1; }
+  100%{ opacity:.6; }
+}
+
+@keyframes logoPulse{
+  0%{ transform:scale(1); }
+  50%{ transform:scale(1.03); }
+  100%{ transform:scale(1); }
+}
+</style>
+
+<div style="
+  min-height:100dvh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:radial-gradient(circle at top left,#0a1a3a,#070b14 72%);
+  color:#eaf0ff;
+  font-family:Arial;
+  padding:20px;
+  text-align:center;
+">
+
+  <div style="
+    max-width:420px;
+    width:100%;
+  ">
+
+    <div style="
+      font-size:52px;
+      font-weight:900;
+      margin-bottom:14px;
+      letter-spacing:.5px;
+      animation:logoPulse 3s ease-in-out infinite;
+    ">
+      todomusica
+    </div>
+
+    <div style="
+      font-size:24px;
+      font-weight:900;
+      margin-bottom:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    ">
+      <span style="font-size:26px;">🚧</span>
+      <span>En mantenimiento</span>
+    </div>
+
+    <div style="
+      font-size:14px;
+      color:#9db0d4;
+      animation:fadeLoop 2s ease-in-out infinite;
+    ">
+      Estamos actualizando los ingresos.<br>
+      Volvé a intentar en unos minutos.
+    </div>
+
+  </div>
+
+</div>
+`;
+}
 /* INIT */
-loadCSV();
-  
+
+if(MODO_MANTENIMIENTO){
+  mostrarMantenimiento();
+}else{
+  loadCSV();
+}
   /* =========================
    BOTÓN PVL — TOGGLE (PASO 10.1)
    ========================= */
