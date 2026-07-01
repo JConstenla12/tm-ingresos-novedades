@@ -2000,7 +2000,7 @@ let ALL = [], VIEW = [];
 const MONTH_DATA = {};
 
   /* =========================
-   ANALYTICS TEST
+   ANALYTICS PROD
    ========================= */
 
 const ANALYTICS_URL =
@@ -3332,7 +3332,6 @@ if(MODO_MANTENIMIENTO){
   mostrarMantenimiento();
 }else{
 
-  console.log("Analytics cargado");
   registrarEvento("APP_OPEN");
 
   loadCSV();
