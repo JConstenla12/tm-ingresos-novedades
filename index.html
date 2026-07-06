@@ -843,6 +843,21 @@ body.theme-light .sun{
   z-index:3;
 }
 
+  .stickerNew{
+  position:absolute;
+  top:10px;
+  right:10px;
+  background:linear-gradient(135deg,#f59e0b,#fbbf24);
+  color:#111;
+  font-weight:900;
+  font-size:11px;
+  padding:6px 10px;
+  border-radius:999px;
+  box-shadow:0 10px 22px rgba(245,158,11,.35);
+  border:1px solid rgba(255,255,255,.15);
+  z-index:3;
+  white-space:nowrap;
+}
 .cardInfo{
   min-width:0;
 }
@@ -922,16 +937,7 @@ body.theme-light .sun{
   color:var(--bad);
 }
 
-.badgeNew{
-  margin-left:8px;
-  font-size:11px;
-  font-weight:900;
-  padding:4px 8px;
-  border-radius:999px;
-  background:linear-gradient(135deg,#f59e0b,#fbbf24);
-  color:#111;
-  box-shadow:0 4px 10px rgba(245,158,11,.35);
-}
+
 
 .oldPrice{
   color:var(--muted);
@@ -1994,7 +2000,6 @@ const MONTHS = [
   { name: "Julio", file: "ingresostm_julio.csv" }
 ];
 
-
 let currentMonthIndex = 2; // arranca en Julio
 const PLACE = "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='640' height='480'><rect width='100%' height='100%' fill='#0b1220'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='26' fill='#9db0d4'>Sin imagen</text></svg>`);
 
@@ -2003,11 +2008,11 @@ let ALL = [], VIEW = [];
 const MONTH_DATA = {};
 
   /* =========================
-   ANALYTICS PROD
+   ANALYTICS TEST
    ========================= */
 
 const ANALYTICS_URL =
-"https://script.google.com/macros/s/AKfycbzjmuihWgZAbbsFopLoDOgquKvPbeDO2xbM48TvGkV2ukO2csq2Fi5YdRPfX4UQlnff/exec";
+"https://script.google.com/macros/s/AKfycbxkXX8vAIiReAvbWIY-WME_Wtoy7gLVibKv_6uvqnCvo1mDOuIkco8iRwZaaDMbJkoa/exec";
   
 
 function registrarEvento(evento, extras = {}){
@@ -2328,15 +2333,17 @@ function card(p){
   if(modoPVL){
     return `
     <div class="card ${inCart}" data-k="${art}">
-      <div class="imgBox" data-z="1">
-        ${off > 0 ? `<div class="stickerOff">${Math.round(off*100)}% OFF</div>` : ``}
-        <img src="${im}" onerror="this.onerror=null;this.src='${PLACE}'">
-      </div>
+     <div class="imgBox" data-z="1">
+  ${off > 0 ? `<div class="stickerOff">${Math.round(off*100)}% OFF</div>` : ``}
+  ${esNuevo ? `<div class="stickerNew">🔥 Nuevo ingreso</div>` : ``}
+  <img src="${im}" onerror="this.onerror=null;this.src='${PLACE}'">
+</div>
+
 
       <div class="cardInfo">
         <div class="pTitle">
   ${marcaOp} · ${art}
-  ${esNuevo ? '<span class="badgeNew">Nuevo 🔥</span>' : ''}
+  ${''}
 </div>
 
         <p class="pDesc">${desc}</p>
@@ -2369,14 +2376,15 @@ function card(p){
   return `
   <div class="card ${inCart}" data-k="${art}">
     <div class="imgBox" data-z="1">
-      ${off > 0 ? `<div class="stickerOff">${Math.round(off*100)}% OFF</div>` : ``}
-      <img src="${im}" onerror="this.onerror=null;this.src='${PLACE}'">
-    </div>
+  ${off > 0 ? `<div class="stickerOff">${Math.round(off*100)}% OFF</div>` : ``}
+  ${esNuevo ? `<div class="stickerNew">🔥 Nuevo ingreso</div>` : ``}
+  <img src="${im}" onerror="this.onerror=null;this.src='${PLACE}'">
+</div>
 
     <div class="cardInfo">
       <div class="pTitle">
   ${marcaOp} · ${art}
-  ${esNuevo ? '<span class="badgeNew">Nuevo 🔥</span>' : ''}
+ 
 </div>
       <p class="pDesc">${desc}</p>
 
@@ -3335,6 +3343,7 @@ if(MODO_MANTENIMIENTO){
   mostrarMantenimiento();
 }else{
 
+  console.log("Analytics cargado");
   registrarEvento("APP_OPEN");
 
   loadCSV();
