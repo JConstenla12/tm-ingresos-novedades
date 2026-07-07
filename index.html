@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Todomusica — Ingresos de Junio</title>
+<title>Todomusica — Ingresos</title>
 <link rel="manifest" href="manifest.json">
 
 <style>
@@ -17,7 +17,6 @@
   --accent:#f59e0b;
   --good:#22c55e;
   --warn:#fbbf24;
-  --ing:#38bdf8;
   --bad:#ef4444;
 
   --shell-max-mobile:430px;
@@ -336,7 +335,6 @@ button,
     0 8px 20px rgba(245,158,11,.25);
 }
 
-#btnNewIngresos,
 #btnClearFilters{
   width:100%;
   height:42px;
@@ -348,15 +346,7 @@ button,
   white-space:nowrap;
 }
 
-#btnNewIngresos{
-  display:none;
-  background:rgba(255,255,255,.06);
-  color:var(--text);
-  border:1px solid var(--stroke);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.05),
-    0 4px 10px rgba(0,0,0,.18);
-}
+
 
 #btnClearFilters{
   background:linear-gradient(135deg,#1f2937,#111827);
@@ -368,25 +358,9 @@ button,
     inset 0 1px 0 rgba(255,255,255,.06);
 }
 
-#btnNewIngresos.active,
-#btnClearFilters.active,
-#btnPVL.active,
-#btnCart.active{
-  background:linear-gradient(135deg,#f59e0b,#fbbf24);
-  color:#111;
-  border-color:rgba(0,0,0,.2);
-  box-shadow:
-    0 0 0 3px rgba(245,158,11,.25),
-    0 10px 25px rgba(245,158,11,.35);
-  transform:translateY(-1px);
-}
 
-#btnNewIngresos.active{
-  background:linear-gradient(135deg,#f97316,#facc15);
-  box-shadow:
-    0 0 0 3px rgba(249,115,22,.28),
-    0 12px 28px rgba(249,115,22,.38);
-}
+
+
 
 body.theme-light #btnClearFilters{
   background:#ffffff;
@@ -397,15 +371,16 @@ body.theme-light #btnClearFilters{
     inset 0 1px 0 rgba(255,255,255,.9);
 }
 
-body.theme-light #btnNewIngresos.active{
-  background:linear-gradient(135deg,#f97316,#fcd34d);
+#btnClearFilters.active,
+#btnPVL.active,
+#btnCart.active{
+  background:linear-gradient(135deg,#f59e0b,#fbbf24);
   color:#111;
-  border-color:rgba(0,0,0,.16);
+  border-color:rgba(0,0,0,.20);
   box-shadow:
-    0 6px 16px rgba(249,115,22,.26),
-    0 0 0 3px rgba(249,115,22,.18);
+    0 0 0 3px rgba(245,158,11,.25),
+    0 10px 25px rgba(245,158,11,.35);
 }
-
 body.theme-light #btnClearFilters.active,
 body.theme-light #btnPVL.active,
 body.theme-light #btnCart.active{
@@ -917,6 +892,12 @@ body.theme-light .sun{
   transition:all .2s ease;
 }
 
+  .badge-condicion{
+  background:rgba(56,189,248,.15);
+  border:1px solid rgba(56,189,248,.45);
+  color:#38bdf8;
+  font-weight:900;
+}
 .badge b{
   color:var(--text);
 }
@@ -929,9 +910,7 @@ body.theme-light .sun{
   color:var(--warn);
 }
 
-.badge.stock-ing b{
-  color:var(--ing);
-}
+
 
 .badge.stock-bad b{
   color:var(--bad);
@@ -1048,11 +1027,6 @@ body.theme-light .sun{
   color:var(--muted);
 }
 
-.cartRight{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
   
 #btnGoCart{
   background:linear-gradient(135deg,#f59e0b,#fbbf24);
@@ -1477,12 +1451,11 @@ body.theme-light .dot.on{
     gap:10px;
   }
 
-  #btnNewIngresos,
   #btnClearFilters{
     height:54px;
     min-height:54px;
     font-size:14px;
-  }
+}
 
   #btnPVL{
     width:96px;
@@ -1571,11 +1544,10 @@ body.theme-light .dot.on{
     gap:7px;
   }
 
-  #btnNewIngresos,
   #btnClearFilters{
     font-size:11px;
     padding:8px 8px;
-  }
+}
 
   #btnPVL{
     width:72px;
@@ -1682,7 +1654,6 @@ body.theme-light .filterChip{
 /* =========================
    CART BAR — BOTONES PRO
    ========================= */
-}
 
 @media (max-width:380px){
   .cartInner{
@@ -1812,9 +1783,9 @@ body.theme-light .filterChip{
 <!-- FILA BOTONES PRINCIPALES -->
 <div class="shellBlock row4 rowBtnsTop">
 
-  <button class="btn" id="btnNewIngresos">
-    🔥 Nuevos ingresos
-  </button>
+  <select id="fEstado">
+  <option value="">Estado</option>
+</select>
 
   <button class="btn" id="btnClearFilters">
     🧹 Quitar filtros
@@ -1851,7 +1822,7 @@ body.theme-light .filterChip{
     <option value="">Stock</option>
     <option value=">10">&gt;10</option>
     <option value="<10">&lt;10</option>
-    <option value="INGRESANDO">Ingresando</option>
+   <option value="AGOTADO">Agotado</option>
   </select>
 
 </div>
@@ -1991,7 +1962,7 @@ body.theme-light .filterChip{
    MODO MANTENIMIENTO
    ========================= */
 
-const MODO_MANTENIMIENTO = true; // ← cambiar a true para activar
+const MODO_MANTENIMIENTO = false; // ← cambiar a true para activar
 
 
 const MONTHS = [
@@ -2007,13 +1978,13 @@ const CART = new Map();
 let ALL = [], VIEW = [];
 const MONTH_DATA = {};
 
-  /* =========================
+ /* =========================
    ANALYTICS PRODUCCIÓN
    ========================= */
 
 const ANALYTICS_URL =
 "https://script.google.com/macros/s/AKfycbzjmuihWgZAbbsFopLoDOgquKvPbeDO2xbM48TvGkV2ukO2csq2Fi5YdRPfX4UQlnff/exec";
-  
+
 
 function registrarEvento(evento, extras = {}){
 
@@ -2092,7 +2063,7 @@ function saveCurrentMonthCart(){
    MODO PVL (PASO 10)
    ========================= */
 let modoPVL = false;
-  let filtroNuevosIngresos = false;
+
 
 function num(v){
   if(v==null) return NaN;
@@ -2165,11 +2136,55 @@ function imgs(p){
 }
 
 function stkNorm(v){
-  const s=String(v||"").replace(/\s+/g,'').toUpperCase();
-  if(s.includes("INGRES")) return "INGRESANDO";
-  if(s===">10") return ">10";
-  if(s==="<10" || s===" <10") return "<10";
+  const s = String(v || "")
+    .replace(/\s+/g,'')
+    .toUpperCase();
+
+  if(s === ">10") return ">10";
+  if(s === "<10") return "<10";
+  if(s === "AGOTADO") return "AGOTADO";
+
   return s || "";
+}
+  function condicionesArray(p){
+  return String(p.CONDICION || "")
+    .split("|")
+    .map(x => x.trim().toUpperCase().replace(/\s+/g, "_"))
+    .filter(Boolean);
+}
+
+function tieneCondicion(p, condicion){
+  const key = String(condicion || "")
+    .trim()
+    .toUpperCase()
+    .replace(/\s+/g, "_");
+
+  return condicionesArray(p).includes(key);
+}
+
+function estadoLabel(codigo){
+
+  const key = String(codigo || "")
+    .trim()
+    .toUpperCase()
+    .replace(/\s+/g, "_");
+
+ if(key === "INGRESANDO"){
+  return "🆕 Ingreso reciente";
+}
+
+  if(key === "MAS_VENDIDO"){
+    return "⭐ Más vendido";
+  }
+
+  if(key === "OFERTA" || key === "OFERTAS"){
+    return "💸 Oferta";
+  }
+
+  return key
+    .replace(/_/g, " ")
+    .toLowerCase()
+    .replace(/\b\w/g, l => l.toUpperCase());
 }
 /* =========================
    MARCA + OP (PASO 8.1)
@@ -2205,6 +2220,13 @@ function qty(p){
 
 function setQty(p, q){
   const oldQ = qty(p);
+  if(
+  stkNorm(p.STOCK_TXT) === "AGOTADO" &&
+  q > oldQ
+){
+  showToast("🚫 Producto agotado");
+  return;
+}
   const hadItemsBefore = totalCartItems() > 0;
 
   q = Math.max(0, q|0);
@@ -2297,12 +2319,52 @@ function cartFeedback(){
 
 
 function badgeStock(v){
-  const s=stkNorm(v);
-  if(s==="INGRESANDO") return `<span class="badge stock-ing"><b>INGRESANDO</b></span>`;
-  if(s===">10") return `<span class="badge stock-good">Stock: <b>&gt;10</b></span>`;
-  if(s==="<10") return `<span class="badge stock-warn">Stock: <b>&lt;10</b></span>`;
-  if(s==="0") return `<span class="badge stock-bad">Stock: <b>0</b></span>`;
-  return `<span class="badge">Stock: <b>${s||"—"}</b></span>`;
+
+  const s = stkNorm(v);
+
+  if(s === ">10"){
+    return `<span class="badge stock-good">Stock: <b>&gt;10</b></span>`;
+  }
+
+  if(s === "<10"){
+    return `<span class="badge stock-warn">Stock: <b>&lt;10</b></span>`;
+  }
+
+  if(s === "AGOTADO"){
+    return `<span class="badge stock-bad">Stock: <b>AGOTADO</b></span>`;
+  }
+
+  return `<span class="badge">Stock: <b>${s || "—"}</b></span>`;
+}
+
+function badgeCondicion(p){
+
+  const condiciones = condicionesArray(p);
+
+  if(!condiciones.length){
+    return "";
+  }
+
+  const esNuevoIngreso =
+    (p.NUEVO_INGRESO || "")
+    .trim()
+    .toUpperCase() === "SI";
+
+  const condicionesFiltradas = condiciones.filter(c => {
+
+    if(c === "INGRESANDO" && esNuevoIngreso){
+      return false;
+    }
+
+    return true;
+
+  });
+
+  return condicionesFiltradas.map(c => `
+    <span class="badge badge-condicion">
+      ${estadoLabel(c)}
+    </span>
+  `).join("");
 }
 
 function card(p){
@@ -2349,7 +2411,10 @@ function card(p){
         <p class="pDesc">${desc}</p>
 
         <div class="prod-block">
-          <div class="prod-rubro">${rub || "—"}</div>
+          <div class="prod-line">
+  <div class="prod-rubro">${rub || "—"}</div>
+  ${badgeCondicion(p)}
+</div>
 
           <div class="prod-line">
             ${badgeStock(p.STOCK_TXT)}
@@ -2389,7 +2454,10 @@ function card(p){
       <p class="pDesc">${desc}</p>
 
       <div class="prod-block">
-        <div class="prod-rubro">${rub || "—"}</div>
+        <div class="prod-line">
+  <div class="prod-rubro">${rub || "—"}</div>
+  ${badgeCondicion(p)}
+</div>
 
         <div class="prod-line">
           ${badgeStock(p.STOCK_TXT)}
@@ -2411,50 +2479,91 @@ function card(p){
             <div class="netLabel">${net === null ? "" : "PVC Neto"}</div>
           </div>
 
-          <div class="qty">
-            <button class="qbtn" data-a="d">–</button>
-            <div class="qval">${q}</div>
-            <button class="qbtn" data-a="i">+</button>
-          </div>
-        </div>
+          ${stkNorm(p.STOCK_TXT) === "AGOTADO"
+  ? `
+    <div class="badge stock-bad">
+      🚫 Agotado
+    </div>
+  `
+  : `
+    <div class="qty">
+      <button class="qbtn" data-a="d">–</button>
+      <div class="qval">${q}</div>
+      <button class="qbtn" data-a="i">+</button>
+    </div>
+  `
+}
+                  </div>
 </div>
     </div>
   </div>`;
 }
-  function applyFilters(data, q, m, r, s){
+ function applyFilters(data, q, m, r, s, e){
+
   return data.filter(p => {
 
-    const esNuevoIngreso = (p.NUEVO_INGRESO || "").trim().toUpperCase() === "SI";
+    const esNuevoIngreso =
+  (p.NUEVO_INGRESO || "")
+  .trim()
+  .toUpperCase() === "SI";
 
-    if(filtroNuevosIngresos && !esNuevoIngreso) return false;
-    if(m && marcaOpLabel(p) !== m) return false;
-    if(r && (p.RUBRO || "") !== r) return false;
+    if(m && marcaOpLabel(p) !== m){
+      return false;
+    }
+
+    if(r && (p.RUBRO || "") !== r){
+      return false;
+    }
 
     if(s){
       const st = stkNorm(p.STOCK_TXT);
-      if(st !== s) return false;
+      if(st !== s){
+        return false;
+      }
     }
 
-    if(!q) return true;
+    /* =========================
+       FILTRO ESTADO
+       ========================= */
 
-    const blob = [p.MARCA, p.ARTICULO, p.DESCRIPCION, p.RUBRO, p.OP]
-      .join(" ")
-      .toLowerCase();
+    if(e){
+
+      if(e === "NUEVO"){
+
+        if(!esNuevoIngreso){
+          return false;
+        }
+
+      }else{
+
+        if(!tieneCondicion(p, e)){
+          return false;
+        }
+
+      }
+
+    }
+
+    if(!q){
+      return true;
+    }
+
+    const blob = [
+      p.MARCA,
+      p.ARTICULO,
+      p.DESCRIPCION,
+      p.RUBRO,
+      p.OP
+    ]
+    .join(" ")
+    .toLowerCase();
 
     return blob.includes(q);
+
   });
+
 }
-  function updateNewIngresoBanner(){
-  const hasNew = ALL.some(p =>
-    (p.NUEVO_INGRESO || "").trim().toUpperCase() === "SI"
-  );
-
-  const el = document.getElementById("btnNewIngresos");
-
-  if(!el) return;
-
-  el.style.display = hasNew ? "inline-flex" : "none";
-}
+  
   function buildMarcaOptions(data){
   const marcaMap = new Map();
 
@@ -2504,13 +2613,14 @@ function rebuildDependentFilters(){
   let m = document.getElementById("fMarca").value;
   let r = document.getElementById("fRubro").value;
   const s = document.getElementById("fStk").value;
+  const e = document.getElementById("fEstado").value;
 
   const fMarca = document.getElementById("fMarca");
   const fRubro = document.getElementById("fRubro");
 
   /* 1) validar marca contra el contexto actual (ignorando la propia marca) */
   let marcas = buildMarcaOptions(
-    applyFilters(ALL, q, "", r, s)
+    applyFilters(ALL, q, "", r, s, e)
   );
 
   if(!marcas.includes(m)){
@@ -2519,7 +2629,8 @@ function rebuildDependentFilters(){
 
   /* 2) validar rubro contra el contexto actual (ignorando el propio rubro) */
   let rubros = buildRubroOptions(
-    applyFilters(ALL, q, m, "", s)
+    applyFilters(ALL, q, m, "", s, e)
+
   );
 
   if(!rubros.includes(r)){
@@ -2528,11 +2639,11 @@ function rebuildDependentFilters(){
 
   /* 3) reconstrucción final ya con valores válidos */
   marcas = buildMarcaOptions(
-    applyFilters(ALL, q, "", r, s)
-  );
+  applyFilters(ALL, q, "", r, s, e)
+);
 
   rubros = buildRubroOptions(
-    applyFilters(ALL, q, m, "", s)
+    applyFilters(ALL, q, m, "", s, e)
   );
 
   refillSelect(fMarca, "Marca", marcas, m);
@@ -2613,11 +2724,7 @@ g.innerHTML = `
     g.classList.add("fade");
   }
 
-  if(filtroNuevosIngresos && !ALL.some(p =>
-    (p.NUEVO_INGRESO || "").trim().toUpperCase() === "SI"
-  )){
-    filtroNuevosIngresos = false;
-  }
+  
 
   rebuildDependentFilters();
 
@@ -2625,8 +2732,9 @@ g.innerHTML = `
   let m = document.getElementById("fMarca").value;
   let r = document.getElementById("fRubro").value;
   const s = document.getElementById("fStk").value;
+   const e = document.getElementById("fEstado").value;
 
-  let result = applyFilters(ALL, q, m, r, s);
+  let result = applyFilters(ALL, q, m, r, s, e);
 
   /* -------------------------------------------------
      SI HAY TEXTO Y NO ENCUENTRA EN EL MES ACTUAL,
@@ -2662,7 +2770,7 @@ g.innerHTML = `
       m = document.getElementById("fMarca").value;
       r = document.getElementById("fRubro").value;
 
-      result = applyFilters(ALL, q, m, r, s);
+     result = applyFilters(ALL, q, m, r, s, e);
     }
   }
 
@@ -2798,7 +2906,6 @@ registrarEvento("WA_SENT",{
 };
 }
 
-  updateNewIngresoBanner();
 }
 
 function showEmptyCartMessage(){
@@ -3005,9 +3112,75 @@ async function loadCSV(){
     const rubros = [...new Set(ALL.map(x => (x.RUBRO || "").trim()).filter(Boolean))]
       .sort((a,b) => a.localeCompare(b, "es", { sensitivity:"base" }));
 
-    const fMarca = document.getElementById("fMarca");
-    const fRubro = document.getElementById("fRubro");
-    const fStk   = document.getElementById("fStk");
+   const fMarca = document.getElementById("fMarca");
+const fRubro = document.getElementById("fRubro");
+const fStk   = document.getElementById("fStk");
+const fEstado = document.getElementById("fEstado");
+
+const prevEstado = fEstado.value;
+
+fEstado.innerHTML =
+  '<option value="">Estado</option>';
+
+const hayNuevo =
+  ALL.some(p =>
+    (p.NUEVO_INGRESO || "")
+    .trim()
+    .toUpperCase() === "SI"
+  );
+
+if(hayNuevo){
+  fEstado.innerHTML +=
+    '<option value="NUEVO">🔥 Nuevo ingreso</option>';
+}
+
+const estadosSet = new Set();
+
+ALL.forEach(p => {
+
+  const esNuevoIngreso =
+    (p.NUEVO_INGRESO || "")
+    .trim()
+    .toUpperCase() === "SI";
+
+  condicionesArray(p).forEach(c => {
+
+    /* si es INGRESANDO pero además es NUEVO_INGRESO,
+       no agregamos el estado al filtro */
+    if(c === "INGRESANDO" && esNuevoIngreso){
+      return;
+    }
+
+    estadosSet.add(c);
+
+  });
+
+});
+
+const ordenEstados = [
+  "INGRESANDO",
+  "MAS_VENDIDO",
+  "OFERTA",
+  "OFERTAS"
+];
+
+const estadosOrdenados = [...estadosSet].sort((a,b) => {
+  const ia = ordenEstados.indexOf(a);
+  const ib = ordenEstados.indexOf(b);
+
+  if(ia !== -1 && ib !== -1) return ia - ib;
+  if(ia !== -1) return -1;
+  if(ib !== -1) return 1;
+
+  return a.localeCompare(b, "es", { sensitivity:"base" });
+});
+
+estadosOrdenados.forEach(c => {
+  const o = document.createElement("option");
+  o.value = c;
+  o.textContent = estadoLabel(c);
+  fEstado.appendChild(o);
+});
 
     fMarca.innerHTML = '<option value="">Marca</option>';
     fRubro.innerHTML = '<option value="">Rubro</option>';
@@ -3040,6 +3213,11 @@ async function loadCSV(){
     }
 
     fStk.value = prevStk;
+    if([...fEstado.options].some(o => o.value === prevEstado)){
+  fEstado.value = prevEstado;
+}else{
+  fEstado.value = "";
+}
 
     /* =========================
        CART — REHIDRATAR MES ACTUAL
@@ -3110,6 +3288,7 @@ document.getElementById("q").addEventListener("input", () => {
     document.getElementById("fMarca").value = "";
     document.getElementById("fRubro").value = "";
     document.getElementById("fStk").value = "";
+    document.getElementById("fEstado").value = "";
   }
 
   apply();
@@ -3122,12 +3301,13 @@ document.getElementById("q").addEventListener("change", () => {
     document.getElementById("fMarca").value = "";
     document.getElementById("fRubro").value = "";
     document.getElementById("fStk").value = "";
+    document.getElementById("fEstado").value = "";
   }
 
   apply();
 });
 
-["fMarca","fRubro","fStk"].forEach(id=>{
+["fMarca","fRubro","fStk","fEstado"].forEach(id=>{
   document.getElementById(id).addEventListener("input", apply);
   document.getElementById(id).addEventListener("change", apply);
 });
@@ -3137,41 +3317,40 @@ function checkFiltersActive(){
   const m = document.getElementById("fMarca");
   const r = document.getElementById("fRubro");
   const s = document.getElementById("fStk");
+  const e = document.getElementById("fEstado");
 
   const btnClear = document.getElementById("btnClearFilters");
-  const btnNew   = document.getElementById("btnNewIngresos");
+ 
 
   /* limpiar estados */
-  [q, m, r, s].forEach(el => el.classList.remove("active"));
+  [q, m, r, s, e].forEach(el => el.classList.remove("active"));
 
   /* activar filtros según valor */
   if(q.value.trim()) q.classList.add("active");
   if(m.value) m.classList.add("active");
   if(r.value) r.classList.add("active");
   if(s.value) s.classList.add("active");
+  if(e.value) e.classList.add("active");
 
-  /* activar botón Nuevos ingresos */
-  if(btnNew){
-    btnNew.classList.toggle("active", filtroNuevosIngresos);
-  }
+ 
 
   /* activar botón limpiar si hay cualquier filtro */
-  if(q.value.trim() || m.value || r.value || s.value || filtroNuevosIngresos){
+  if(q.value.trim() || m.value || r.value || s.value || e.value){
     btnClear.classList.add("active");
   }else{
     btnClear.classList.remove("active");
   }
 }
-
 function renderActiveFilters(){
 
   const bar = document.getElementById("filtersActiveBar");
   if(!bar) return;
 
-  const q = document.getElementById("q").value.trim();
-  const m = document.getElementById("fMarca").value;
-  const r = document.getElementById("fRubro").value;
-  const s = document.getElementById("fStk").value;
+ const q = document.getElementById("q").value.trim();
+const m = document.getElementById("fMarca").value;
+const r = document.getElementById("fRubro").value;
+const s = document.getElementById("fStk").value;
+const e = document.getElementById("fEstado").value;
 
   let html = "";
 
@@ -3190,22 +3369,34 @@ function renderActiveFilters(){
   if(s){
     html += `<div class="filterChip">Stock: ${s} <span data-x="s">✕</span></div>`;
   }
+  if(e){
 
-  if(filtroNuevosIngresos){
-    html += `<div class="filterChip">🔥 Nuevos <span data-x="new">✕</span></div>`;
-  }
+  const estadoTxt =
+    e === "NUEVO"
+      ? "🔥 Nuevo ingreso"
+      : estadoLabel(e);
 
+  html += `
+    <div class="filterChip">
+      Estado: ${estadoTxt}
+      <span data-x="e">✕</span>
+    </div>
+  `;
+}
+  
   bar.innerHTML = html;
 
   bar.querySelectorAll("[data-x]").forEach(el=>{
     el.onclick = ()=>{
       const t = el.getAttribute("data-x");
 
-      if(t === "q") document.getElementById("q").value = "";
-      if(t === "m") document.getElementById("fMarca").value = "";
-      if(t === "r") document.getElementById("fRubro").value = "";
-      if(t === "s") document.getElementById("fStk").value = "";
-      if(t === "new") filtroNuevosIngresos = false;
+     if(t === "q") document.getElementById("q").value = "";
+if(t === "m") document.getElementById("fMarca").value = "";
+if(t === "r") document.getElementById("fRubro").value = "";
+if(t === "s") document.getElementById("fStk").value = "";
+if(t === "e") document.getElementById("fEstado").value = "";
+
+
 
       apply();
     };
@@ -3213,42 +3404,17 @@ function renderActiveFilters(){
 }
 
 document.getElementById("btnClearFilters").onclick = () => {
-  filtroNuevosIngresos = false;
+  
 
   document.getElementById("q").value = "";
   document.getElementById("fMarca").value = "";
   document.getElementById("fRubro").value = "";
   document.getElementById("fStk").value = "";
+  document.getElementById("fEstado").value = "";
 
   apply();
 };
 
-document.getElementById("btnNewIngresos").onclick = () => {
-  filtroNuevosIngresos = !filtroNuevosIngresos;
-
-  document.getElementById("q").value = "";
-  document.getElementById("fRubro").value = "";
-  document.getElementById("fStk").value = "";
-
-  const marcasNuevas = [...new Set(
-    ALL
-      .filter(p => (p.NUEVO_INGRESO || "").trim().toUpperCase() === "SI")
-      .map(p => marcaOpLabel(p))
-      .filter(Boolean)
-  )];
-
-  /*
-    Si hay una sola marca nueva, la seleccionamos en Marca
-    y se ilumina el filtro de Marca.
-  */
-  if(filtroNuevosIngresos && marcasNuevas.length === 1){
-    document.getElementById("fMarca").value = marcasNuevas[0];
-  }else{
-    document.getElementById("fMarca").value = "";
-  }
-
-  apply();
-};
   
 /* THEME */
 const btnTheme = document.getElementById("btnTheme");
