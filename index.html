@@ -255,6 +255,52 @@ button,
   box-shadow:0 0 0 3px rgba(255,0,0,.25);
 }
 
+.campaignBtn{
+  margin-left:auto;
+  height:32px;
+  padding:0 12px;
+  border-radius:999px;
+  border:1px solid rgba(245,158,11,.45);
+  background:rgba(245,158,11,.10);
+  color:#fbbf24;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  font-size:11px;
+  font-weight:900;
+  line-height:1;
+  cursor:pointer;
+  white-space:nowrap;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 4px 12px rgba(0,0,0,.18);
+  transition:
+    transform .12s ease,
+    background .12s ease,
+    color .12s ease,
+    border-color .12s ease,
+    box-shadow .12s ease;
+}
+
+.campaignIcon{
+  font-size:15px;
+  line-height:1;
+}
+
+.campaignBtn:active{
+  transform:scale(.96);
+}
+
+.campaignBtn.active{
+  background:linear-gradient(135deg,#f59e0b,#fbbf24);
+  color:#111;
+  border-color:rgba(0,0,0,.20);
+  box-shadow:
+    0 0 0 3px rgba(245,158,11,.20),
+    0 8px 20px rgba(245,158,11,.30);
+}
+  
 /* =========================
    MES / TÍTULO
    ========================= */
@@ -1753,7 +1799,7 @@ body.theme-light .filterChip{
     www.todomusica.com.ar
   </a>
 
-  <div class="social">
+    <div class="social">
     <a class="iconBtn" target="_blank" rel="noopener" href="https://www.facebook.com/people/Todomusica-SA/100064115318334/">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.5V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg>
     </a>
@@ -1767,6 +1813,10 @@ body.theme-light .filterChip{
     </a>
   </div>
 
+<button class="campaignBtn" id="btnCampaign" type="button">
+  <span id="campaignLabel"></span>
+</button>
+  
 </div>
 
 <!-- FILA MES / TITULO -->
@@ -1962,7 +2012,12 @@ body.theme-light .filterChip{
    MODO MANTENIMIENTO
    ========================= */
 
-const MODO_MANTENIMIENTO = true; // ← cambiar a true para activar
+const MODO_MANTENIMIENTO = false; // ← cambiar a true para activar
+
+  const CAMPAIGN_ENABLED = true;
+
+const CAMPAIGN_NAME = "🎁 Día del Niño";
+const CAMPAIGN_FILTER = "DIA_NINO";
 
 
 const MONTHS = [
@@ -1985,7 +2040,7 @@ const MONTH_DATA = {};
 
 const ANALYTICS_URL =
 "https://script.google.com/macros/s/AKfycbzjmuihWgZAbbsFopLoDOgquKvPbeDO2xbM48TvGkV2ukO2csq2Fi5YdRPfX4UQlnff/exec";
-
+  
 
 function registrarEvento(evento, extras = {}){
 
@@ -2181,6 +2236,10 @@ function estadoLabel(codigo){
   if(key === "OFERTA" || key === "OFERTAS"){
     return "💸 Oferta";
   }
+  if(key === "DIA_NINO"){
+  return "🎁 Día del Niño";
+}
+
 
   return key
     .replace(/_/g, " ")
@@ -3319,6 +3378,7 @@ function checkFiltersActive(){
   const r = document.getElementById("fRubro");
   const s = document.getElementById("fStk");
   const e = document.getElementById("fEstado");
+  const btnCampaign = document.getElementById("btnCampaign");
 
   const btnClear = document.getElementById("btnClearFilters");
  
@@ -3337,10 +3397,17 @@ function checkFiltersActive(){
 
   /* activar botón limpiar si hay cualquier filtro */
   if(q.value.trim() || m.value || r.value || s.value || e.value){
-    btnClear.classList.add("active");
-  }else{
-    btnClear.classList.remove("active");
-  }
+  btnClear.classList.add("active");
+}else{
+  btnClear.classList.remove("active");
+}
+
+if(btnCampaign){
+  btnCampaign.classList.toggle(
+    "active",
+    e.value === CAMPAIGN_FILTER
+  );
+}
 }
 function renderActiveFilters(){
 
@@ -3525,7 +3592,24 @@ if(MODO_MANTENIMIENTO){
    ========================= */
 const btnPVL = document.getElementById("btnPVL");
 const lblPVL = document.getElementById("lblPVL");
+  const btnCampaign = document.getElementById("btnCampaign");
+const campaignLabel = document.getElementById("campaignLabel");
 
+if(btnCampaign){
+
+  if(!CAMPAIGN_ENABLED){
+
+    btnCampaign.style.display = "none";
+
+  }else{
+
+    if(campaignLabel){
+      campaignLabel.textContent = CAMPAIGN_NAME;
+    }
+
+  }
+
+}
 /* =========================
    MODO PVL — UI GENERAL (PASO 10.2)
    ========================= */
@@ -3567,6 +3651,31 @@ btnPVL.onclick = () => {
 
 
 };
+
+  if(btnCampaign){
+
+  btnCampaign.onclick = () => {
+
+    const fEstado = document.getElementById("fEstado");
+
+   if(fEstado.value === CAMPAIGN_FILTER){
+
+      fEstado.value = "";
+      btnCampaign.classList.remove("active");
+
+    }else{
+
+      fEstado.value = CAMPAIGN_FILTER;
+      btnCampaign.classList.add("active");
+
+    }
+
+    apply();
+
+  };
+
+}
+  
 /* =========================
    CARRITO — RENDER CONTENIDO
    ========================= */
