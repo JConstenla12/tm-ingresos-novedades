@@ -2266,18 +2266,29 @@ function opNum(p){
   
 function pvcNeto(p){
   const pvc = num(p.PVC);
-  const off = pct(p.OFF);
+  const offPVC = pct(p.OFF_PVC);
 
   if(!Number.isFinite(pvc) || pvc === 0){
-    return null; // 👈 clave
+    return null;
   }
 
-  return pvc * (1 - off);
+  return pvc * (1 - offPVC);
 }
+
+function pvlNeto(p){
+  const pvl = num(p.PVL);
+  const offPVL = pct(p.OFF_PVL);
+
+  if(!Number.isFinite(pvl) || pvl === 0){
+    return null;
+  }
+
+  return pvl * (1 - offPVL);
+}
+
 function qty(p){
   return CART.get(p.ARTICULO)?.q ?? 0;
 }
-
 function setQty(p, q){
   const oldQ = qty(p);
   if(
@@ -2435,14 +2446,18 @@ function card(p){
   const esNuevo = (p.NUEVO_INGRESO || "").trim().toUpperCase() === "SI";
   const rub     = p.RUBRO || "";
 
-  const net = pvcNeto(p);
-  const off = pct(p.OFF);
-  const pvL = num(p.PVL);
-  const mk  = pct(p.MKUP);
-  const iva = pct(p.IVA);
-  const ii  = pct(p.II);
+ const net = pvcNeto(p);
 
-  const q = qty(p);
+const offPVC = pct(p.OFF_PVC);
+const offPVL = pct(p.OFF_PVL);
+
+const pvL = num(p.PVL);
+const pvLNeto = pvlNeto(p);
+
+const mk  = pct(p.MKUP);
+const iva = pct(p.IVA);
+const ii  = pct(p.II);
+const q = qty(p);
 
   /* en PVL no queremos resaltar carrito */
   const inCart = (!modoPVL && q > 0) ? "inCart" : "";
@@ -2456,7 +2471,7 @@ function card(p){
     return `
     <div class="card ${inCart}" data-k="${art}">
      <div class="imgBox" data-z="1">
-  ${off > 0 ? `<div class="stickerOff">${Math.round(off*100)}% OFF</div>` : ``}
+  ${offPVL > 0 ? `<div class="stickerOff">${Math.round(offPVL*100)}% OFF</div>` : ``}
   ${esNuevo ? `<div class="stickerNew">🔥 Nuevo ingreso</div>` : ``}
   <img src="${im}" onerror="this.onerror=null;this.src='${PLACE}'">
 </div>
@@ -2482,13 +2497,22 @@ function card(p){
 
           <div class="prod-bottom">
             <div>
-              <div class="priceBig">
-  ${Number.isFinite(pvL) && pvL > 0 
-    ? ars(pvL) 
-    : '<span class="priceConsultar">Consultar</span>'}
+              ${offPVL > 0 && pvLNeto !== null
+  ? `<div class="oldPrice">PVL: ${ars(pvL)}</div>`
+  : ``}
+
+<div class="priceBig">
+  ${pvLNeto === null
+    ? '<span class="priceConsultar">Consultar</span>'
+    : ars(pvLNeto)}
 </div>
-<div class="netLabel">${Number.isFinite(pvL) && pvL > 0 ? "PVL sugerido" : ""}</div>
-            </div>
+
+<div class="netLabel">
+  ${pvLNeto === null
+  ? ""
+  : (offPVL > 0 ? "PVL Neto" : "PVL")}
+</div>
+                          </div>
           </div>
         </div>
       </div>
@@ -2501,7 +2525,7 @@ function card(p){
   return `
   <div class="card ${inCart}" data-k="${art}">
     <div class="imgBox" data-z="1">
-  ${off > 0 ? `<div class="stickerOff">${Math.round(off*100)}% OFF</div>` : ``}
+  ${offPVC > 0 ? `<div class="stickerOff">${Math.round(offPVC*100)}% OFF</div>` : ``}
   ${esNuevo ? `<div class="stickerNew">🔥 Nuevo ingreso</div>` : ``}
   <img src="${im}" onerror="this.onerror=null;this.src='${PLACE}'">
 </div>
@@ -2526,17 +2550,40 @@ function card(p){
         </div>
 
         <div class="prod-line">
-          ${Number.isFinite(pvL) && pvL > 0 ? `<span class="mini">PVL ${ars(pvL)}</span>` : ""}
-          ${mk > 0 ? `<span class="mini">MKUP ${Math.round(mk*100)}%</span>` : ""}
-        </div>
+ ${Number.isFinite(pvL) && pvL > 0
+  ? `<span class="mini" ${
+      offPVL > 0
+        ? 'style="text-decoration:line-through;"'
+        : ''
+    }>PVL ${ars(pvL)}</span>`
+  : ""}
+
+  ${offPVL > 0
+  ? `<span class="mini" style="color:#ef4444;font-weight:900;">▼${Math.round(offPVL*100)}%</span>`
+  : ""}
+
+  ${offPVL > 0 && pvLNeto !== null
+    ? `<span class="mini">PVL ${ars(pvLNeto)}</span>`
+    : ""}
+
+  ${mk > 0
+    ? `<span class="mini">MKUP ${Math.round(mk*100)}%</span>`
+    : ""}
+</div>
 
         <div class="prod-bottom">
           <div>
-            ${off > 0 && net !== null ? `<div class="oldPrice">PVC: ${ars(num(p.PVC))}</div>` : ``}
+            ${offPVC > 0 && net !== null ? `<div class="oldPrice">PVC: ${ars(num(p.PVC))}</div>` : ``}
             <div class="priceBig">
   ${net === null ? '<span class="priceConsultar">Consultar</span>' : ars(net)}
 </div>
-            <div class="netLabel">${net === null ? "" : "PVC Neto"}</div>
+            <div class="netLabel">
+  ${
+    net === null
+      ? ""
+      : (offPVC > 0 ? "PVC Neto" : "PVC")
+  }
+</div>
           </div>
 
           ${stkNorm(p.STOCK_TXT) === "AGOTADO"
