@@ -2671,31 +2671,55 @@ const q = qty(p);
 
 }
   
-  function buildMarcaOptions(data){
+ function buildMarcaOptions(data){
+
   const marcaMap = new Map();
 
   data.forEach(x => {
+
     const label = marcaOpLabel(x);
     if(!label) return;
 
     if(!marcaMap.has(label)){
-      marcaMap.set(label, {
+
+      marcaMap.set(label,{
         label,
-        marca: (x.MARCA || "").trim(),
-        op: opNum(x)
+        marca:(x.MARCA || "").trim(),
+        op:opNum(x),
+        nuevo:
+          (x.NUEVO_INGRESO || "")
+            .trim()
+            .toUpperCase() === "SI"
       });
+
     }
+
   });
 
   return [...marcaMap.values()]
-    .sort((a,b) => {
-      const cmpMarca = a.marca.localeCompare(b.marca, "es", { sensitivity:"base" });
-      if(cmpMarca !== 0) return cmpMarca;
-      return a.op - b.op;
-    })
-    .map(x => x.label);
-}
+    .sort((a,b)=>{
 
+      if(a.nuevo && !b.nuevo) return -1;
+      if(!a.nuevo && b.nuevo) return 1;
+
+      const cmpMarca =
+        a.marca.localeCompare(
+          b.marca,
+          "es",
+          { sensitivity:"base" }
+        );
+
+      if(cmpMarca !== 0) return cmpMarca;
+
+      return a.op - b.op;
+
+    })
+    .map(x =>
+      x.nuevo
+        ? `🔥 ${x.label}`
+        : x.label
+    );
+}
 function buildRubroOptions(data){
   return [...new Set(
     data.map(x => (x.RUBRO || "").trim()).filter(Boolean)
@@ -2881,7 +2905,24 @@ g.innerHTML = `
     }
   }
 
-  VIEW = result;
+ VIEW = result.sort((a,b)=>{
+
+  const aNuevo =
+    (a.NUEVO_INGRESO || "")
+      .trim()
+      .toUpperCase() === "SI";
+
+  const bNuevo =
+    (b.NUEVO_INGRESO || "")
+      .trim()
+      .toUpperCase() === "SI";
+
+  if(aNuevo && !bNuevo) return -1;
+  if(!aNuevo && bNuevo) return 1;
+
+  return 0;
+
+});
 
   if(g){
     setTimeout(()=>{
