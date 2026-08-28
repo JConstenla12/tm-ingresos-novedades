@@ -2614,9 +2614,13 @@ const q = qty(p);
   .trim()
   .toUpperCase() === "SI";
 
-    if(m && marcaOpLabel(p) !== m){
-      return false;
-    }
+   const marcaSeleccionada = String(m || "")
+  .replace(/^🔥\s*/, "")
+  .trim();
+
+if(marcaSeleccionada && marcaOpLabel(p) !== marcaSeleccionada){
+  return false;
+}
 
     if(r && (p.RUBRO || "") !== r){
       return false;
@@ -2671,7 +2675,7 @@ const q = qty(p);
 
 }
   
- function buildMarcaOptions(data){
+function buildMarcaOptions(data){
 
   const marcaMap = new Map();
 
@@ -2680,24 +2684,30 @@ const q = qty(p);
     const label = marcaOpLabel(x);
     if(!label) return;
 
+    const esNuevo =
+      (x.NUEVO_INGRESO || "")
+        .trim()
+        .toUpperCase() === "SI";
+
     if(!marcaMap.has(label)){
 
       marcaMap.set(label,{
         label,
-        marca:(x.MARCA || "").trim(),
-        op:opNum(x),
-        nuevo:
-          (x.NUEVO_INGRESO || "")
-            .trim()
-            .toUpperCase() === "SI"
+        marca: (x.MARCA || "").trim(),
+        op: opNum(x),
+        nuevo: esNuevo
       });
+
+    }else if(esNuevo){
+
+      marcaMap.get(label).nuevo = true;
 
     }
 
   });
 
   return [...marcaMap.values()]
-    .sort((a,b)=>{
+    .sort((a,b) => {
 
       if(a.nuevo && !b.nuevo) return -1;
       if(!a.nuevo && b.nuevo) return 1;
@@ -2720,7 +2730,7 @@ const q = qty(p);
         : x.label
     );
 }
-function buildRubroOptions(data){
+  function buildRubroOptions(data){
   return [...new Set(
     data.map(x => (x.RUBRO || "").trim()).filter(Boolean)
   )].sort((a,b) => a.localeCompare(b, "es", { sensitivity:"base" }));
