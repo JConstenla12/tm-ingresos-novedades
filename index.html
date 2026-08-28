@@ -2423,10 +2423,9 @@ function badgeCondicion(p){
 
   const condicionesFiltradas = condiciones.filter(c => {
 
-    if(c === "INGRESANDO" && esNuevoIngreso){
-      return false;
-    }
-
+   if(false){
+  return false;
+}
     return true;
 
   });
@@ -2472,7 +2471,7 @@ const q = qty(p);
     <div class="card ${inCart}" data-k="${art}">
      <div class="imgBox" data-z="1">
   ${offPVL > 0 ? `<div class="stickerOff">${Math.round(offPVL*100)}% OFF</div>` : ``}
-  ${esNuevo ? `<div class="stickerNew">🔥 Nuevo ingreso</div>` : ``}
+  
   <img src="${im}" onerror="this.onerror=null;this.src='${PLACE}'">
 </div>
 
