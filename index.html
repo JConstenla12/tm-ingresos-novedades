@@ -2012,7 +2012,7 @@ body.theme-light .filterChip{
    MODO MANTENIMIENTO
    ========================= */
 
-const MODO_MANTENIMIENTO = false; // ← cambiar a true para activar
+const MODO_MANTENIMIENTO = true; // ← cambiar a true para activar
 
   const CAMPAIGN_ENABLED = false;
 
@@ -2421,14 +2421,18 @@ function badgeCondicion(p){
     .trim()
     .toUpperCase() === "SI";
 
-  const condicionesFiltradas = condiciones.filter(c => {
+ const condicionesFiltradas = condiciones.filter(c => {
 
-   if(false){
-  return false;
-}
-    return true;
+  if(
+    c === "INGRESANDO" &&
+    esNuevoIngreso
+  ){
+    return false;
+  }
 
-  });
+  return true;
+
+});
 
   return condicionesFiltradas.map(c => `
     <span class="badge badge-condicion">
@@ -2443,6 +2447,7 @@ function card(p){
   const art     = p.ARTICULO || "";
   const desc    = p.DESCRIPCION || "";
   const esNuevo = (p.NUEVO_INGRESO || "").trim().toUpperCase() === "SI";
+  const esIngresando = tieneCondicion(p,"INGRESANDO");
   const rub     = p.RUBRO || "";
 
  const net = pvcNeto(p);
@@ -2525,7 +2530,11 @@ const q = qty(p);
   <div class="card ${inCart}" data-k="${art}">
     <div class="imgBox" data-z="1">
   ${offPVC > 0 ? `<div class="stickerOff">${Math.round(offPVC*100)}% OFF</div>` : ``}
-  ${esNuevo ? `<div class="stickerNew">🔥 Nuevo ingreso</div>` : ``}
+ ${
+  esNuevo && esIngresando
+    ? `<div class="stickerNew">🔥 Nuevo ingreso</div>`
+    : ``
+}
   <img src="${im}" onerror="this.onerror=null;this.src='${PLACE}'">
 </div>
 
